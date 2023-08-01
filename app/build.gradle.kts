@@ -1,7 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin_kapt")
+    id("kotlin-kapt")
+    id("kotlin-android")
     id("kotlin-parcelize")
 }
 
@@ -56,6 +57,8 @@ dependencies {
 
     //room db
     kapt ("androidx.room:room-compiler:2.5.1")
+    implementation ("androidx.room:room-runtime")
+    annotationProcessor ("androidx.room:room-compiler")
     implementation ("androidx.room:room-ktx:2.5.1")
     implementation ("androidx.room:room-runtime:2.5.1")
     implementation ("androidx.room:room-rxjava2:2.5.1")
