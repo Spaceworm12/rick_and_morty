@@ -1,8 +1,8 @@
-package ru.lesson.fragmentsample.presentation.model
+package com.example.rickandmorty.presentation.model
 
 
-import ru.lesson.fragmentsample.data.db.entity.ExampleEntity
-import ru.lesson.fragmentsample.presentation.model.ExampleModel as ExampleModelPresentation
+import com.example.rickandmorty.data.db.entity.ExampleEntity
+import com.example.rickandmorty.presentation.model.ExampleModel as ExampleModelPresentation
 
 object Mapper {
 
@@ -10,7 +10,6 @@ object Mapper {
         return ExampleModelPresentation(
             id = model.id,
             name = model.name,
-            description = model.description
         )
     }
 
@@ -22,7 +21,6 @@ object Mapper {
         return ExampleEntity(
             id = model.id,
             name = model.name,
-            description = model.description
         )
     }
 

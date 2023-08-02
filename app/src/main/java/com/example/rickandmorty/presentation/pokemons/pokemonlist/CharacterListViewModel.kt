@@ -1,38 +1,38 @@
-package ru.lesson.fragmentsample.presentation.pokemons.pokemonlist
+package com.example.rickandmorty.presentation.pokemons.pokemonlist
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.rickandmorty.application.App
+import com.example.rickandmorty.data.network.NetworkRepositoryImpl
+import com.example.rickandmorty.presentation.model.Character
+import com.example.rickandmorty.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
-import ru.lesson.fragmentsample.app.App
-import ru.lesson.fragmentsample.data.network.NetworkRepositoryImpl
-import ru.lesson.fragmentsample.presentation.model.Pokemon
-import ru.lesson.fragmentsample.util.Resource
 
 
-class PokemonsListViewModel(
-    private val networkRepository: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getPokemonApi())
+class CharacterListViewModel(
+    private val networkRepository: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getRickAndMortyApi())
 ): ViewModel() {
 
     private val disposables = CompositeDisposable()
 
-    val pokemons = MutableLiveData<List<Pokemon>>(emptyList())
+    val characters = MutableLiveData<List<Character>>(emptyList())
     val loading = MutableLiveData(false)
 
     init {
-        loadPokemons()
+        loadCharacters()
     }
 
-    private fun loadPokemons() {
-        networkRepository.getPokemons()
+    private fun loadCharacters() {
+        networkRepository.getCharacters()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { resource ->
                 when (resource) {
                     Resource.Loading -> loading.postValue(true)
 
                     is Resource.Data -> {
-                        pokemons.postValue(resource.data ?: emptyList())
+                        characters.postValue(resource.data ?: emptyList())
                         loading.postValue(false)
                     }
 

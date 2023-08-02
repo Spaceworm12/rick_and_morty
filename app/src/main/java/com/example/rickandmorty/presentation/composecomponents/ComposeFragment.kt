@@ -1,4 +1,4 @@
-package ru.lesson.fragmentsample.presentation.composecomponents
+package com.example.rickandmorty.presentation.composecomponents
 
 import android.os.Bundle
 import android.view.LayoutInflater

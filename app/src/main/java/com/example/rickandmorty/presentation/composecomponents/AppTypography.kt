@@ -1,4 +1,4 @@
-package ru.lesson.fragmentsample.presentation.composecomponents
+package com.example.rickandmorty.presentation.composecomponents
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.text.TextStyle

@@ -1,4 +1,4 @@
-package ru.lesson.fragmentsample.presentation.model
+package com.example.rickandmorty.presentation.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -7,5 +7,4 @@ import kotlinx.parcelize.Parcelize
 data class ExampleModel(
     val id: Long,
     var name: String,
-    var description: String
 ): Parcelable

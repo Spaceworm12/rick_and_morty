@@ -1,4 +1,4 @@
-package ru.lesson.fragmentsample.presentation.detail
+package com.example.rickandmorty.presentation.detail
 
 import android.content.res.Configuration
 import android.os.Build
@@ -26,13 +26,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
-import ru.lesson.fragmentsample.R
-import ru.lesson.fragmentsample.presentation.composecomponents.AppTheme
-import ru.lesson.fragmentsample.presentation.composecomponents.ComposeFragment
-import ru.lesson.fragmentsample.presentation.composecomponents.FragmentSampleTheme
-import ru.lesson.fragmentsample.presentation.composecomponents.buttons.PrimaryButton
-import ru.lesson.fragmentsample.presentation.composecomponents.toolbar.Toolbar
-import ru.lesson.fragmentsample.presentation.model.ExampleModel
+import com.example.rickandmorty.R
+import com.example.rickandmorty.presentation.composecomponents.AppTheme
+import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
+import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
+import com.example.rickandmorty.presentation.composecomponents.buttons.PrimaryButton
+import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
+import com.example.rickandmorty.presentation.model.ExampleModel
+import ru.lesson.fragmentsample.presentation.detail.DetailViewModel
 
 class DetailFragment : ComposeFragment() {
 
@@ -63,7 +64,7 @@ class DetailFragment : ComposeFragment() {
         val currentTheme = viewModel.currentTheme.observeAsState().value ?: return
         val exit = viewModel.exit.observeAsState().value ?: return
 
-        FragmentSampleTheme(themeCode = currentTheme) {
+        RickAndMortyMainTheme(themeCode = currentTheme) {
             DetailScreen(exampleModel, exit)
         }
     }
@@ -181,7 +182,7 @@ class DetailFragment : ComposeFragment() {
     @Preview(name = "DetailScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
     private fun DetailScreenPreview() {
-        FragmentSampleTheme {
+        RickAndMortyMainTheme {
 
             val model = ExampleModel(
                 id = 0,

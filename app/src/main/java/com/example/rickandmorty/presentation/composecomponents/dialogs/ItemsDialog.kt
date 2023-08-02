@@ -1,4 +1,4 @@
-package ru.lesson.fragmentsample.presentation.composecomponents.dialogs
+package com.example.rickandmorty.presentation.composecomponents.dialogs
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -22,9 +22,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import ru.lesson.fragmentsample.presentation.composecomponents.AppTheme
-import ru.lesson.fragmentsample.presentation.composecomponents.FragmentSampleTheme
-import ru.lesson.fragmentsample.presentation.composecomponents.buttons.DialogButton
+import com.example.rickandmorty.presentation.composecomponents.AppTheme
+import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
+import com.example.rickandmorty.presentation.composecomponents.buttons.DialogButton
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -110,7 +110,7 @@ fun ItemsDialog(
 @Preview(name = "ItemsDialog", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 private fun ItemsDialogPreview() {
-    FragmentSampleTheme() {
+    RickAndMortyMainTheme() {
         ItemsDialog(
             "Добавьте фото",
             "При добавлении файлов, пользователь должен учитывать ограничения, все добавленные файлы не должны превышать 10 Мб.",

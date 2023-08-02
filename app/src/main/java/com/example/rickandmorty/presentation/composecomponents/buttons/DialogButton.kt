@@ -1,4 +1,4 @@
-package ru.lesson.fragmentsample.presentation.composecomponents.buttons
+package com.example.rickandmorty.presentation.composecomponents.buttons
 
 
 import android.content.res.Configuration
@@ -17,8 +17,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.lesson.fragmentsample.presentation.composecomponents.AppTheme
-import ru.lesson.fragmentsample.presentation.composecomponents.FragmentSampleTheme
+import com.example.rickandmorty.presentation.composecomponents.AppTheme
+import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
 
 
 @Composable
@@ -57,7 +57,7 @@ fun DialogButton(
 @Preview(name = "DialogButton", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 private fun DialogButtonPreview() {
-    FragmentSampleTheme() {
+    RickAndMortyMainTheme() {
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             DialogButton(text = "Text") {}
             DialogButton(text = "Text", isEnabled = false) {}

@@ -1,4 +1,4 @@
-package ru.lesson.fragmentsample.presentation.composecomponents.shimmer
+package com.example.rickandmorty.presentation.composecomponents.shimmer
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background

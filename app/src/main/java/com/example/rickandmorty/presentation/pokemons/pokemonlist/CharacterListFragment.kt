@@ -1,4 +1,4 @@
-package ru.lesson.fragmentsample.presentation.pokemons.pokemonlist
+package com.example.rickandmorty.presentation.pokemons.pokemonlist
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -31,34 +31,34 @@ import androidx.lifecycle.ViewModelProvider
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
-import ru.lesson.fragmentsample.R
-import ru.lesson.fragmentsample.presentation.composecomponents.AppTheme
-import ru.lesson.fragmentsample.presentation.composecomponents.ComposeFragment
-import ru.lesson.fragmentsample.presentation.composecomponents.FragmentSampleTheme
-import ru.lesson.fragmentsample.presentation.composecomponents.dialogs.LoaderBlock
-import ru.lesson.fragmentsample.presentation.composecomponents.shimmer.shimmerBackground
-import ru.lesson.fragmentsample.presentation.composecomponents.toolbar.Toolbar
-import ru.lesson.fragmentsample.presentation.model.Pokemon
+import com.example.rickandmorty.R
+import com.example.rickandmorty.presentation.composecomponents.AppTheme
+import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
+import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
+import com.example.rickandmorty.presentation.model.Character
+import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlock
+import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
+import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 
 
-class PokemonsListFragment : ComposeFragment() {
+class CharacterListFragment : ComposeFragment() {
 
-    private val viewModel: PokemonsListViewModel by lazy {
-        ViewModelProvider(this)[PokemonsListViewModel::class.java]
+    private val viewModel: CharacterListViewModel by lazy {
+        ViewModelProvider(this)[CharacterListViewModel::class.java]
     }
 
     @Composable
     override fun GetContent() {
-        val pokemons = viewModel.pokemons.observeAsState().value ?: return
+        val characters = viewModel.characters.observeAsState().value ?: return
         val loading = viewModel.loading.observeAsState().value ?: return
 
-        FragmentSampleTheme() {
-            PokemonListScreen(pokemons, loading)
+        RickAndMortyMainTheme() {
+            CharacterListScreen(characters, loading)
         }
     }
 
     @Composable
-    private fun PokemonListScreen(pokemons: List<Pokemon>, loading: Boolean) {
+    private fun CharacterListScreen(characters: List<Character>, loading: Boolean) {
 
         if (loading) LoaderBlock()
 
@@ -68,16 +68,16 @@ class PokemonsListFragment : ComposeFragment() {
                 .background(AppTheme.colors.background)
         ) {
             Toolbar(
-                title = stringResource(id = R.string.pokemons_label),
+                title = stringResource(id = R.string.rik_wiki),
                 elevation = AppTheme.dimens.halfContentMargin,
                 onBackClick = { goBack() }
             )
             LazyVerticalGrid(
                 columns = GridCells.Fixed(count = 3)
             ) {
-                pokemons.forEach { pokemon ->
+                characters.forEach { character ->
                     item {
-                        Pokemon(pokemon)
+                        Character(character)
                     }
                 }
             }
@@ -86,7 +86,7 @@ class PokemonsListFragment : ComposeFragment() {
 
     @OptIn(ExperimentalCoilApi::class)
     @Composable
-    private fun Pokemon(pokemon: Pokemon) {
+    private fun Character(character: Character) {
 
         Column(
             modifier = Modifier
@@ -97,7 +97,7 @@ class PokemonsListFragment : ComposeFragment() {
 
             Text(
                 modifier = Modifier.padding(bottom = AppTheme.dimens.halfContentMargin),
-                text = pokemon.name,
+                text = character.name,
                 style = AppTheme.typography.body1,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -117,7 +117,7 @@ class PokemonsListFragment : ComposeFragment() {
                 shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
             ) {
 
-                val painterImage = rememberImagePainter(data = pokemon.url)
+                val painterImage = rememberImagePainter(data = character.url)
 
                 when (painterImage.state) {
                     is ImagePainter.State.Loading -> {
@@ -130,7 +130,7 @@ class PokemonsListFragment : ComposeFragment() {
 
                     is ImagePainter.State.Error -> {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_file_error),
+                            painter = painterResource(id = android.R.drawable.stat_notify_error),
                             contentDescription = null,
                             modifier = Modifier
                                 .fillMaxSize()
@@ -163,20 +163,20 @@ class PokemonsListFragment : ComposeFragment() {
 
     private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
 
-    @Preview(name = "PokemonListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
+    @Preview(name = "CharactersListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
     private fun PokemonListScreenPreview() {
-        FragmentSampleTheme {
+        RickAndMortyMainTheme {
 
-            val pokemons = listOf(
-                Pokemon("1", "https://placebear.com/g/200/200"),
-                Pokemon("2", "https://placebear.com/g/200/200"),
-                Pokemon("3", "https://placebear.com/g/200/200"),
-                Pokemon("4", "https://placebear.com/g/200/200")
+            val characters = listOf(
+                Character("1", "https://placebear.com/g/200/200"),
+                Character("2", "https://placebear.com/g/200/200"),
+                Character("3", "https://placebear.com/g/200/200"),
+                Character("4", "https://placebear.com/g/200/200")
             )
 
-            PokemonListScreen(
-                pokemons = pokemons,
+            CharacterListScreen(
+                characters = characters,
                 loading = false
             )
         }

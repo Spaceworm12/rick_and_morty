@@ -1,4 +1,4 @@
-package ru.lesson.fragmentsample.presentation.composecomponents.dialogs
+package com.example.rickandmorty.presentation.composecomponents.dialogs
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -14,8 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import ru.lesson.fragmentsample.presentation.composecomponents.AppTheme
-import ru.lesson.fragmentsample.presentation.composecomponents.FragmentSampleTheme
+import com.example.rickandmorty.presentation.composecomponents.AppTheme
+import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
 
 @Composable
 fun LoaderBlock(text: String = "Идет обмен данными с сервером") {
@@ -45,7 +45,7 @@ fun LoaderBlock(text: String = "Идет обмен данными с серве
 @Preview(name = "LoaderBlock", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 private fun LoaderBlockPreview() {
-    FragmentSampleTheme {
+    RickAndMortyMainTheme {
         LoaderBlock("Идет обмен данными с сервером")
     }
 }

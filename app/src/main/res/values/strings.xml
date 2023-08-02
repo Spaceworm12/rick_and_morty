@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Rick and Morty</string>
+    <string name="Yes">Да</string>
+    <string name="No">Нет</string>
+    <string name="go_next">Вперед</string>
+    <string name="go_back">Назад</string>
+    <string name="save">Сохранить</string>
+    <string name="delete">Удалить</string>
+    <string name="settings">Настройки</string>
+    <string name="first_theme">Первая тема</string>
+    <string name="second_theme">Вторая тема</string>
+    <string name="rik_wiki">Рик и Морти Wiki</string>
+
 </resources>
+

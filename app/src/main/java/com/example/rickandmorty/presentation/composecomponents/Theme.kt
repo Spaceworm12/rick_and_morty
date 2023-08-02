@@ -1,4 +1,4 @@
-package ru.lesson.fragmentsample.presentation.composecomponents
+package com.example.rickandmorty.presentation.composecomponents
 
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.runtime.Composable
@@ -12,7 +12,7 @@ private val LightColorPalette = lightColors()
 private val DarkColorPalette = darkColors()
 
 @Composable
-fun FragmentSampleTheme(
+fun RickAndMortyMainTheme(
     themeCode: Int = 0,
     content: @Composable () -> Unit
 ) {

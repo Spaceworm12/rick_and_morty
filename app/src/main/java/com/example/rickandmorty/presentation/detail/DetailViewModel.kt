@@ -8,10 +8,11 @@ import io.reactivex.rxkotlin.addTo
 import ru.lesson.fragmentsample.app.App
 import ru.lesson.fragmentsample.data.repository.ItemRepository
 import ru.lesson.fragmentsample.data.repository.ItemRepositoryImpl
-import ru.lesson.fragmentsample.presentation.composecomponents.FIRST_THEME
-import ru.lesson.fragmentsample.presentation.composecomponents.THEME_CODE
-import ru.lesson.fragmentsample.presentation.model.ExampleModel
-import ru.lesson.fragmentsample.presentation.model.Mapper
+import com.example.rickandmorty.presentation.composecomponents.FIRST_THEME
+import com.example.rickandmorty.presentation.composecomponents.THEME_CODE
+import com.example.rickandmorty.presentation.detail.DetailEvent
+import com.example.rickandmorty.presentation.model.ExampleModel
+import com.example.rickandmorty.presentation.model.Mapper
 import ru.lesson.fragmentsample.util.Resource
 
 class DetailViewModel(

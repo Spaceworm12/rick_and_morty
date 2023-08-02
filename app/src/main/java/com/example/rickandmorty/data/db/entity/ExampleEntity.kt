@@ -10,5 +10,4 @@ data class ExampleEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val name: String,
-    val description: String
 )

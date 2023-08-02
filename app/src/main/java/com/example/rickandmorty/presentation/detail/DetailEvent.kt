@@ -1,6 +1,6 @@
-package ru.lesson.fragmentsample.presentation.detail
+package com.example.rickandmorty.presentation.detail
 
-import ru.lesson.fragmentsample.presentation.model.ExampleModel
+import com.example.rickandmorty.presentation.model.ExampleModel
 
 
 sealed class DetailEvent {
