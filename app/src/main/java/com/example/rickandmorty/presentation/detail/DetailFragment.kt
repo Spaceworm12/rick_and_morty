@@ -33,7 +33,6 @@ import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainT
 import com.example.rickandmorty.presentation.composecomponents.buttons.PrimaryButton
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.model.ExampleModel
-import ru.lesson.fragmentsample.presentation.detail.DetailViewModel
 
 class DetailFragment : ComposeFragment() {
 

@@ -28,7 +28,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                ("proguard-rules.pro")
             )
         }
     }
@@ -37,7 +37,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = ("1.8")
     }
     buildFeatures {
         compose = true
@@ -46,7 +46,7 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = ("1.4.3")
     }
 }
 
@@ -58,7 +58,7 @@ dependencies {
     //room db
     kapt ("androidx.room:room-compiler:2.5.1")
     implementation ("androidx.room:room-runtime")
-    annotationProcessor ("androidx.room:room-compiler")
+    kapt ("androidx.room:room-compiler")
     implementation ("androidx.room:room-ktx:2.5.1")
     implementation ("androidx.room:room-runtime:2.5.1")
     implementation ("androidx.room:room-rxjava2:2.5.1")
@@ -95,7 +95,7 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
     implementation ("androidx.compose:compose-bom:2022.10.00")
     implementation ("androidx.compose.ui:ui-graphics")
-    implementation ("androidx.compose.material3:material3")
+    implementation ("androidx.compose.material3:material3:1.1.1")
 
     androidTestImplementation ("androidx.compose:compose-bom:2022.10.00")
     androidTestImplementation ("androidx.compose.ui:ui-test-junit4")

@@ -1,19 +1,19 @@
-package ru.lesson.fragmentsample.presentation.detail
+package com.example.rickandmorty.presentation.detail
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.rickandmorty.application.App
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
-import ru.lesson.fragmentsample.app.App
-import ru.lesson.fragmentsample.data.repository.ItemRepository
-import ru.lesson.fragmentsample.data.repository.ItemRepositoryImpl
 import com.example.rickandmorty.presentation.composecomponents.FIRST_THEME
 import com.example.rickandmorty.presentation.composecomponents.THEME_CODE
 import com.example.rickandmorty.presentation.detail.DetailEvent
 import com.example.rickandmorty.presentation.model.ExampleModel
 import com.example.rickandmorty.presentation.model.Mapper
-import ru.lesson.fragmentsample.util.Resource
+import com.example.rickandmorty.util.Resource
+import ru.lesson.fragmentsample.data.repository.ItemRepository
+import ru.lesson.fragmentsample.data.repository.ItemRepositoryImpl
 
 class DetailViewModel(
     private val itemRepository: ItemRepository = ItemRepositoryImpl(App.getExampleDao())
