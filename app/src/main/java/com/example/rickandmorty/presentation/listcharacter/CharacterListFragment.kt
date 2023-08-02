@@ -1,4 +1,4 @@
-package com.example.rickandmorty.presentation.pokemons.pokemonlist
+package com.example.rickandmorty.presentation.listcharacter
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -39,6 +39,7 @@ import com.example.rickandmorty.presentation.model.Character
 import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlock
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
+import com.example.rickandmorty.presentation.pokemons.characterlist.CharacterListViewModel
 
 
 class CharacterListFragment : ComposeFragment() {
