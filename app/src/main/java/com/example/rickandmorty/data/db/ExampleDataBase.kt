@@ -2,7 +2,6 @@ package com.example.rickandmorty.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.rickandmorty.data.db.ExampleDao
 import com.example.rickandmorty.data.db.entity.ExampleEntity
 
 

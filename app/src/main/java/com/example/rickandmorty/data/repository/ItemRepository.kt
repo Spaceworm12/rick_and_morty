@@ -1,4 +1,4 @@
-package ru.lesson.fragmentsample.data.repository
+package com.example.rickandmorty.data.repository
 
 import io.reactivex.Observable
 import com.example.rickandmorty.data.db.entity.ExampleEntity

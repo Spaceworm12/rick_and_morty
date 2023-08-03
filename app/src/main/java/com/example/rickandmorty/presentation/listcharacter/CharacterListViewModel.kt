@@ -1,4 +1,4 @@
-package com.example.rickandmorty.presentation.pokemons.characterlist
+package com.example.rickandmorty.presentation.listcharacter
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

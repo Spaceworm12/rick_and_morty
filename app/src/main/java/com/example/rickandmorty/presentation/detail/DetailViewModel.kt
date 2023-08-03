@@ -8,12 +8,11 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import com.example.rickandmorty.presentation.composecomponents.FIRST_THEME
 import com.example.rickandmorty.presentation.composecomponents.THEME_CODE
-import com.example.rickandmorty.presentation.detail.DetailEvent
 import com.example.rickandmorty.presentation.model.ExampleModel
 import com.example.rickandmorty.presentation.model.Mapper
 import com.example.rickandmorty.util.Resource
-import ru.lesson.fragmentsample.data.repository.ItemRepository
-import ru.lesson.fragmentsample.data.repository.ItemRepositoryImpl
+import com.example.rickandmorty.data.repository.ItemRepository
+import com.example.rickandmorty.data.repository.ItemRepositoryImpl
 
 class DetailViewModel(
     private val itemRepository: ItemRepository = ItemRepositoryImpl(App.getExampleDao())

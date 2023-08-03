@@ -77,13 +77,13 @@ class DetailFragment : ComposeFragment() {
         currentName = currentName.ifBlank { item.name }
 
         var currentDescription by remember { mutableStateOf("") }
-        currentDescription = currentDescription.ifBlank { item.description }
+        currentDescription = currentDescription.ifBlank { item.name }
 
 
         Column(modifier = Modifier.background(AppTheme.colors.background)) {
 
             Toolbar(
-                title = stringResource(id = R.string.detail_fragment),
+                title = "21",
                 onBackClick = { goBack() }
             )
 
@@ -107,7 +107,7 @@ class DetailFragment : ComposeFragment() {
                     },
                     placeholder = {
                         Text(
-                            text = stringResource(id = R.string.label_hint),
+                            text = "2",
                             style = AppTheme.typography.body1
                         )
                     },
@@ -137,12 +137,12 @@ class DetailFragment : ComposeFragment() {
                     value = currentDescription,
                     onValueChange = {
                         currentDescription = it
-                        item.description = it
+//                        item.description = it
                         viewModel.submitUIEvent(DetailEvent.SetItem(item))
                     },
                     placeholder = {
                         Text(
-                            text = stringResource(id = R.string.description_hint),
+                            text = "23",
                             style = AppTheme.typography.body1
                         )
                     },
@@ -174,7 +174,6 @@ class DetailFragment : ComposeFragment() {
         return ExampleModel(
             id = 0,
             name = "",
-            description = ""
         )
     }
 
@@ -186,8 +185,6 @@ class DetailFragment : ComposeFragment() {
             val model = ExampleModel(
                 id = 0,
                 name = "Заметка про Витю",
-                description = "Витя, ты справишься! Ты собака, я собака, ты собака, " +
-                        "я собака, ты собака, я собака, ты собака.",
             )
 
             DetailScreen(
