@@ -7,7 +7,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -15,7 +17,12 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Dangerous
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
@@ -24,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,10 +43,10 @@ import com.example.rickandmorty.R
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
-import com.example.rickandmorty.presentation.model.Character
 import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlock
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
+import com.example.rickandmorty.presentation.model.Character
 
 
 class CharacterListFragment : ComposeFragment() {
@@ -70,15 +78,37 @@ class CharacterListFragment : ComposeFragment() {
             Toolbar(
                 title = stringResource(id = R.string.rik_wiki),
                 elevation = AppTheme.dimens.halfContentMargin,
-                onBackClick = { goBack() }
+                onBackClick = { }
             )
             LazyVerticalGrid(
-                columns = GridCells.Fixed(count = 3)
+                columns = GridCells.Fixed(count = 1)
             ) {
                 characters.forEach { character ->
                     item {
                         Character(character)
                     }
+                }
+            }
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+
+                val fabSize = 56.dp
+
+                FloatingActionButton(
+                    modifier = Modifier
+                        .size(fabSize)
+                        .padding(
+                            end = AppTheme.dimens.sideMargin,
+                            bottom = AppTheme.dimens.sideMargin
+                        ),
+                    backgroundColor = AppTheme.colors.rippleColor,
+                    onClick = {
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Dangerous,
+                        contentDescription = null,
+                        tint = AppTheme.colors.background
+                    )
                 }
             }
         }
@@ -92,73 +122,105 @@ class CharacterListFragment : ComposeFragment() {
             modifier = Modifier
                 .padding(AppTheme.dimens.contentMargin)
                 .width(100.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.Start
         ) {
 
-            Text(
-                modifier = Modifier.padding(bottom = AppTheme.dimens.halfContentMargin),
-                text = character.name,
-                style = AppTheme.typography.body1,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-
-            Card(
-                modifier = Modifier
-                    .size(
-                        width = 100.dp,
-                        height = 100.dp
-                    )
-                    .clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() },
-                        onClick = { }
-                    ),
-                shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
+            Row(
+                modifier = Modifier.background(
+                    color = AppTheme.colors.rippleColor,
+                    shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
+                )
             ) {
-
-                val painterImage = rememberImagePainter(data = character.url)
-
-                when (painterImage.state) {
-                    is ImagePainter.State.Loading -> {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .shimmerBackground(RoundedCornerShape(AppTheme.dimens.halfContentMargin))
+                Card(
+                    modifier = Modifier
+                        .size(
+                            width = 100.dp,
+                            height = 100.dp
                         )
+                        .clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() },
+                            onClick = { }
+                        ),
+                    shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
+                ) {
+
+                    val painterImage = rememberImagePainter(data = character.url)
+
+                    when (painterImage.state) {
+                        is ImagePainter.State.Loading -> {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.halfContentMargin))
+                            )
+                        }
+
+                        is ImagePainter.State.Error -> {
+                            Image(
+                                painter = painterResource(id = android.R.drawable.stat_notify_error),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clickable(
+                                        onClick = {
+
+                                        },
+                                    ),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+
+                        else -> {
+                            Image(
+                                painter = painterImage,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clickable(
+                                        onClick = {
+                                        }
+                                    ),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
                     }
+                }
 
-                    is ImagePainter.State.Error -> {
-                        Image(
-                            painter = painterResource(id = android.R.drawable.stat_notify_error),
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            bottom = AppTheme.dimens.halfContentMargin,
+                            top = AppTheme.dimens.halfContentMargin
+                        ),
+                    text = character.name,
+                    style = AppTheme.typography.body1,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center,
+                )
+            }
+        }
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopEnd) {
+
+                    val fabSize = 56.dp
+
+                    FloatingActionButton(
+                        modifier = Modifier
+                            .size(fabSize)
+                            .padding(AppTheme.dimens.sideMargin),
+                        onClick = {
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.FavoriteBorder,
                             contentDescription = null,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clickable(
-                                    onClick = {
-
-                                    },
-                                ),
-                            contentScale = ContentScale.Crop
-                        )
-                    }
-
-                    else -> {
-                        Image(
-                            painter = painterImage,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clickable(
-                                    onClick = {
-                                    }
-                                ),
-                            contentScale = ContentScale.Crop
+                            tint = AppTheme.colors.background
                         )
                     }
                 }
-            }
-        }
+
     }
 
     private fun goBack() = requireActivity().supportFragmentManager.popBackStack()

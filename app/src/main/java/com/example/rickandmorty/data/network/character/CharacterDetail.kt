@@ -2,7 +2,7 @@ package com.example.rickandmorty.data.network.character
 
 import com.google.gson.annotations.SerializedName
 
-data class CharacterDetail(
+data class  CharacterDetail(
     @SerializedName("base_info")
     val status: String,
     val species: String,
