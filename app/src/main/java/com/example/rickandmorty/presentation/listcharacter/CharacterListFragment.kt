@@ -145,7 +145,7 @@ class CharacterListFragment : ComposeFragment() {
                     shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
                 ) {
 
-                    val painterImage = rememberImagePainter(data = character.url)
+                    val painterImage = rememberImagePainter(data = character.avatar)
 
                     when (painterImage.state) {
                         is ImagePainter.State.Loading -> {
@@ -231,10 +231,10 @@ class CharacterListFragment : ComposeFragment() {
         RickAndMortyMainTheme {
 
             val characters = listOf(
-                Character("1", "https://placebear.com/g/200/200"),
-                Character("2", "https://placebear.com/g/200/200"),
-                Character("3", "https://placebear.com/g/200/200"),
-                Character("4", "https://placebear.com/g/200/200")
+                Character("1", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg"),
+                Character("2", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg"),
+                Character("3", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg"),
+                Character("4", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg")
             )
 
             CharacterListScreen(

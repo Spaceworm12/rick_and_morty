@@ -14,7 +14,7 @@ class NetworkRepositoryImpl(private val api: RickAndMortyApi): NetworkRepository
     private val characterMapper = CharacterMapper()
 
     override fun getCharacters(): Observable<Resource<List<Character>>> {
-        return api.getCharactersList(10, 10)
+        return api.getCharactersList(20, 20)
             .map { it.results }
             .map<Resource<List<Character>>> { Resource.Data(characterMapper.transformToPresentation(it)) }
             .onErrorReturn { Resource.Error(it) }
@@ -22,8 +22,8 @@ class NetworkRepositoryImpl(private val api: RickAndMortyApi): NetworkRepository
             .subscribeOn(Schedulers.io())
     }
 
-    override fun getCharactersDetail(name: String): Observable<Resource<CharacterDetail>> {
-        return api.getCharacterInfo(name)
+    override fun getCharactersDetail(name: String,avatar:String): Observable<Resource<CharacterDetail>> {
+        return api.getCharacterInfo(name,avatar)
             .map<Resource<CharacterDetail>> { Resource.Data(characterMapper.transformCharacterDetailToPresentation(it)) }
             .onErrorReturn { Resource.Error(it) }
             .startWith(Resource.Loading)

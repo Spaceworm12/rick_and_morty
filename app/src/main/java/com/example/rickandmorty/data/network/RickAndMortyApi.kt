@@ -9,7 +9,7 @@ import com.example.rickandmorty.data.network.character.Result
 
 
 interface RickAndMortyApi {
-    @GET("Character")
+    @GET("character")
     fun getCharactersList(
         @Query("limit") limit: Int,
         @Query("offset") offset: Int
@@ -17,7 +17,8 @@ interface RickAndMortyApi {
 
     @GET("character/{name}")
     fun getCharacterInfo(
-        @Path("name") name: String
+        @Path("name") name: String,
+        @Path("image") avatar: String
     ): Observable<CharacterDetail>
 
 }

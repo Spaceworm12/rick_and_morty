@@ -15,11 +15,13 @@ class CharacterMapper {
         } else {
             model.url.takeLastWhile { it.isDigit() }
         }
-        val url = "https://rickandmortyapi.com/api/character/${number}.png"
+        val url = "https://rickandmortyapi.com/api/character/${number}"
+        val avatar = "https://rickandmortyapi.com/api/character/avatar/${number}.png"
 
         return CharacterPresentation(
             name = model.name,
-            url = url
+            url = url,
+            avatar = avatar,
         )
     }
 

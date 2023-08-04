@@ -8,6 +8,6 @@ interface NetworkRepository {
 
     fun getCharacters(): Observable<Resource<List<com.example.rickandmorty.presentation.model.Character>>>
 
-    fun getCharactersDetail(name: String): Observable<Resource<com.example.rickandmorty.presentation.model.CharacterDetail>>
+    fun getCharactersDetail(name: String, avatar:String): Observable<Resource<com.example.rickandmorty.presentation.model.CharacterDetail>>
 
 }
