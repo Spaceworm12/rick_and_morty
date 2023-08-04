@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rickandmorty.R
 import com.example.rickandmorty.databinding.ActivityMainBinding
-import com.example.rickandmorty.presentation.listcharacter.CharacterListFragment
+import com.example.rickandmorty.presentation.category.CategoryListFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null)
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_container, CharacterListFragment())
+                .add(R.id.fragment_container, CategoryListFragment())
                 .commit()
 
     }

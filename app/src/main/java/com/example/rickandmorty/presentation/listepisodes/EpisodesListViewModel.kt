@@ -1,4 +1,4 @@
-package com.example.rickandmorty.presentation.listcharacter
+package com.example.rickandmorty.presentation.listepisodes
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +11,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 
 
-class CharacterListViewModel(
+class EpisodesListViewModel(
     private val networkRepository: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getRickAndMortyApi())
 ): ViewModel() {
 

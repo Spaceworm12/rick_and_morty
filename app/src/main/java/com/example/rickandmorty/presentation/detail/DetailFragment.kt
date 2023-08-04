@@ -32,7 +32,7 @@ import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
 import com.example.rickandmorty.presentation.composecomponents.buttons.PrimaryButton
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
-import com.example.rickandmorty.presentation.model.ExampleModel
+import com.example.rickandmorty.presentation.model.modelcharacter.ExampleModel
 
 class DetailFragment : ComposeFragment() {
 

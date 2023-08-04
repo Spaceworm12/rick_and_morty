@@ -1,12 +1,12 @@
 package com.example.rickandmorty.data.network
 
 
-import com.example.rickandmorty.presentation.model.Character
-import com.example.rickandmorty.presentation.model.CharacterDetail
+import com.example.rickandmorty.presentation.model.modelcharacter.Character
+import com.example.rickandmorty.presentation.model.modelcharacter.CharacterDetail
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import com.example.rickandmorty.util.Resource
-import com.example.rickandmorty.presentation.model.CharacterMapper
+import com.example.rickandmorty.presentation.model.modelcharacter.CharacterMapper
 
 
 class NetworkRepositoryImpl(private val api: RickAndMortyApi): NetworkRepository {

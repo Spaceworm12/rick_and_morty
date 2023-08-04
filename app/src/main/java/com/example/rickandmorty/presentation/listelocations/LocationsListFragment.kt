@@ -1,4 +1,4 @@
-package com.example.rickandmorty.presentation.listcharacter
+package com.example.rickandmorty.presentation.listelocations
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -45,11 +45,10 @@ import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainT
 import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlock
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
-import com.example.rickandmorty.presentation.listelocations.LocationsListViewModel
 import com.example.rickandmorty.presentation.model.modelcharacter.Character
 
 
-class CharacterListFragment : ComposeFragment() {
+class LocationsListFragment : ComposeFragment() {
 
     private val viewModel: LocationsListViewModel by lazy {
         ViewModelProvider(this)[LocationsListViewModel::class.java]

@@ -1,6 +1,6 @@
 package com.example.rickandmorty.presentation.detail
 
-import com.example.rickandmorty.presentation.model.ExampleModel
+import com.example.rickandmorty.presentation.model.modelcharacter.ExampleModel
 
 
 sealed class DetailEvent {

@@ -1,9 +1,9 @@
-package com.example.rickandmorty.presentation.model
+package com.example.rickandmorty.presentation.model.modelcharacter
 
 import com.example.rickandmorty.data.network.character.Character
 import com.example.rickandmorty.data.network.character.CharacterDetail
-import com.example.rickandmorty.presentation.model.Character as CharacterPresentation
-import com.example.rickandmorty.presentation.model.CharacterDetail as CharacterDetailPresentation
+import com.example.rickandmorty.presentation.model.modelcharacter.Character as CharacterPresentation
+import com.example.rickandmorty.presentation.model.modelcharacter.CharacterDetail as CharacterDetailPresentation
 
 
 class CharacterMapper {

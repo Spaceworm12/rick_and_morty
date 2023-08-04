@@ -1,4 +1,4 @@
-package com.example.rickandmorty.presentation.listcharacter
+package com.example.rickandmorty.presentation.listepisodes
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -49,7 +49,7 @@ import com.example.rickandmorty.presentation.listelocations.LocationsListViewMod
 import com.example.rickandmorty.presentation.model.modelcharacter.Character
 
 
-class CharacterListFragment : ComposeFragment() {
+class EpisodesListFragment : ComposeFragment() {
 
     private val viewModel: LocationsListViewModel by lazy {
         ViewModelProvider(this)[LocationsListViewModel::class.java]
