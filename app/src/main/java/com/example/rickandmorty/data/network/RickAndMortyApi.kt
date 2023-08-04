@@ -18,7 +18,7 @@ interface RickAndMortyApi {
     @GET("character/{name}")
     fun getCharacterInfo(
         @Path("name") name: String,
-        @Path("image") avatar: String
+        @Path("avatar") avatar: String
     ): Observable<CharacterDetail>
 
 }
