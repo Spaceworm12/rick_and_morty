@@ -52,13 +52,13 @@ class AppColors(
 }
 
 fun lightColors(
-    primary: Color = Color(0xFFE4F0B1),
-    primaryVariant: Color = Color(0XFFE8F133),
-    secondary: Color = Color(0xFF619F73),
-    secondaryVariant: Color = Color(0xFF217EF6),
-    background: Color = Color(0xFFFDECAF),
+    primary: Color = Color(0xFF4239BB),
+    primaryVariant: Color = Color(0xFF60a85f),
+    secondary: Color = Color(0xFF88e23b),
+    secondaryVariant: Color = Color(0xFF043c6e),
+    background: Color = Color(0xFFa6cccc),
     surface: Color = Color.White,
-    error: Color = Color(0xFFf92a13),
+    error: Color = Color(0xFFebe480),
     onPrimary: Color = Color.Black,
     onSecondary: Color = Color.White,
     onBackground: Color = Color.Black,

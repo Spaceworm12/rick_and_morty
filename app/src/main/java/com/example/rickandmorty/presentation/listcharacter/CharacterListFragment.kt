@@ -27,6 +27,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -205,7 +206,7 @@ class CharacterListFragment : ComposeFragment() {
 
     @Preview(name = "CharactersListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
-    private fun PokemonListScreenPreview() {
+    private fun CharacterListScreenPreview() {
         RickAndMortyMainTheme {
 
             val characters = listOf(

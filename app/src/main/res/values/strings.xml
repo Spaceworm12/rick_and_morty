@@ -9,6 +9,9 @@
     <string name="settings">Настройки</string>
     <string name="first_theme">Первая тема</string>
     <string name="second_theme">Вторая тема</string>
+    <string name="characters">Персонажи</string>
+    <string name="episodes">Эпизоды</string>
+    <string name="locations">Локации</string>
     <string name="rik_wiki">Рик и Морти Wiki</string>
 
 </resources>
