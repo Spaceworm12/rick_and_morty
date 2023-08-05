@@ -1,5 +1,5 @@
 package com.example.rickandmorty.data.network.location
 
-data class Result (
+data class ResultLocations (
     val results: List<Location>
 )

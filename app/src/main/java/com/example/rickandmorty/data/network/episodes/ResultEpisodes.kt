@@ -1,6 +1,6 @@
 package com.example.rickandmorty.data.network.episodes
 
 
-data class Result (
+data class ResultEpisodes (
     val results: List<Episodes>
 )

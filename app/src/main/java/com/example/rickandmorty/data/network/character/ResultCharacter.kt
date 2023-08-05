@@ -2,6 +2,6 @@ package com.example.rickandmorty.data.network.character
 
 
 
-data class Result (
+data class ResultCharacter (
     val results: List<Character>
 )

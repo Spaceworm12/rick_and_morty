@@ -1,8 +1,8 @@
-package com.example.rickandmorty.presentation.model.modelcharacter
+package com.example.rickandmorty.presentation.model
 
 
 import com.example.rickandmorty.data.db.entity.ExampleEntity
-import com.example.rickandmorty.presentation.model.modelcharacter.ExampleModel as ExampleModelPresentation
+import com.example.rickandmorty.presentation.model.ExampleModel as ExampleModelPresentation
 
 object Mapper {
 
