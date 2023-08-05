@@ -9,7 +9,6 @@ import com.example.rickandmorty.presentation.model.modellocation.LocationMapper
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import com.example.rickandmorty.util.Resource
-import com.example.rickandmorty.data.network.location.ResultLocations
 
 
 
@@ -30,11 +29,8 @@ class NetworkRepositoryImpl(private val api: RickAndMortyApi): NetworkRepository
                 .subscribeOn(Schedulers.io())
         }
 
-        override fun getCharactersDetail(
-            name: String,
-            avatar: String
-        ): Observable<Resource<CharacterDetail>> {
-            return api.getCharacterInfo(name, avatar)
+        override fun getCharacterDetail(model:Character): Observable<Resource<CharacterDetail>> {
+            return api.getCharacterInfo(model.id)
                 .map<Resource<CharacterDetail>> {
                     Resource.Data(characterMapper.transformCharacterDetailToPresentation(it))
                 }

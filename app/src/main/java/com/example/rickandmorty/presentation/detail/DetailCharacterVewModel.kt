@@ -8,20 +8,18 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import com.example.rickandmorty.util.Resource
-import com.example.rickandmorty.data.repository.ItemRepository
-import com.example.rickandmorty.data.repository.ItemRepositoryImpl
 import com.example.rickandmorty.presentation.model.modelcharacter.Character
 import com.example.rickandmorty.presentation.model.Mapper
 
 class DetailCharacterVewModel(
-    private val networkRepositoryImpl: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getRickAndMortyApi())
+    private val networkRepository: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getRickAndMortyApi())
 ): ViewModel() {
     private val disposables = CompositeDisposable()
     val character = MutableLiveData<Character>()
-    val exit = MutableLiveData(false)
+    val loading = MutableLiveData(false)
 
     init {
-       DetailCharacterEvent.SetCharacter(character)
+       loadCharacterInfo()
     }
 
     fun submitUIEvent(event: DetailCharacterEvent) {
@@ -35,25 +33,50 @@ class DetailCharacterVewModel(
         }
     }
 
-    private fun likeCharacter(id: Long) {
-
-        itemRepository.insertExample(Mapper.transformToData( exampleCharacter.value!!.copy(url = id)))
+    private fun loadCharacterInfo() {
+        networkRepository.getCharacterDetail(name,
+            url: String,
+            avatar: String,
+            status: String,
+            species: String,
+            type: String,
+            gender:String,
+            id: Int)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { resource ->
                 when (resource) {
-                    Resource.Loading -> { }
+                    Resource.Loading -> loading.postValue(true)
 
-                    is Resource.Data -> exit.postValue(true)
+                    is Resource.Data -> {
+                        characters.postValue(resource.data ?: emptyList())
+                        loading.postValue(false)
+                    }
 
-                    is Resource.Error -> { }
+                    is Resource.Error -> loading.postValue(false)
                 }
             }
             .addTo(disposables)
-
     }
 
     override fun onCleared() {
         disposables.clear()
     }
+
+//    private fun likeCharacter(id: Long) {
+//
+//        itemRepository.insertExample(Mapper.transformToData( exampleCharacter.value!!.copy(url = id)))
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe { resource ->
+//                when (resource) {
+//                    Resource.Loading -> { }
+//
+//                    is Resource.Data -> exit.postValue(true)
+//
+//                    is Resource.Error -> { }
+//                }
+//            }
+//            .addTo(disposables)
+//
+//    }
 
 }

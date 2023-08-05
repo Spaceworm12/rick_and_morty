@@ -1,5 +1,6 @@
 package com.example.rickandmorty.presentation.detail
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,28 +12,31 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.Image
 import androidx.compose.material.Card
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import coil.compose.ImagePainter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
-import com.example.rickandmorty.R
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
-import com.example.rickandmorty.presentation.model.modelcharacter.Character
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.listcharacter.CharacterListViewModel
+import com.example.rickandmorty.presentation.model.modelcharacter.Character
 
 class DetailCharacterFragment : ComposeFragment() {
     private val viewModel: CharacterListViewModel by lazy {
@@ -41,9 +45,9 @@ class DetailCharacterFragment : ComposeFragment() {
 
     @Composable
     override fun GetContent() {
-        val character = viewModel.character.observeAsState().value ?: return
-        val loading = viewModel.loading.observeAsState().value ?: return
-        val exit = viewModel.exit.observeAsState().value?: return
+        val character = Character("1","2","3")
+        val loading = false
+        val exit = false
 
         RickAndMortyMainTheme() {
             DetailCharacterListScreen(character, loading)
@@ -51,12 +55,12 @@ class DetailCharacterFragment : ComposeFragment() {
     }
 
     @Composable
-    private fun DetailCharacterListScreen(item: Character, exit: Boolean) {
+    private fun DetailCharacterListScreen(character: Character, exit: Boolean) {
         if (exit) goBack()
         Column(modifier = Modifier.background(AppTheme.colors.background)) {
 
             Toolbar(
-                title = "карточка",
+                title = character.name,
                 onBackClick = { goBack() }
             )
             Column(
@@ -86,13 +90,12 @@ class DetailCharacterFragment : ComposeFragment() {
                         shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
                     ) {
 
-                        val painterImage = rememberImagePainter(data = R.drawable._23)
+                        val painterImage = rememberImagePainter(data = character.avatar)
 
                         when (painterImage.state) {
                             is ImagePainter.State.Loading -> {
                                 Box(
                                     modifier = Modifier
-                                        .fillMaxSize()
                                         .shimmerBackground(RoundedCornerShape(AppTheme.dimens.halfContentMargin))
                                 )
                             }
@@ -127,20 +130,34 @@ class DetailCharacterFragment : ComposeFragment() {
                             }
                         }
                     }
-
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                bottom = AppTheme.dimens.halfContentMargin,
-                                top = AppTheme.dimens.halfContentMargin
-                            ),
-                        text = character.name,
-                        style = AppTheme.typography.body1,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center,
-                    )
+                    Column() {
+                        Text(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(
+                                    bottom = AppTheme.dimens.halfContentMargin,
+                                    top = AppTheme.dimens.halfContentMargin
+                                ),
+                            text = character.name,
+                            style = AppTheme.typography.body1,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center,
+                        )
+                        Text(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(
+                                    bottom = AppTheme.dimens.halfContentMargin,
+                                    top = AppTheme.dimens.halfContentMargin
+                                ),
+                            text = character.url,
+                            style = AppTheme.typography.body1,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center,
+                        )
+                    }
                 }
             }
 
@@ -148,7 +165,6 @@ class DetailCharacterFragment : ComposeFragment() {
     }
 
     private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
-}
 
 
 //    @Composable
@@ -252,7 +268,7 @@ class DetailCharacterFragment : ComposeFragment() {
 //    }
 //
 
-//
+    //
 //    private fun getEmptyItem(): ExampleModel {
 //        return ExampleModel(
 //            id = 0,
@@ -260,21 +276,20 @@ class DetailCharacterFragment : ComposeFragment() {
 //        )
 //    }
 //
-//    @Preview(name = "DetailScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
-//    @Composable
-//    private fun DetailScreenPreview() {
-//        RickAndMortyMainTheme {
-//
-//            val model = ExampleModel(
-//                id = 0,
-//                name = "Заметка про Витю",
-//            )
-//
-//            DetailScreen(
-//                item = model,
-//                exit = false
-//            )
-//        }
-//    }
-//
-//}
+    @Preview(name = "DetailCharacterScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
+    @Composable
+    private fun DetailCharacterScreenPreview() {
+        RickAndMortyMainTheme {
+
+            val character = Character(
+                name = "Витька",
+                url = "урл",
+                avatar = ""
+            )
+
+            DetailCharacterListScreen(character, false)
+
+        }
+    }
+}
+

@@ -17,10 +17,9 @@ interface RickAndMortyApi {
         @Query("offset") offset: Int
     ): Observable<ResultCharacter>
 
-    @GET("character/{name}")
+    @GET("character/{id}")
     fun getCharacterInfo(
-        @Path("name") name: String,
-        @Path("avatar") avatar: String
+        @Path("id") id: Int
     ): Observable<CharacterDetail>
 
     @GET("location")
