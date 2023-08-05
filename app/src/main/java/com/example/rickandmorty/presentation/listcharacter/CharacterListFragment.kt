@@ -46,14 +46,13 @@ import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainT
 import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlock
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
-import com.example.rickandmorty.presentation.listelocations.LocationsListViewModel
-import com.example.rickandmorty.presentation.model.modellocation.Location
+import com.example.rickandmorty.presentation.model.modelcharacter.Character
 
 
 class CharacterListFragment : ComposeFragment() {
 
-    private val viewModel: LocationsListViewModel by lazy {
-        ViewModelProvider(this)[LocationsListViewModel::class.java]
+    private val viewModel: CharacterListViewModel by lazy {
+        ViewModelProvider(this)[CharacterListViewModel::class.java]
     }
 
     @Composable
@@ -67,7 +66,7 @@ class CharacterListFragment : ComposeFragment() {
     }
 
     @Composable
-    private fun CharacterListScreen(characters: List<Location>, loading: Boolean) {
+    private fun CharacterListScreen(characters: List<Character>, loading: Boolean) {
 
         if (loading) LoaderBlock()
 
@@ -82,7 +81,8 @@ class CharacterListFragment : ComposeFragment() {
                 onBackClick = { requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_container, CategoryListFragment()).commit() }
             )
             LazyVerticalGrid(
-                columns = GridCells.Fixed(count = 1)
+                columns = GridCells.Fixed(count = 1),
+                modifier=Modifier.clickable { }
             ) {
                 characters.forEach { character ->
                     item {
@@ -95,7 +95,7 @@ class CharacterListFragment : ComposeFragment() {
 
     @OptIn(ExperimentalCoilApi::class)
     @Composable
-    private fun Character(character: Location) {
+    private fun Character(character: Character) {
 
         Column(
             modifier = Modifier
@@ -210,10 +210,10 @@ class CharacterListFragment : ComposeFragment() {
         RickAndMortyMainTheme {
 
             val characters = listOf(
-                Location("1", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg"),
-                Location("2", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg"),
-                Location("3", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg"),
-                Location("4", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg")
+                Character("1", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg"),
+                Character("2", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg"),
+                Character("3", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg"),
+                Character("4", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg")
             )
 
             CharacterListScreen(

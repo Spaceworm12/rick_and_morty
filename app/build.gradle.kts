@@ -54,6 +54,7 @@ android {
 dependencies {
 
     implementation ("androidx.room:room-common:2.5.2")
+    implementation("com.google.android.engage:engage-core:1.2.0")
 
 
     //room db

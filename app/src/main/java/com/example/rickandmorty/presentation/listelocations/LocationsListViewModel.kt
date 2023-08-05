@@ -17,22 +17,22 @@ class LocationsListViewModel(
 
     private val disposables = CompositeDisposable()
 
-    val characters = MutableLiveData<List<Location>>(emptyList())
+    val locations = MutableLiveData<List<Location>>(emptyList())
     val loading = MutableLiveData(false)
 
     init {
-        loadCharacters()
+        loadLocations()
     }
 
-    private fun loadCharacters() {
-        networkRepository.getCharacters()
+    private fun loadLocations() {
+        networkRepository.getLocations()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { resource ->
                 when (resource) {
                     Resource.Loading -> loading.postValue(true)
 
                     is Resource.Data -> {
-                        characters.postValue(resource.data ?: emptyList())
+                        locations.postValue(resource.data ?: emptyList())
                         loading.postValue(false)
                     }
 

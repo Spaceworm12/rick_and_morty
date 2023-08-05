@@ -56,16 +56,16 @@ class LocationsListFragment : ComposeFragment() {
 
     @Composable
     override fun GetContent() {
-        val characters = viewModel.characters.observeAsState().value ?: return
+        val locations = viewModel.locations.observeAsState().value ?: return
         val loading = viewModel.loading.observeAsState().value ?: return
 
         RickAndMortyMainTheme() {
-            CharacterListScreen(characters, loading)
+            LocationListScreen(locations, loading)
         }
     }
 
     @Composable
-    private fun CharacterListScreen(characters: List<Location>, loading: Boolean) {
+    private fun LocationListScreen(locations: List<Location>, loading: Boolean) {
 
         if (loading) LoaderBlock()
 
@@ -82,9 +82,9 @@ class LocationsListFragment : ComposeFragment() {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(count = 1)
             ) {
-                characters.forEach { character ->
+                locations.forEach { location ->
                     item {
-                        Character(character)
+                        Location(location)
                     }
                 }
             }
@@ -93,7 +93,7 @@ class LocationsListFragment : ComposeFragment() {
 
     @OptIn(ExperimentalCoilApi::class)
     @Composable
-    private fun Character(character: Location) {
+    private fun Location(location: Location) {
 
         Column(
             modifier = Modifier
@@ -122,7 +122,7 @@ class LocationsListFragment : ComposeFragment() {
                     shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
                 ) {
 
-                    val painterImage = rememberImagePainter(data = character.avatar)
+                    val painterImage = rememberImagePainter(data = location.name)
 
                     when (painterImage.state) {
                         is ImagePainter.State.Loading -> {
@@ -171,7 +171,7 @@ class LocationsListFragment : ComposeFragment() {
                             bottom = AppTheme.dimens.halfContentMargin,
                             top = AppTheme.dimens.halfContentMargin
                         ),
-                    text = character.name,
+                    text = location.type,
                     style = AppTheme.typography.body1,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -202,20 +202,20 @@ class LocationsListFragment : ComposeFragment() {
 
     private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
 
-    @Preview(name = "CharactersListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
+    @Preview(name = "LocationsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
-    private fun PokemonListScreenPreview() {
+    private fun LocationsListScreenPreview() {
         RickAndMortyMainTheme {
 
-            val characters = listOf(
+            val locations = listOf(
                 Location("1", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg"),
                 Location("2", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg"),
                 Location("3", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg"),
                 Location("4", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg")
             )
 
-            CharacterListScreen(
-                characters = characters,
+            LocationListScreen(
+                locations = locations,
                 loading = false
             )
         }

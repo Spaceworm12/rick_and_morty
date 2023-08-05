@@ -3,46 +3,41 @@ package com.example.rickandmorty.presentation.detail
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.rickandmorty.application.App
+import com.example.rickandmorty.data.network.NetworkRepositoryImpl
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
-import com.example.rickandmorty.presentation.composecomponents.FIRST_THEME
-import com.example.rickandmorty.presentation.composecomponents.THEME_CODE
-import com.example.rickandmorty.presentation.model.modellocation.ExampleModel
-import com.example.rickandmorty.presentation.model.modellocation.Mapper
 import com.example.rickandmorty.util.Resource
 import com.example.rickandmorty.data.repository.ItemRepository
 import com.example.rickandmorty.data.repository.ItemRepositoryImpl
+import com.example.rickandmorty.presentation.model.modelcharacter.Character
+import com.example.rickandmorty.presentation.model.Mapper
 
-class DetailViewModel(
-    private val itemRepository: ItemRepository = ItemRepositoryImpl(App.getExampleDao())
+class DetailCharacterVewModel(
+    private val networkRepositoryImpl: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getRickAndMortyApi())
 ): ViewModel() {
-
     private val disposables = CompositeDisposable()
-
-    val exampleModel = MutableLiveData<ExampleModel>()
-
-    val currentTheme = MutableLiveData(FIRST_THEME)
+    val character = MutableLiveData<Character>()
     val exit = MutableLiveData(false)
 
     init {
-        currentTheme.postValue(App.getSettings().getInt(THEME_CODE, FIRST_THEME))
+       DetailCharacterEvent.SetCharacter(character)
     }
 
-    fun submitUIEvent(event: DetailEvent) {
+    fun submitUIEvent(event: DetailCharacterEvent) {
         handleUIEvent(event)
     }
 
-    private fun handleUIEvent(event: DetailEvent) {
+    private fun handleUIEvent(event: DetailCharacterEvent) {
         when (event) {
-            is DetailEvent.SetItem -> exampleModel.postValue((event.item))
-            is DetailEvent.SaveItem -> saveNewItem(id = event.id)
+            is DetailCharacterEvent.SetCharacter -> character.postValue((character.))
+            is DetailCharacterEvent.LikeCharacter -> likeCharacter(id = event.id)
         }
     }
 
-    private fun saveNewItem(id: Long) {
+    private fun likeCharacter(id: Long) {
 
-        itemRepository.insertExample(Mapper.transformToData( exampleModel.value!!.copy(id = id)))
+        itemRepository.insertExample(Mapper.transformToData( exampleCharacter.value!!.copy(url = id)))
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { resource ->
                 when (resource) {

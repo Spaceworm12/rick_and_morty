@@ -29,6 +29,7 @@ import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainT
 import com.example.rickandmorty.presentation.composecomponents.buttons.HorizontalBtn
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.listcharacter.CharacterListFragment
+import com.example.rickandmorty.presentation.listelocations.LocationsListFragment
 
 
 class CategoryListFragment : ComposeFragment() {
@@ -123,7 +124,7 @@ class CategoryListFragment : ComposeFragment() {
                             .beginTransaction()
                             .replace(
                                 R.id.fragment_container,
-                                CharacterListFragment()
+                                LocationsListFragment()
                             )
                             .addToBackStack("")
                             .commit()
