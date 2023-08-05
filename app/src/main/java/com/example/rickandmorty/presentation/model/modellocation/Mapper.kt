@@ -1,4 +1,4 @@
-package com.example.rickandmorty.presentation.model.refactor
+package com.example.rickandmorty.presentation.model.modellocation
 
 
 import com.example.rickandmorty.data.db.entity.ExampleEntity

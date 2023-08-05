@@ -8,8 +8,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import com.example.rickandmorty.presentation.composecomponents.FIRST_THEME
 import com.example.rickandmorty.presentation.composecomponents.THEME_CODE
-import com.example.rickandmorty.presentation.model.modelcharacter.ExampleModel
-import com.example.rickandmorty.presentation.model.modelcharacter.Mapper
+import com.example.rickandmorty.presentation.model.modellocation.ExampleModel
+import com.example.rickandmorty.presentation.model.modellocation.Mapper
 import com.example.rickandmorty.util.Resource
 import com.example.rickandmorty.data.repository.ItemRepository
 import com.example.rickandmorty.data.repository.ItemRepositoryImpl

@@ -25,7 +25,7 @@ class CharacterMapper {
         )
     }
 
-    fun transformToPresentation(characters: List<Character>): List<CharacterPresentation> {
+    fun transformCharacterToPresentation(characters: List<Character>): List<CharacterPresentation> {
         return characters.map { transformCharacterForPresentation(it) }
     }
 

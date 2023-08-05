@@ -10,4 +10,5 @@ data class LocationDetail(
     val id: Int,
     @SerializedName("additional_info")
     val residents: List<Character>,
+    val created:String
 )

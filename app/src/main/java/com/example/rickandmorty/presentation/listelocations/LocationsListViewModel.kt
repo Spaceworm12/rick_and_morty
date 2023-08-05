@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.rickandmorty.application.App
 import com.example.rickandmorty.data.network.NetworkRepositoryImpl
-import com.example.rickandmorty.presentation.model.modelcharacter.Character
+import com.example.rickandmorty.presentation.model.modellocation.Location
 import com.example.rickandmorty.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -17,7 +17,7 @@ class LocationsListViewModel(
 
     private val disposables = CompositeDisposable()
 
-    val characters = MutableLiveData<List<Character>>(emptyList())
+    val characters = MutableLiveData<List<Location>>(emptyList())
     val loading = MutableLiveData(false)
 
     init {

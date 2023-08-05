@@ -21,4 +21,16 @@ interface RickAndMortyApi {
         @Path("avatar") avatar: String
     ): Observable<CharacterDetail>
 
+    @GET("location")
+    fun getLocationsList(
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int
+    ): Observable<Result>
+
+    @GET("location/{name}")
+    fun getLocationsInfo(
+        @Path("name") name: String,
+        @Path("type") type: String
+    ): Observable<CharacterDetail>
+
 }

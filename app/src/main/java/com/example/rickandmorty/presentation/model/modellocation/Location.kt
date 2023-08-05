@@ -1,4 +1,4 @@
-package com.example.rickandmorty.data.network.location
+package com.example.rickandmorty.presentation.model.modellocation
 
 
 data class Location(
