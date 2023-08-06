@@ -1,7 +1,7 @@
-package com.example.rickandmorty.presentation.model.modelcharacter
+package com.example.rickandmorty.presentation.model.modelperson
 
 
-data class CharacterDetail(
+data class PersonDetail(
     val name:String,
     val url: String,
     val avatar: String,

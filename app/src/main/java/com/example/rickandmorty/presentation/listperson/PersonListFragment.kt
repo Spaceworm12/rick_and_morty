@@ -1,4 +1,4 @@
-package com.example.rickandmorty.presentation.listcharacter
+package com.example.rickandmorty.presentation.listperson
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -39,34 +39,33 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.rickandmorty.R
-import com.example.rickandmorty.presentation.category.CategoryListFragment
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
 import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlock
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
-import com.example.rickandmorty.presentation.model.modelcharacter.Character
+import com.example.rickandmorty.presentation.model.modelperson.Person
 
 
-class CharacterListFragment : ComposeFragment() {
+class PersonListFragment : ComposeFragment() {
 
-    private val viewModel: CharacterListViewModel by lazy {
-        ViewModelProvider(this)[CharacterListViewModel::class.java]
+    private val viewModel: PersonListViewModel by lazy {
+        ViewModelProvider(this)[PersonListViewModel::class.java]
     }
 
     @Composable
     override fun GetContent() {
-        val characters = viewModel.characters.observeAsState().value ?: return
+        val persons = viewModel.persons.observeAsState().value ?: return
         val loading = viewModel.loading.observeAsState().value ?: return
 
         RickAndMortyMainTheme() {
-            CharacterListScreen(characters, loading)
+            PersonListScreen(persons, loading)
         }
     }
 
     @Composable
-    private fun CharacterListScreen(characters: List<Character>, loading: Boolean) {
+    private fun PersonListScreen(persons: List<Person>, loading: Boolean) {
 
         if (loading) LoaderBlock()
 
@@ -78,13 +77,13 @@ class CharacterListFragment : ComposeFragment() {
             Toolbar(
                 title = stringResource(id = R.string.rik_wiki),
                 elevation = AppTheme.dimens.halfContentMargin,
-                onBackClick = { requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_container, CategoryListFragment()).commit() }
+                onBackClick = { goBack() }
             )
             LazyVerticalGrid(
                 columns = GridCells.Fixed(count = 1),
-                modifier=Modifier.clickable { }
+                modifier = Modifier.clickable { }
             ) {
-                characters.forEach { character ->
+                persons.forEach { character ->
                     item {
                         Character(character)
                     }
@@ -95,7 +94,7 @@ class CharacterListFragment : ComposeFragment() {
 
     @OptIn(ExperimentalCoilApi::class)
     @Composable
-    private fun Character(character: Character) {
+    private fun Character(character: Person) {
 
         Column(
             modifier = Modifier
@@ -181,43 +180,59 @@ class CharacterListFragment : ComposeFragment() {
                 )
             }
         }
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopEnd) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopEnd) {
 
-                    val fabSize = 56.dp
+            val fabSize = 56.dp
 
-                    FloatingActionButton(
-                        modifier = Modifier
-                            .size(fabSize)
-                            .padding(AppTheme.dimens.sideMargin),
-                        onClick = {
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.FavoriteBorder,
-                            contentDescription = null,
-                            tint = AppTheme.colors.background
-                        )
-                    }
+            FloatingActionButton(
+                modifier = Modifier
+                    .size(fabSize)
+                    .padding(AppTheme.dimens.sideMargin),
+                onClick = {
                 }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.FavoriteBorder,
+                    contentDescription = null,
+                    tint = AppTheme.colors.background
+                )
+            }
+        }
 
     }
 
     private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
 
-    @Preview(name = "CharactersListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
+    @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
-    private fun CharacterListScreenPreview() {
+    private fun PersonsListScreenPreview() {
         RickAndMortyMainTheme {
 
-            val characters = listOf(
-                Character("1", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg"),
-                Character("2", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg"),
-                Character("3", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg"),
-                Character("4", "https://placebear.com/g/200/200","https://rickandmortyapi.com/api/character/avatar/435.jpeg")
+            val persons = listOf(
+                Person(
+                    "1",
+                    "https://placebear.com/g/200/200",
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg"
+                ),
+                Person(
+                    "2",
+                    "https://placebear.com/g/200/200",
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg"
+                ),
+                Person(
+                    "3",
+                    "https://placebear.com/g/200/200",
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg"
+                ),
+                Person(
+                    "4",
+                    "https://placebear.com/g/200/200",
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg"
+                )
             )
 
-            CharacterListScreen(
-                characters = characters,
+            PersonListScreen(
+                persons = persons,
                 loading = false
             )
         }

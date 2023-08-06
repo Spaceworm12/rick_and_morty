@@ -1,40 +1,39 @@
-package com.example.rickandmorty.presentation.detail
+package com.example.rickandmorty.presentation.detailperson
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.rickandmorty.application.App
-import com.example.rickandmorty.data.network.NetworkRepositoryImpl
+import com.example.rickandmorty.data.network.networkrepo.NetworkRepositoryImpl
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import com.example.rickandmorty.util.Resource
-import com.example.rickandmorty.presentation.model.modelcharacter.Character
-import com.example.rickandmorty.presentation.model.Mapper
+import com.example.rickandmorty.presentation.model.modelperson.Person
 
-class DetailCharacterVewModel(
+class DetailPersonViewModel(
     private val networkRepository: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getRickAndMortyApi())
 ): ViewModel() {
     private val disposables = CompositeDisposable()
-    val character = MutableLiveData<Character>()
+    val character = MutableLiveData<Person>()
     val loading = MutableLiveData(false)
 
     init {
        loadCharacterInfo()
     }
 
-    fun submitUIEvent(event: DetailCharacterEvent) {
+    fun submitUIEvent(event: DetailPersonEvent) {
         handleUIEvent(event)
     }
 
-    private fun handleUIEvent(event: DetailCharacterEvent) {
+    private fun handleUIEvent(event: DetailPersonEvent) {
         when (event) {
-            is DetailCharacterEvent.SetCharacter -> character.postValue((character.))
-            is DetailCharacterEvent.LikeCharacter -> likeCharacter(id = event.id)
+            is DetailPersonEvent.SetCharacter -> character.postValue((character.))
+            is DetailPersonEvent.LikeCharacter -> likeCharacter(id = event.id)
         }
     }
 
     private fun loadCharacterInfo() {
-        networkRepository.getCharacterDetail(name,
+        networkRepository.getPersonDetail(name,
             url: String,
             avatar: String,
             status: String,

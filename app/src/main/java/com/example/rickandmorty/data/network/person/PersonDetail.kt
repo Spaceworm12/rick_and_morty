@@ -1,8 +1,8 @@
-package com.example.rickandmorty.data.network.character
+package com.example.rickandmorty.data.network.person
 
 import com.google.gson.annotations.SerializedName
 
-data class  CharacterDetail(
+data class  PersonDetail(
     @SerializedName("base_info")
     val name:String,
     val url: String,

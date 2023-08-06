@@ -1,4 +1,4 @@
-package com.example.rickandmorty.presentation.detail
+package com.example.rickandmorty.presentation.detailperson
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -17,7 +17,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,17 +34,17 @@ import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
-import com.example.rickandmorty.presentation.listcharacter.CharacterListViewModel
-import com.example.rickandmorty.presentation.model.modelcharacter.Character
+import com.example.rickandmorty.presentation.listperson.PersonListViewModel
+import com.example.rickandmorty.presentation.model.modelperson.Person
 
-class DetailCharacterFragment : ComposeFragment() {
-    private val viewModel: CharacterListViewModel by lazy {
-        ViewModelProvider(this)[CharacterListViewModel::class.java]
+class DetailPersonFragment : ComposeFragment() {
+    private val viewModel: PersonListViewModel by lazy {
+        ViewModelProvider(this)[PersonListViewModel::class.java]
     }
 
     @Composable
     override fun GetContent() {
-        val character = Character("1","2","3")
+        val character = Person("1","2","3")
         val loading = false
         val exit = false
 
@@ -55,7 +54,7 @@ class DetailCharacterFragment : ComposeFragment() {
     }
 
     @Composable
-    private fun DetailCharacterListScreen(character: Character, exit: Boolean) {
+    private fun DetailCharacterListScreen(character: Person, exit: Boolean) {
         if (exit) goBack()
         Column(modifier = Modifier.background(AppTheme.colors.background)) {
 
@@ -281,7 +280,7 @@ class DetailCharacterFragment : ComposeFragment() {
     private fun DetailCharacterScreenPreview() {
         RickAndMortyMainTheme {
 
-            val character = Character(
+            val character = Person(
                 name = "Витька",
                 url = "урл",
                 avatar = ""

@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomMasterTable
 import com.example.rickandmorty.data.db.ExampleDao
 import com.example.rickandmorty.data.db.ExampleDataBase
-import com.example.rickandmorty.data.network.RickAndMortyApi
+import com.example.rickandmorty.data.network.networkrepo.RickAndMortyApi
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
