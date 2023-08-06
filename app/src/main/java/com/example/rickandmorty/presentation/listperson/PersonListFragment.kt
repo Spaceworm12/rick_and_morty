@@ -82,7 +82,6 @@ class PersonListFragment : ComposeFragment() {
             )
             LazyVerticalGrid(
                 columns = GridCells.Fixed(count = 1),
-                modifier = Modifier.clickable { }
             ) {
                 persons.forEach { person ->
                     item {
@@ -115,11 +114,6 @@ class PersonListFragment : ComposeFragment() {
                         .size(
                             width = 100.dp,
                             height = 100.dp
-                        )
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() },
-                            onClick = { goToPerson(person)}
                         ),
                     shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
                 ) {
@@ -155,11 +149,7 @@ class PersonListFragment : ComposeFragment() {
                                 painter = painterImage,
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .fillMaxSize()
-                                    .clickable(
-                                        onClick = {
-                                        }
-                                    ),
+                                    .fillMaxSize(),
                                 contentScale = ContentScale.Crop
                             )
                         }
@@ -172,6 +162,10 @@ class PersonListFragment : ComposeFragment() {
                         .padding(
                             bottom = AppTheme.dimens.halfContentMargin,
                             top = AppTheme.dimens.halfContentMargin
+                        ).clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() },
+                            onClick = { goToPerson(person)}
                         ),
                     text = person.name,
                     style = AppTheme.typography.body1,
@@ -206,7 +200,7 @@ class PersonListFragment : ComposeFragment() {
     private fun goToPerson(person:Person) = requireActivity()
         .supportFragmentManager
         .beginTransaction()
-        .add(R.id.fragment_container, DetailPersonFragment())
+        .add(R.id.fragment_container, DetailPersonFragment(person.id))
         .commit()
 
     @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)

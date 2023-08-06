@@ -11,14 +11,14 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 
 class DetailPersonViewModel(
-    private val networkRepository: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getRickAndMortyApi())
+    private val networkRepository: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getRickAndMortyApi()),id:Int
 ) : ViewModel() {
     private val disposables = CompositeDisposable()
      var person = MutableLiveData<PersonDetail>()
     private val loading = MutableLiveData(false)
 
     init {
-        loadPersonInfo()
+        loadPersonInfo(id)
     }
 
     fun submitUIEvent(event: DetailPersonEvent) {
@@ -32,8 +32,8 @@ class DetailPersonViewModel(
         }
     }
 
-    private fun loadPersonInfo() {
-        networkRepository.getPersonDetail(2)
+    private fun loadPersonInfo(id: Int) {
+        networkRepository.getPersonDetail(id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { resource ->
                 when (resource) {

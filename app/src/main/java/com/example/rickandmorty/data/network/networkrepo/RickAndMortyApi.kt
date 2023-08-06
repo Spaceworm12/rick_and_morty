@@ -1,6 +1,5 @@
 package com.example.rickandmorty.data.network.networkrepo
 
-import com.example.rickandmorty.data.network.person.PersonDetail
 import com.example.rickandmorty.data.network.person.ResultPerson
 import com.example.rickandmorty.data.network.person.ResultPersonDetail
 import io.reactivex.Observable
@@ -17,7 +16,7 @@ interface RickAndMortyApi {
     ): Observable<ResultPerson>
 
     @GET("character/{id}")
-    fun getCharacterInfo(
+    fun getPersonInfo(
         @Path("id") id: Int
     ): Observable<ResultPersonDetail>
 }

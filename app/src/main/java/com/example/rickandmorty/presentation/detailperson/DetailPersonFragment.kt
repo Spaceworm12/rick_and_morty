@@ -1,6 +1,5 @@
 package com.example.rickandmorty.presentation.detailperson
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,7 +23,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import coil.compose.ImagePainter
@@ -35,26 +33,28 @@ import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainT
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.listperson.PersonListViewModel
-import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.presentation.model.modelperson.PersonDetail
 
-class DetailPersonFragment(person:Person) : ComposeFragment() {
-    private val viewModel: PersonListViewModel by lazy {
-        ViewModelProvider(this)[PersonListViewModel::class.java]
+class DetailPersonFragment(id:Int) : ComposeFragment() {
+    private val viewModel: DetailPersonViewModel by lazy {
+        ViewModelProvider(this)[DetailPersonViewModel::class.java]
     }
 
     @Composable
     override fun GetContent() {
+        val person = viewModel.person.value
         val loading = false
         val exit = false
 
         RickAndMortyMainTheme() {
-            DetailPersonListScreen(person, loading)
+            if (person != null) {
+                DetailPersonListScreen(person, loading,exit)
+            }
         }
     }
 
     @Composable
-    private fun DetailPersonListScreen(person: PersonDetail, exit: Boolean) {
+    private fun DetailPersonListScreen(person: PersonDetail, exit: Boolean,loading:Boolean) {
         if (exit) goBack()
         Column(modifier = Modifier.background(AppTheme.colors.background)) {
 
@@ -164,7 +164,7 @@ class DetailPersonFragment(person:Person) : ComposeFragment() {
     }
 
     private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
-    @Preview(name = "DetailCharacterScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
+
     @Composable
     private fun DetailPersonScreenPreview() {
         RickAndMortyMainTheme {
@@ -175,7 +175,7 @@ class DetailPersonFragment(person:Person) : ComposeFragment() {
                 avatar = ""
             )
 
-            DetailPersonListScreen(person, false)
+            DetailPersonListScreen(person, false,false)
 
         }
     }
