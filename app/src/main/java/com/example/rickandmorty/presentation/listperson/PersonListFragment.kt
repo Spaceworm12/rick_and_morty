@@ -45,6 +45,7 @@ import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainT
 import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlock
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
+import com.example.rickandmorty.presentation.detailperson.DetailPersonFragment
 import com.example.rickandmorty.presentation.model.modelperson.Person
 
 
@@ -83,9 +84,9 @@ class PersonListFragment : ComposeFragment() {
                 columns = GridCells.Fixed(count = 1),
                 modifier = Modifier.clickable { }
             ) {
-                persons.forEach { character ->
+                persons.forEach { person ->
                     item {
-                        Character(character)
+                        Person(person)
                     }
                 }
             }
@@ -94,7 +95,7 @@ class PersonListFragment : ComposeFragment() {
 
     @OptIn(ExperimentalCoilApi::class)
     @Composable
-    private fun Character(character: Person) {
+    private fun Person(person: Person) {
 
         Column(
             modifier = Modifier
@@ -118,12 +119,12 @@ class PersonListFragment : ComposeFragment() {
                         .clickable(
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() },
-                            onClick = { }
+                            onClick = { goToPerson(person)}
                         ),
                     shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
                 ) {
 
-                    val painterImage = rememberImagePainter(data = character.avatar)
+                    val painterImage = rememberImagePainter(data = person.avatar)
 
                     when (painterImage.state) {
                         is ImagePainter.State.Loading -> {
@@ -172,7 +173,7 @@ class PersonListFragment : ComposeFragment() {
                             bottom = AppTheme.dimens.halfContentMargin,
                             top = AppTheme.dimens.halfContentMargin
                         ),
-                    text = character.name,
+                    text = person.name,
                     style = AppTheme.typography.body1,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -202,6 +203,11 @@ class PersonListFragment : ComposeFragment() {
     }
 
     private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
+    private fun goToPerson(person:Person) = requireActivity()
+        .supportFragmentManager
+        .beginTransaction()
+        .add(R.id.fragment_container, DetailPersonFragment(person))
+        .commit()
 
     @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
@@ -212,22 +218,22 @@ class PersonListFragment : ComposeFragment() {
                 Person(
                     "1",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg"
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",1
                 ),
                 Person(
                     "2",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg"
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",2
                 ),
                 Person(
                     "3",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg"
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",4
                 ),
                 Person(
                     "4",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg"
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",3
                 )
             )
 

@@ -4,21 +4,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.rickandmorty.application.App
 import com.example.rickandmorty.data.network.networkrepo.NetworkRepositoryImpl
+import com.example.rickandmorty.presentation.model.modelperson.PersonDetail
+import com.example.rickandmorty.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
-import com.example.rickandmorty.util.Resource
-import com.example.rickandmorty.presentation.model.modelperson.Person
 
 class DetailPersonViewModel(
     private val networkRepository: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getRickAndMortyApi())
-): ViewModel() {
+) : ViewModel() {
     private val disposables = CompositeDisposable()
-    val character = MutableLiveData<Person>()
+    val person = MutableLiveData<PersonDetail>()
     val loading = MutableLiveData(false)
 
     init {
-       loadCharacterInfo()
+        loadPersonInfo()
     }
 
     fun submitUIEvent(event: DetailPersonEvent) {
@@ -27,27 +27,20 @@ class DetailPersonViewModel(
 
     private fun handleUIEvent(event: DetailPersonEvent) {
         when (event) {
-            is DetailPersonEvent.SetCharacter -> character.postValue((character.))
-            is DetailPersonEvent.LikeCharacter -> likeCharacter(id = event.id)
+            is DetailPersonEvent.SetCharacter -> {}
+            is DetailPersonEvent.LikeCharacter -> {}
         }
     }
 
-    private fun loadCharacterInfo() {
-        networkRepository.getPersonDetail(name,
-            url: String,
-            avatar: String,
-            status: String,
-            species: String,
-            type: String,
-            gender:String,
-            id: Int)
+    private fun loadPersonInfo() {
+        networkRepository.getPersonDetail(person.value)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { resource ->
                 when (resource) {
                     Resource.Loading -> loading.postValue(true)
 
                     is Resource.Data -> {
-                        characters.postValue(resource.data ?: emptyList())
+                        person.postValue((resource.data ?:"") as PersonDetail?)
                         loading.postValue(false)
                     }
 

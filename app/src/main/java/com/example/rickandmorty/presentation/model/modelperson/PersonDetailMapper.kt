@@ -12,7 +12,7 @@ class PersonDetailMapper {
         } else {
             model.url.takeLastWhile { it.isDigit() }
         }
-        val ids = "https://rickandmortyapi.com/api/character/${number}"
+        val url = "https://rickandmortyapi.com/api/character/${number}"
 
         return CharacterDetailPresentation(
             name = model.name,
@@ -22,7 +22,7 @@ class PersonDetailMapper {
             gender = model.gender,
             id = model.id,
             avatar = model.avatar,
-            url = ids
+            url = url
         )
     }
 }

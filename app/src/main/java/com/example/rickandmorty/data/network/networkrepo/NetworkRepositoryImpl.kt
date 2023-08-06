@@ -26,8 +26,8 @@ class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepositor
             .subscribeOn(Schedulers.io())
     }
 
-    override fun getPersonDetail(): Observable<Resource<PersonDetail>> {
-        return api.getCharacterInfo(id=1)
+    override fun getPersonDetail(person:Person): Observable<Resource<PersonDetail>> {
+        return api.getCharacterInfo(person.id)
             .map<Resource<PersonDetail>> {
                 Resource.Data(personDetailMapper.transformPersonDetailToPresentation(it))
             }

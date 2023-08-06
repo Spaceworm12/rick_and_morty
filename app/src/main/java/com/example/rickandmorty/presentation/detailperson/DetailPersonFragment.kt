@@ -37,29 +37,29 @@ import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.listperson.PersonListViewModel
 import com.example.rickandmorty.presentation.model.modelperson.Person
 
-class DetailPersonFragment : ComposeFragment() {
+class DetailPersonFragment(person:Person) : ComposeFragment() {
     private val viewModel: PersonListViewModel by lazy {
         ViewModelProvider(this)[PersonListViewModel::class.java]
     }
 
     @Composable
     override fun GetContent() {
-        val character = Person("1","2","3")
+        val person = viewModel.
         val loading = false
         val exit = false
 
         RickAndMortyMainTheme() {
-            DetailCharacterListScreen(character, loading)
+            DetailPersonListScreen(person, loading)
         }
     }
 
     @Composable
-    private fun DetailCharacterListScreen(character: Person, exit: Boolean) {
+    private fun DetailPersonListScreen(person: Person, exit: Boolean) {
         if (exit) goBack()
         Column(modifier = Modifier.background(AppTheme.colors.background)) {
 
             Toolbar(
-                title = character.name,
+                title = person.name,
                 onBackClick = { goBack() }
             )
             Column(
@@ -89,7 +89,7 @@ class DetailPersonFragment : ComposeFragment() {
                         shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
                     ) {
 
-                        val painterImage = rememberImagePainter(data = character.avatar)
+                        val painterImage = rememberImagePainter(data = person.avatar)
 
                         when (painterImage.state) {
                             is ImagePainter.State.Loading -> {
@@ -137,7 +137,7 @@ class DetailPersonFragment : ComposeFragment() {
                                     bottom = AppTheme.dimens.halfContentMargin,
                                     top = AppTheme.dimens.halfContentMargin
                                 ),
-                            text = character.name,
+                            text = person.name,
                             style = AppTheme.typography.body1,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -150,7 +150,7 @@ class DetailPersonFragment : ComposeFragment() {
                                     bottom = AppTheme.dimens.halfContentMargin,
                                     top = AppTheme.dimens.halfContentMargin
                                 ),
-                            text = character.url,
+                            text = person.url,
                             style = AppTheme.typography.body1,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -286,7 +286,7 @@ class DetailPersonFragment : ComposeFragment() {
                 avatar = ""
             )
 
-            DetailCharacterListScreen(character, false)
+            DetailPersonListScreen(character, false)
 
         }
     }

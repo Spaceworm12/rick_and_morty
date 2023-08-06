@@ -23,6 +23,7 @@ class PersonMapper {
             name = model.name,
             url = url,
             avatar = avatar,
+            id = model.id
         )
     }
 
