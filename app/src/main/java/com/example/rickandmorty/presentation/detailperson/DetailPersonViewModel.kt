@@ -16,6 +16,7 @@ class DetailPersonViewModel(
     private val disposables = CompositeDisposable()
      var person = MutableLiveData<PersonDetail>()
     private val loading = MutableLiveData(false)
+    private val exit = MutableLiveData(false)
 
     init {
         loadPersonInfo(id)

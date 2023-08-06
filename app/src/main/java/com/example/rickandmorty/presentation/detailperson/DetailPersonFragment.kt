@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,9 +43,9 @@ class DetailPersonFragment(id:Int) : ComposeFragment() {
 
     @Composable
     override fun GetContent() {
-        val person = viewModel.person.value
-        val loading = false
-        val exit = false
+        val person = viewModel.person.observeAsState().value ?: return
+        val loading = viewModel.loading.observeAsState().value ?: return
+        val exit = viewModel.exit.observeAsState().value ?: return
 
         RickAndMortyMainTheme() {
             if (person != null) {
