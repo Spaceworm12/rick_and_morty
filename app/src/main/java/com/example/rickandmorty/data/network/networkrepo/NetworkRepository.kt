@@ -10,6 +10,6 @@ interface NetworkRepository {
 
     fun getPersons(): Observable<Resource<List<Person>>>
 
-    fun getPersonDetail(id:Int): Observable<Resource<PersonDetail>>
+    fun getPersonDetail(person:Person): Observable<Resource<PersonDetail>>
 
 }

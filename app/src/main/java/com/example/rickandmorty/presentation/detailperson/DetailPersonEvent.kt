@@ -1,7 +1,9 @@
 package com.example.rickandmorty.presentation.detailperson
 
+import com.example.rickandmorty.presentation.model.modelperson.Person
+
 
 sealed class DetailPersonEvent {
-    class SetCharacter(val id: Int): DetailPersonEvent()
-    class LikeCharacter(val inFavorites: Boolean=false): DetailPersonEvent()
+    class LikePerson(val inFavorites: Boolean=false): DetailPersonEvent()
+    class OpenPerson(val person: Person) : DetailPersonEvent()
 }

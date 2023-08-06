@@ -107,7 +107,10 @@ class PersonListFragment : ComposeFragment() {
                 modifier = Modifier.background(
                     color = AppTheme.colors.rippleColor,
                     shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
-                )
+                ).clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() },
+                    onClick = { goToPerson(person.id)})
             ) {
                 Card(
                     modifier = Modifier
@@ -134,12 +137,7 @@ class PersonListFragment : ComposeFragment() {
                                 painter = painterResource(id = android.R.drawable.stat_notify_error),
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .fillMaxSize()
-                                    .clickable(
-                                        onClick = {
-
-                                        },
-                                    ),
+                                    .fillMaxSize(),
                                 contentScale = ContentScale.Crop
                             )
                         }
@@ -162,10 +160,6 @@ class PersonListFragment : ComposeFragment() {
                         .padding(
                             bottom = AppTheme.dimens.halfContentMargin,
                             top = AppTheme.dimens.halfContentMargin
-                        ).clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() },
-                            onClick = { goToPerson(person)}
                         ),
                     text = person.name,
                     style = AppTheme.typography.body1,
@@ -197,10 +191,10 @@ class PersonListFragment : ComposeFragment() {
     }
 
     private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
-    private fun goToPerson(person:Person) = requireActivity()
+    private fun goToPerson(id:Int) = requireActivity()
         .supportFragmentManager
         .beginTransaction()
-        .add(R.id.fragment_container, DetailPersonFragment(person.id))
+        .add(R.id.fragment_container, DetailPersonFragment.newInstance(id))
         .commit()
 
     @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
