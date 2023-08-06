@@ -206,7 +206,7 @@ class PersonListFragment : ComposeFragment() {
     private fun goToPerson(person:Person) = requireActivity()
         .supportFragmentManager
         .beginTransaction()
-        .add(R.id.fragment_container, DetailPersonFragment(person))
+        .add(R.id.fragment_container, DetailPersonFragment())
         .commit()
 
     @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)

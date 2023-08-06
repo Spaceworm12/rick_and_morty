@@ -36,6 +36,7 @@ import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBa
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.listperson.PersonListViewModel
 import com.example.rickandmorty.presentation.model.modelperson.Person
+import com.example.rickandmorty.presentation.model.modelperson.PersonDetail
 
 class DetailPersonFragment(person:Person) : ComposeFragment() {
     private val viewModel: PersonListViewModel by lazy {
@@ -44,7 +45,6 @@ class DetailPersonFragment(person:Person) : ComposeFragment() {
 
     @Composable
     override fun GetContent() {
-        val person = viewModel.
         val loading = false
         val exit = false
 
@@ -54,7 +54,7 @@ class DetailPersonFragment(person:Person) : ComposeFragment() {
     }
 
     @Composable
-    private fun DetailPersonListScreen(person: Person, exit: Boolean) {
+    private fun DetailPersonListScreen(person: PersonDetail, exit: Boolean) {
         if (exit) goBack()
         Column(modifier = Modifier.background(AppTheme.colors.background)) {
 
@@ -164,129 +164,18 @@ class DetailPersonFragment(person:Person) : ComposeFragment() {
     }
 
     private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
-
-
-//    @Composable
-//    private fun DetailScreen(item: ExampleModel, exit: Boolean) {
-//
-//        if (exit) goBack()
-//
-//        var currentName by remember { mutableStateOf("") }
-//        currentName = currentName.ifBlank { item.name }
-//
-//        var currentDescription by remember { mutableStateOf("") }
-//        currentDescription = currentDescription.ifBlank { item.name }
-//
-//
-//        Column(modifier = Modifier.background(AppTheme.colors.background)) {
-//
-//            Toolbar(
-//                title = "21",
-//                onBackClick = { goBack() }
-//            )
-//
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(AppTheme.dimens.halfContentMargin)
-//                    .border(
-//                        width = 1.dp,
-//                        color = AppTheme.colors.secondaryVariant,
-//                        shape = RoundedCornerShape(AppTheme.dimens.contentMargin)
-//                    )
-//            ) {
-//                TextField(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    value = currentName,
-//                    onValueChange = {
-//                        currentName = it
-//                        item.name = it
-//                        viewModel.submitUIEvent(DetailCharacterEvent.SetItem(item))
-//                    },
-//                    placeholder = {
-//                        Text(
-//                            text = "2",
-//                            style = AppTheme.typography.body1
-//                        )
-//                    },
-//                    colors = TextFieldDefaults.textFieldColors(
-//                        backgroundColor = Color.Transparent,
-//                        focusedIndicatorColor = Color.Transparent,
-//                        unfocusedIndicatorColor = Color.Transparent,
-//                        disabledIndicatorColor = Color.Transparent,
-//                        cursorColor = AppTheme.colors.secondary
-//                    ),
-//                )
-//            }
-//
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .weight(1f)
-//                    .padding(AppTheme.dimens.halfContentMargin)
-//                    .border(
-//                        width = 1.dp,
-//                        color = AppTheme.colors.secondaryVariant,
-//                        shape = RoundedCornerShape(AppTheme.dimens.contentMargin)
-//                    )
-//            ) {
-//                TextField(
-//                    modifier = Modifier.fillMaxSize(),
-//                    value = currentDescription,
-//                    onValueChange = {
-//                        currentDescription = it
-////                        item.description = it
-//                        viewModel.submitUIEvent(DetailCharacterEvent.SetItem(item))
-//                    },
-//                    placeholder = {
-//                        Text(
-//                            text = "23",
-//                            style = AppTheme.typography.body1
-//                        )
-//                    },
-//                    colors = TextFieldDefaults.textFieldColors(
-//                        backgroundColor = Color.Transparent,
-//                        focusedIndicatorColor = Color.Transparent,
-//                        unfocusedIndicatorColor = Color.Transparent,
-//                        disabledIndicatorColor = Color.Transparent,
-//                        cursorColor = AppTheme.colors.secondary
-//                    ),
-//                )
-//            }
-//
-//            PrimaryButton(
-//                modifier = Modifier.fillMaxWidth(),
-//                text = stringResource(id = R.string.save),
-//                isEnabled = currentName.isNotBlank() && currentDescription.isNotBlank()
-//            ) {
-//                viewModel.submitUIEvent(DetailCharacterEvent.LikeCharacter(item.id))
-//            }
-//
-//        }
-//
-//    }
-//
-
-    //
-//    private fun getEmptyItem(): ExampleModel {
-//        return ExampleModel(
-//            id = 0,
-//            name = "",
-//        )
-//    }
-//
     @Preview(name = "DetailCharacterScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
-    private fun DetailCharacterScreenPreview() {
+    private fun DetailPersonScreenPreview() {
         RickAndMortyMainTheme {
 
-            val character = Person(
+            val person = PersonDetail(
                 name = "Витька",
                 url = "урл",
                 avatar = ""
             )
 
-            DetailPersonListScreen(character, false)
+            DetailPersonListScreen(person, false)
 
         }
     }

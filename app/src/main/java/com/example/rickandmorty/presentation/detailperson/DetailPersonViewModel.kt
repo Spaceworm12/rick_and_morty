@@ -14,8 +14,8 @@ class DetailPersonViewModel(
     private val networkRepository: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getRickAndMortyApi())
 ) : ViewModel() {
     private val disposables = CompositeDisposable()
-    val person = MutableLiveData<PersonDetail>()
-    val loading = MutableLiveData(false)
+     var person = MutableLiveData<PersonDetail>()
+    private val loading = MutableLiveData(false)
 
     init {
         loadPersonInfo()
@@ -33,12 +33,11 @@ class DetailPersonViewModel(
     }
 
     private fun loadPersonInfo() {
-        networkRepository.getPersonDetail(person.value)
+        networkRepository.getPersonDetail(2)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { resource ->
                 when (resource) {
                     Resource.Loading -> loading.postValue(true)
-
                     is Resource.Data -> {
                         person.postValue((resource.data ?:"") as PersonDetail?)
                         loading.postValue(false)
@@ -53,22 +52,5 @@ class DetailPersonViewModel(
     override fun onCleared() {
         disposables.clear()
     }
-
-//    private fun likeCharacter(id: Long) {
-//
-//        itemRepository.insertExample(Mapper.transformToData( exampleCharacter.value!!.copy(url = id)))
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe { resource ->
-//                when (resource) {
-//                    Resource.Loading -> { }
-//
-//                    is Resource.Data -> exit.postValue(true)
-//
-//                    is Resource.Error -> { }
-//                }
-//            }
-//            .addTo(disposables)
-//
-//    }
 
 }

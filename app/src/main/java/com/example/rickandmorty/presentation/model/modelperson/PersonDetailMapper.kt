@@ -1,6 +1,7 @@
 package com.example.rickandmorty.presentation.model.modelperson
 
 import com.example.rickandmorty.data.network.person.PersonDetail
+import com.example.rickandmorty.data.network.person.ResultPersonDetail
 import com.example.rickandmorty.presentation.model.modelperson.PersonDetail as CharacterDetailPresentation
 
 
