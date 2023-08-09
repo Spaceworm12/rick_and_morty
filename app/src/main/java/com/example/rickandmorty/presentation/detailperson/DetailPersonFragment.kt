@@ -63,26 +63,24 @@ class DetailPersonFragment : ComposeFragment() {
         savedInstanceState: Bundle?
     ): View {
         return super.onCreateView(inflater, container, savedInstanceState)
-        val identifyNumber = requireArguments().getInt(KEY)
-        viewModel.submitUIEvent(DetailPersonEvent.OpenPerson(identifyNumber))
+        val identifyNumber = arguments?.getInt(KEY)
+        viewModel.submitUIEvent(DetailPersonEvent.ShowPerson(identifyNumber!!))
     }
 
     @Composable
     override fun GetContent() {
-        val identifyNumber = requireArguments().getInt(KEY)
-        viewModel.submitUIEvent(DetailPersonEvent.OpenPerson(identifyNumber))
         val state = viewModel.viewStateObs.observeAsState().value ?: return
         val person = viewModel.person.observeAsState().value ?: return
-
-
+        val identifyNumber = requireArguments().getInt(KEY)
+        viewModel.submitUIEvent(DetailPersonEvent.ShowPerson(identifyNumber))
         RickAndMortyMainTheme {
+            DetailPersonListScreen(person, state.exit, state.isLoading)
             if (state.isLoading) {
                 LoaderBlock()
             }
             if (state.exit) {
                 goBack()
             }
-            DetailPersonListScreen(person, state.exit, state.isLoading)
         }
     }
 

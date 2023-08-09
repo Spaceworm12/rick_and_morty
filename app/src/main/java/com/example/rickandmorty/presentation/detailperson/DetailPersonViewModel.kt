@@ -24,6 +24,7 @@ class DetailPersonViewModel(
             _viewState.value = value
         }
 
+
     fun submitUIEvent(event: DetailPersonEvent) {
         handleUIEvent(event)
     }
@@ -31,7 +32,7 @@ class DetailPersonViewModel(
     private fun handleUIEvent(event: DetailPersonEvent) {
         when (event) {
             is DetailPersonEvent.LikePerson -> {}
-            is DetailPersonEvent.OpenPerson -> {loadPersonInfo(event.id)
+            is DetailPersonEvent.ShowPerson -> {loadPersonInfo(event.id)
             }
         }
     }

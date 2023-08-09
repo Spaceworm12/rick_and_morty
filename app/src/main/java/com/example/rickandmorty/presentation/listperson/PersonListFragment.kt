@@ -58,18 +58,20 @@ class PersonListFragment : ComposeFragment() {
     @Composable
     override fun GetContent() {
         val persons = viewModel.persons.observeAsState().value ?: return
-        val loading = viewModel.loading.observeAsState().value ?: return
-
-        RickAndMortyMainTheme() {
-            PersonListScreen(persons, loading)
+        val state = viewModel.viewStateObs.observeAsState().value ?: return
+        RickAndMortyMainTheme {
+            PersonListScreen(persons, state.isLoading, state.exit)
+            if (state.isLoading) {
+                LoaderBlock()
+            }
+            if (state.exit) {
+                goBack()
+            }
         }
     }
 
     @Composable
-    private fun PersonListScreen(persons: List<Person>, loading: Boolean) {
-
-        if (loading) LoaderBlock()
-
+    private fun PersonListScreen(persons: List<Person>, loading: Boolean, exit: Boolean) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -201,6 +203,7 @@ class PersonListFragment : ComposeFragment() {
             .commit()
     }
 
+
     @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
     private fun PersonsListScreenPreview() {
@@ -231,10 +234,11 @@ class PersonListFragment : ComposeFragment() {
 
             PersonListScreen(
                 persons = persons,
-                loading = false
+                loading = false,
+                exit = false
             )
         }
-    }
+}
 }
 
 
