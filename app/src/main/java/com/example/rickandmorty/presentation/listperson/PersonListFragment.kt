@@ -1,6 +1,7 @@
 package com.example.rickandmorty.presentation.listperson
 
 import android.content.res.Configuration
+import android.os.Bundle
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -104,13 +105,15 @@ class PersonListFragment : ComposeFragment() {
         ) {
 
             Row(
-                modifier = Modifier.background(
-                    color = AppTheme.colors.rippleColor,
-                    shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
-                ).clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() },
-                    onClick = { goToPerson(person.id)})
+                modifier = Modifier
+                    .background(
+                        color = AppTheme.colors.rippleColor,
+                        shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
+                    )
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() },
+                        onClick = { goToPerson(person.id) })
             ) {
                 Card(
                     modifier = Modifier
@@ -191,11 +194,12 @@ class PersonListFragment : ComposeFragment() {
     }
 
     private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
-    private fun goToPerson(id:Int) = requireActivity()
+    private fun goToPerson(id:Int) {
+     requireActivity()
         .supportFragmentManager
         .beginTransaction()
         .add(R.id.fragment_container, DetailPersonFragment.newInstance(id))
-        .commit()
+        .commit()}
 
     @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable

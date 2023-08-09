@@ -43,6 +43,7 @@ import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBa
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.model.modelperson.PersonDetail
 
+@Suppress("UNREACHABLE_CODE")
 class DetailPersonFragment : ComposeFragment() {
     private val viewModel: DetailPersonViewModel by lazy {
         ViewModelProvider(this)[DetailPersonViewModel::class.java]
@@ -53,6 +54,7 @@ class DetailPersonFragment : ComposeFragment() {
 
         fun newInstance(id: Int) = DetailPersonFragment().apply {
             arguments = bundleOf(KEY to id)
+            viewModel.submitUIEvent(DetailPersonEvent.OpenPerson(id))
         }
     }
 
@@ -83,12 +85,12 @@ class DetailPersonFragment : ComposeFragment() {
 
 @Composable
 private fun DetailPersonListScreen(person: PersonDetail, exit: Boolean, loading: Boolean) {
-    if (exit) goBack()
+//    if (exit) goBack()
     Column(modifier = Modifier.background(AppTheme.colors.background)) {
 
         Toolbar(
             title = person.name,
-            onBackClick = { goBack() }
+            onBackClick = {  }
         )
         Column(
             modifier = Modifier
@@ -188,7 +190,7 @@ private fun getEmpty(): PersonDetail {
     )
 }
 
-private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
+//private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
 
 @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
@@ -202,6 +204,5 @@ private fun DetailPersonScreenPreview() {
         DetailPersonListScreen(person, exit = false, loading = false)
 
     }
-}
 }
 
