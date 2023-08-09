@@ -52,9 +52,8 @@ class DetailPersonFragment : ComposeFragment() {
     companion object {
         private const val KEY = "KEY"
 
-        fun newInstance(id: Int) = DetailPersonFragment().apply {
-            arguments = bundleOf(KEY to id)
-            viewModel.submitUIEvent(DetailPersonEvent.OpenPerson(id))
+        fun newInstance(identifyNumber: Int) = DetailPersonFragment().apply {
+            arguments = bundleOf(KEY to identifyNumber)
         }
     }
 
@@ -64,145 +63,146 @@ class DetailPersonFragment : ComposeFragment() {
         savedInstanceState: Bundle?
     ): View {
         return super.onCreateView(inflater, container, savedInstanceState)
-        val id = requireArguments().getInt(KEY)
+        val identifyNumber = requireArguments().getInt(KEY)
+        viewModel.submitUIEvent(DetailPersonEvent.OpenPerson(identifyNumber))
     }
 
     @Composable
     override fun GetContent() {
-        val loading = viewModel.loading.observeAsState().value ?: return
-        val exit = viewModel.exit.observeAsState().value ?: return
+        val identifyNumber = requireArguments().getInt(KEY)
+        viewModel.submitUIEvent(DetailPersonEvent.OpenPerson(identifyNumber))
+        val state = viewModel.viewStateObs.observeAsState().value ?: return
         val person = viewModel.person.observeAsState().value ?: return
 
 
         RickAndMortyMainTheme {
-            if (loading) {
+            if (state.isLoading) {
                 LoaderBlock()
             }
-            DetailPersonListScreen(person, loading, exit)
+            if (state.exit) {
+                goBack()
+            }
+            DetailPersonListScreen(person, state.exit, state.isLoading)
         }
     }
-}
 
-@Composable
-private fun DetailPersonListScreen(person: PersonDetail, exit: Boolean, loading: Boolean) {
-//    if (exit) goBack()
-    Column(modifier = Modifier.background(AppTheme.colors.background)) {
+    @Composable
+    private fun DetailPersonListScreen(person: PersonDetail, exit: Boolean, loading: Boolean) {
 
-        Toolbar(
-            title = person.name,
-            onBackClick = {  }
-        )
-        Column(
-            modifier = Modifier
-                .padding(AppTheme.dimens.contentMargin)
-                .width(100.dp),
-            horizontalAlignment = Alignment.Start
-        ) {
+        Column(modifier = Modifier.background(AppTheme.colors.background)) {
 
-            Row(
-                modifier = Modifier.background(
-                    color = AppTheme.colors.rippleColor,
-                    shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
-                )
+            Toolbar(
+                title = person.name,
+                onBackClick = { }
+            )
+            Column(
+                modifier = Modifier
+                    .padding(AppTheme.dimens.contentMargin)
+                    .width(100.dp),
+                horizontalAlignment = Alignment.Start
             ) {
-                Card(
-                    modifier = Modifier
-                        .size(
-                            width = 100.dp,
-                            height = 100.dp
-                        )
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() },
-                            onClick = { }
-                        ),
-                    shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
+
+                Row(
+                    modifier = Modifier.background(
+                        color = AppTheme.colors.rippleColor,
+                        shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
+                    )
                 ) {
-
-                    val painterImage = rememberImagePainter(data = person.avatar)
-
-                    when (painterImage.state) {
-                        is ImagePainter.State.Loading -> {
-                            Box(
-                                modifier = Modifier
-                                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.halfContentMargin))
+                    Card(
+                        modifier = Modifier
+                            .size(
+                                width = 100.dp,
+                                height = 100.dp
                             )
-                        }
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() },
+                                onClick = { }
+                            ),
+                        shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
+                    ) {
 
-                        is ImagePainter.State.Error -> {
-                            Image(
-                                painter = painterResource(id = android.R.drawable.stat_notify_error),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .fillMaxSize(),
-                                contentScale = ContentScale.Crop
-                            )
-                        }
+                        val painterImage = rememberImagePainter(data = person.avatar)
 
-                        else -> {
-                            Image(
-                                painter = painterImage,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .fillMaxSize(),
-                                contentScale = ContentScale.Crop
-                            )
+                        when (painterImage.state) {
+                            is ImagePainter.State.Loading -> {
+                                Box(
+                                    modifier = Modifier
+                                        .shimmerBackground(RoundedCornerShape(AppTheme.dimens.halfContentMargin))
+                                )
+                            }
+
+                            is ImagePainter.State.Error -> {
+                                Image(
+                                    painter = painterResource(id = android.R.drawable.stat_notify_error),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .fillMaxSize(),
+                                    contentScale = ContentScale.Crop
+                                )
+                            }
+
+                            else -> {
+                                Image(
+                                    painter = painterImage,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .fillMaxSize(),
+                                    contentScale = ContentScale.Crop
+                                )
+                            }
                         }
                     }
-                }
-                Column() {
-                    Text(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(
-                                bottom = AppTheme.dimens.halfContentMargin,
-                                top = AppTheme.dimens.halfContentMargin
-                            ),
-                        text = person.name,
-                        style = AppTheme.typography.body1,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center,
-                    )
-                    Text(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(
-                                bottom = AppTheme.dimens.halfContentMargin,
-                                top = AppTheme.dimens.halfContentMargin
-                            ),
-                        text = person.url,
-                        style = AppTheme.typography.body1,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center,
-                    )
+                    Column() {
+                        Text(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(
+                                    bottom = AppTheme.dimens.halfContentMargin,
+                                    top = AppTheme.dimens.halfContentMargin
+                                ),
+                            text = person.name,
+                            style = AppTheme.typography.body1,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center,
+                        )
+                        Text(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(
+                                    bottom = AppTheme.dimens.halfContentMargin,
+                                    top = AppTheme.dimens.halfContentMargin
+                                ),
+                            text = person.url,
+                            style = AppTheme.typography.body1,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center,
+                        )
+                    }
                 }
             }
+
         }
+    }
 
+    private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
+
+    @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
+    @Composable
+    private fun DetailPersonScreenPreview() {
+        RickAndMortyMainTheme {
+            val person = PersonDetail(
+                name = "Витька",
+                url = "урл",
+                avatar = ""
+            )
+            DetailPersonListScreen(person, exit = false, loading = false)
+
+        }
     }
 }
 
 
-private fun getEmpty(): PersonDetail {
-    return PersonDetail(
-    )
-}
-
-//private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
-
-@Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Composable
-private fun DetailPersonScreenPreview() {
-    RickAndMortyMainTheme {
-        val person = PersonDetail(
-            name = "Витька",
-            url = "урл",
-            avatar = ""
-        )
-        DetailPersonListScreen(person, exit = false, loading = false)
-
-    }
-}
 

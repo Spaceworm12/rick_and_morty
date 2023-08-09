@@ -20,7 +20,7 @@ class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepositor
         return api.getCharactersList(20, 20)
             .map { it.results }
             .map<Resource<List<Person>>> {
-                Resource.Data(personMapper.transformCharacterToPresentation(it))
+                Resource.Data(personMapper.transformPersonToPresentation(it))
             }
             .onErrorReturn { Resource.Error(it) }
             .startWith(Resource.Loading)

@@ -1,5 +1,6 @@
 package com.example.rickandmorty.presentation.detailperson
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.rickandmorty.application.App
@@ -14,13 +15,14 @@ class DetailPersonViewModel(
     private val networkRepository: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getRickAndMortyApi())
 ) : ViewModel() {
     private val disposables = CompositeDisposable()
-    var person = MutableLiveData<PersonDetail>()
-    var loading = MutableLiveData(false)
-    var exit = MutableLiveData(false)
-
-    init {
-        person.value?.let { loadPersonInfo(person.value!!.id) }
-    }
+    val person = MutableLiveData<PersonDetail>()
+    private val _viewState = MutableLiveData(DetailPersonViewState())
+    val viewStateObs: LiveData<DetailPersonViewState> get() = _viewState
+    private var viewState: DetailPersonViewState
+        get() = _viewState.value!!
+        set(value) {
+            _viewState.value = value
+        }
 
     fun submitUIEvent(event: DetailPersonEvent) {
         handleUIEvent(event)
@@ -29,28 +31,26 @@ class DetailPersonViewModel(
     private fun handleUIEvent(event: DetailPersonEvent) {
         when (event) {
             is DetailPersonEvent.LikePerson -> {}
-            is DetailPersonEvent.OpenPerson -> {
-                person.value?.let { loadPersonInfo(it.id) }
+            is DetailPersonEvent.OpenPerson -> {loadPersonInfo(event.id)
             }
         }
     }
 
     private fun loadPersonInfo(id: Int) {
-      let {
             networkRepository.getPersonDetail(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { resource ->
                     when (resource) {
-                        Resource.Loading -> loading.postValue(true)
+                        Resource.Loading -> viewState.isLoading = true
                         is Resource.Data -> {
-                            person.postValue(resource.data as PersonDetail)
-                            loading.postValue(false)
+                            person.postValue((resource.data ?: viewState.getEmptyPerson()))
+                            viewState.isLoading = true
                         }
 
-                        is Resource.Error -> loading.postValue(false)
+                        is Resource.Error -> viewState.isLoading = true
                     }
+
                 }
-        }
             .addTo(disposables)
     }
 

@@ -1,7 +1,6 @@
 package com.example.rickandmorty.presentation.listperson
 
 import android.content.res.Configuration
-import android.os.Bundle
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -194,12 +193,13 @@ class PersonListFragment : ComposeFragment() {
     }
 
     private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
-    private fun goToPerson(id:Int) {
-     requireActivity()
-        .supportFragmentManager
-        .beginTransaction()
-        .add(R.id.fragment_container, DetailPersonFragment.newInstance(id))
-        .commit()}
+    private fun goToPerson(id: Int) {
+        requireActivity()
+            .supportFragmentManager
+            .beginTransaction()
+            .add(R.id.fragment_container, DetailPersonFragment.newInstance(id))
+            .commit()
+    }
 
     @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
@@ -210,22 +210,22 @@ class PersonListFragment : ComposeFragment() {
                 Person(
                     "1",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",1
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg", 1
                 ),
                 Person(
                     "2",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",2
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg", 2
                 ),
                 Person(
                     "3",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",4
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg", 4
                 ),
                 Person(
                     "4",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",3
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg", 3
                 )
             )
 
