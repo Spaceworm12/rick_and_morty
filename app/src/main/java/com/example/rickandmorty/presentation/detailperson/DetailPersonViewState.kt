@@ -8,10 +8,4 @@ data class DetailPersonViewState(
     val exit: Boolean = false,
     val errorText: String = "",
     val person: PersonDetail? = null,
-) {
-
-    fun getEmptyPerson(): PersonDetail {
-        return PersonDetail()
-    }
-
-}
+)

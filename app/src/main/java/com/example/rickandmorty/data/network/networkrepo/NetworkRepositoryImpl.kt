@@ -16,6 +16,7 @@ class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepositor
     private val personDetailMapper = PersonDetailMapper()
 
 
+
     override fun getPersons(): Observable<Resource<List<Person>>> {
         return api.getCharactersList(20, 20)
             .map { it.results }
@@ -31,11 +32,12 @@ class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepositor
         return api.getPersonInfo(id)
             .map { it.results }
             .map<Resource<PersonDetail>> {
-                Resource.Data(personDetailMapper.transformPersonDetailToPresentation(it))
+                Resource.Data(personDetailMapper.transformPersonDetailForPresentation(it))
             }
             .onErrorReturn { Resource.Error(it) }
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())
     }
+
 
 }

@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.example.rickandmorty.data.db.entity.ExampleEntity
 
 
-@Database(entities = [ExampleEntity::class], version = 1, exportSchema = true)
+@Database(entities = [ExampleEntity::class], version = 1, exportSchema = false)
 abstract class ExampleDataBase: RoomDatabase() {
     abstract fun exampleDao(): ExampleDao
 }

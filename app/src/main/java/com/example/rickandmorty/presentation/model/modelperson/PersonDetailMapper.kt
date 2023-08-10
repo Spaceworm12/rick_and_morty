@@ -6,7 +6,7 @@ import com.example.rickandmorty.presentation.model.modelperson.PersonDetail as P
 
 class PersonDetailMapper {
 
-    fun transformPersonDetailToPresentation(model: PersonDetail): PersonDetailPresentation {
+    fun transformPersonDetailForPresentation(model: PersonDetail): PersonDetailPresentation {
         val number = if (model.url.endsWith("/")) {
             model.url.dropLast(1).takeLastWhile { it.isDigit() }
         } else {
@@ -26,5 +26,5 @@ class PersonDetailMapper {
             url = url
         )
     }
-}
 
+}

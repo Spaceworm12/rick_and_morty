@@ -71,12 +71,12 @@ class DetailPersonFragment : ComposeFragment() {
     override fun GetContent() {
         val state = viewModel.viewStateObs.observeAsState().value ?: return
         RickAndMortyMainTheme {
-                DetailPersonListScreen(state)
-            }
+            DetailPersonListScreen(state)
         }
+    }
 
     @Composable
-    private fun DetailPersonListScreen(state:DetailPersonViewState) {
+    private fun DetailPersonListScreen(state: DetailPersonViewState) {
         // state в конструктор и все
         if (state.isLoading) {
             LoaderBlock()
@@ -88,7 +88,7 @@ class DetailPersonFragment : ComposeFragment() {
             Column(modifier = Modifier.background(AppTheme.colors.background)) {
 
                 Toolbar(
-                    title = state.person.name?:"Empty",
+                    title = state.person.name ?: "Empty",
                     onBackClick = { }
                 )
                 Column(
@@ -157,7 +157,7 @@ class DetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = state.person.name?:"Empty",
+                                text = state.person.name ?: "Empty",
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -170,7 +170,7 @@ class DetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = state.person.url?:"Empty",
+                                text = state.person.url ?: "Empty",
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -194,7 +194,12 @@ class DetailPersonFragment : ComposeFragment() {
             val person = PersonDetail(
                 name = "Витька",
                 url = "урл",
-                avatar = ""
+                avatar = "",
+                id = 1,
+                status = "1",
+                species = "1",
+                type = "1",
+                gender = "1"
             )
             DetailPersonListScreen(state)
 
