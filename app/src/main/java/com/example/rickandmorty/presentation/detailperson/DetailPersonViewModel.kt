@@ -43,7 +43,7 @@ class DetailPersonViewModel(
                         Resource.Loading -> viewState = viewState.copy(isLoading = true)
                         is Resource.Data -> {viewState=
                             viewState.copy(person =resource.data, isLoading = false, exit = false)
-                            viewState.isLoading = true
+                            viewState.isLoading = false
                         }
 
                         is Resource.Error -> viewState = viewState.copy(isLoading = false)

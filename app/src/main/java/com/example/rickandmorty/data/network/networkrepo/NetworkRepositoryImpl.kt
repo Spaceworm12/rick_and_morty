@@ -34,7 +34,6 @@ class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepositor
 
     override fun getPersonDetail(id: Int): Observable<Resource<PersonDetail>> {
         return api.getPersonInfo(id)
-            .map { it.results }
             .map<Resource<PersonDetail>> {
                 Resource.Data(personDetailMapper.transformPersonDetailForPresentation(it))
             }

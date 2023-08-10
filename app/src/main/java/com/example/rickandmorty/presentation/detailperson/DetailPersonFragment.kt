@@ -84,13 +84,15 @@ class DetailPersonFragment : ComposeFragment() {
         if (state.exit) {
             goBack()
         }
-        if (state.person != null) {
-            Column(modifier = Modifier.background(AppTheme.colors.background)) {
 
-                Toolbar(
-                    title = state.person.name ?: "Empty",
-                    onBackClick = { }
-                )
+        Column(modifier = Modifier.background(AppTheme.colors.background)) {
+
+            Toolbar(
+                title = state.person?.name ?: "Empty",
+                onBackClick = { }
+            )
+
+            if (state.person != null)
                 Column(
                     modifier = Modifier
                         .padding(AppTheme.dimens.contentMargin)
@@ -179,8 +181,6 @@ class DetailPersonFragment : ComposeFragment() {
                         }
                     }
                 }
-
-            }
         }
     }
 
