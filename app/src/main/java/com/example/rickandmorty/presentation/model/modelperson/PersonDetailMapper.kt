@@ -7,13 +7,14 @@ import com.example.rickandmorty.presentation.model.modelperson.PersonDetail as P
 class PersonDetailMapper {
 
     fun transformPersonDetailForPresentation(model: PersonDetail): PersonDetailPresentation {
-//        val number = if (model.url!!.endsWith("/")) {
-//            model.url.dropLast(1).takeLastWhile { it.isDigit() }
-//        } else {
-//            model.url.takeLastWhile { it.isDigit() }
-//        }
-//        val url = "https://rickandmortyapi.com/api/character/${number}/"
-//        val avatar = "https://rickandmortyapi.com/api/character/avatar/${number}.jpeg"
+        val number = if (model.url!!.endsWith("/")) {
+            model.url.dropLast(1).takeLastWhile { it.isDigit() }
+        } else {
+            model.url.takeLastWhile { it.isDigit() }
+        }
+        val url = "https://rickandmortyapi.com/api/character/${number}/"
+        val avatar = "https://rickandmortyapi.com/api/character/avatar/${number}.jpeg"
+
 
         return PersonDetailPresentation(
             name = model.name?:"",
@@ -22,8 +23,8 @@ class PersonDetailMapper {
             type = model.type?:"",
             gender = model.gender?:"",
             id = model.id,
-            avatar = "",
-            url = ""
+            avatar = avatar,
+            url = url
         )
     }
 

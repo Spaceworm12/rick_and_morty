@@ -9,12 +9,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,6 +38,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
+import com.example.rickandmorty.R
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
@@ -43,7 +47,6 @@ import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBa
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.model.modelperson.PersonDetail
 
-@Suppress("UNREACHABLE_CODE")
 class DetailPersonFragment : ComposeFragment() {
     private val viewModel: DetailPersonViewModel by lazy {
         ViewModelProvider(this)[DetailPersonViewModel::class.java]
@@ -69,118 +72,206 @@ class DetailPersonFragment : ComposeFragment() {
 
     @Composable
     override fun GetContent() {
+        val person = PersonDetail()
+        val isLoading: Boolean = false
+        val exit: Boolean = false
         val state = viewModel.viewStateObs.observeAsState().value ?: return
         RickAndMortyMainTheme {
-            DetailPersonListScreen(state)
+            DetailPersonListScreen(person, isLoading, exit)
+            if (state.isLoading) {
+                LoaderBlock()
+            }
+            if (state.exit) {
+                goBack()
+            }
         }
     }
 
     @Composable
-    private fun DetailPersonListScreen(state: DetailPersonViewState) {
-        // state в конструктор и все
-        if (state.isLoading) {
+    private fun DetailPersonListScreen(person: PersonDetail, isLoading: Boolean, exit: Boolean) {
+        if (isLoading) {
             LoaderBlock()
         }
-        if (state.exit) {
+        if (exit) {
             goBack()
         }
 
         Column(modifier = Modifier.background(AppTheme.colors.background)) {
 
             Toolbar(
-                title = state.person?.name ?: "Empty",
-                onBackClick = { }
+                title = stringResource(id = R.string.about_person),
+                onBackClick = { goBack() }
             )
-
-            if (state.person != null)
-                Column(
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(AppTheme.dimens.contentMargin)
+                ,
+                horizontalAlignment = Alignment.Start
+            ) {
+                Row(
                     modifier = Modifier
-                        .padding(AppTheme.dimens.contentMargin)
-                        .width(100.dp),
-                    horizontalAlignment = Alignment.Start
-                ) {
-
-                    Row(
-                        modifier = Modifier.background(
+                        .background(
                             color = AppTheme.colors.rippleColor,
                             shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
                         )
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                bottom = AppTheme.dimens.halfContentMargin,
+                                top = AppTheme.dimens.halfContentMargin
+                            ),
+                        text = person.name ?: "Not identified",
+                        style = AppTheme.typography.body1,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+                Column(
+                    modifier = Modifier
+                        .wrapContentSize().padding(AppTheme.dimens.contentMargin),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Card(
+                        modifier = Modifier
+                            .width(300.dp)
+                            .height(300.dp)
+                            .padding(start=40.dp)
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() },
+                                onClick = { }
+                            ),
+
+                        shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
                     ) {
-                        Card(
-                            modifier = Modifier
-                                .size(
-                                    width = 100.dp,
-                                    height = 100.dp
+
+                        val painterImage = rememberImagePainter(data = person.avatar)
+
+                        when (painterImage.state) {
+                            is ImagePainter.State.Loading -> {
+                                Box(
+                                    modifier = Modifier
+                                        .shimmerBackground(RoundedCornerShape(AppTheme.dimens.halfContentMargin))
                                 )
-                                .clickable(
-                                    indication = null,
-                                    interactionSource = remember { MutableInteractionSource() },
-                                    onClick = { }
-                                ),
-                            shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
-                        ) {
-
-                            val painterImage = rememberImagePainter(data = state.person.avatar)
-
-                            when (painterImage.state) {
-                                is ImagePainter.State.Loading -> {
-                                    Box(
-                                        modifier = Modifier
-                                            .shimmerBackground(RoundedCornerShape(AppTheme.dimens.halfContentMargin))
-                                    )
-                                }
-
-                                is ImagePainter.State.Error -> {
-                                    Image(
-                                        painter = painterResource(id = android.R.drawable.stat_notify_error),
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .fillMaxSize(),
-                                        contentScale = ContentScale.Crop
-                                    )
-                                }
-
-                                else -> {
-                                    Image(
-                                        painter = painterImage,
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .fillMaxSize(),
-                                        contentScale = ContentScale.Crop
-                                    )
-                                }
                             }
-                        }
-                        Column() {
-                            Text(
-                                modifier = Modifier
-                                    .wrapContentSize()
-                                    .padding(
-                                        bottom = AppTheme.dimens.halfContentMargin,
-                                        top = AppTheme.dimens.halfContentMargin
-                                    ),
-                                text = state.person.name ?: "Empty",
-                                style = AppTheme.typography.body1,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                            )
-                            Text(
-                                modifier = Modifier
-                                    .wrapContentSize()
-                                    .padding(
-                                        bottom = AppTheme.dimens.halfContentMargin,
-                                        top = AppTheme.dimens.halfContentMargin
-                                    ),
-                                text = state.person.url ?: "Empty",
-                                style = AppTheme.typography.body1,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                            )
+
+                            is ImagePainter.State.Error -> {
+                                Image(
+                                    painter = painterResource(id = android.R.drawable.stat_notify_error),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .fillMaxSize(),
+                                    contentScale = ContentScale.Crop
+                                )
+                            }
+
+                            else -> {
+                                Image(
+                                    painter = painterImage,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .fillMaxSize(),
+                                    contentScale = ContentScale.Crop
+                                )
+                            }
                         }
                     }
                 }
+                Column(
+                    modifier = Modifier
+                        .background(
+                            color = AppTheme.colors.rippleColor,
+                            shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
+                        )
+                        .fillMaxWidth()
+                        .padding(AppTheme.dimens.contentMargin),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(
+                                bottom = AppTheme.dimens.halfContentMargin,
+                                top = AppTheme.dimens.halfContentMargin
+                            ),
+                        text = stringResource(id = R.string.id_person),
+                        style = AppTheme.typography.body1,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                    )
+                    Text(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(
+                                bottom = AppTheme.dimens.halfContentMargin,
+                                top = AppTheme.dimens.halfContentMargin
+                            ),
+                        text = stringResource(id = R.string.gender_person),
+                        style = AppTheme.typography.body1,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                    )
+                    Text(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(
+                                bottom = AppTheme.dimens.halfContentMargin,
+                                top = AppTheme.dimens.halfContentMargin
+                            ),
+                        text = stringResource(id = R.string.status_person),
+                        style = AppTheme.typography.body1,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                    )
+                    Text(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(
+                                bottom = AppTheme.dimens.halfContentMargin,
+                                top = AppTheme.dimens.halfContentMargin
+                            ),
+                        text = stringResource(id = R.string.species_person),
+                        style = AppTheme.typography.body1,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                    )
+                    Text(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(
+                                bottom = AppTheme.dimens.halfContentMargin,
+                                top = AppTheme.dimens.halfContentMargin
+                            ),
+                        text = stringResource(id = R.string.url_person),
+                        style = AppTheme.typography.body1,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                    )
+                    Text(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(
+                                bottom = AppTheme.dimens.halfContentMargin,
+                                top = AppTheme.dimens.halfContentMargin
+                            ),
+                        text = stringResource(id = R.string.id_person),
+                        style = AppTheme.typography.body1,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+            }
         }
     }
 
@@ -190,19 +281,11 @@ class DetailPersonFragment : ComposeFragment() {
     @Composable
     private fun DetailPersonScreenPreview() {
         RickAndMortyMainTheme {
-            val state = DetailPersonViewState()
-            val person = PersonDetail(
-                name = "Витька",
-                url = "урл",
-                avatar = "",
-                id = 1,
-                status = "1",
-                species = "1",
-                type = "1",
-                gender = "1"
-            )
-            DetailPersonListScreen(state)
-
+            val person =
+                PersonDetail("name", "url", "avatar", "status", "species", "type", "genderm", 123)
+            val isLoading: Boolean = false
+            val exit: Boolean = false
+            DetailPersonListScreen(person, isLoading, exit)
         }
     }
 }
