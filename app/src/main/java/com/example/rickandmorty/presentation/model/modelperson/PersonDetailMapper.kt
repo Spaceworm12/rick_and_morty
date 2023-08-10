@@ -1,7 +1,6 @@
 package com.example.rickandmorty.presentation.model.modelperson
 
 import com.example.rickandmorty.data.network.person.PersonDetail
-import com.example.rickandmorty.data.network.person.ResultPersonDetail
 import com.example.rickandmorty.presentation.model.modelperson.PersonDetail as PersonDetailPresentation
 
 
@@ -13,7 +12,8 @@ class PersonDetailMapper {
         } else {
             model.url.takeLastWhile { it.isDigit() }
         }
-        val url = "https://rickandmortyapi.com/api/character/${number}"
+        val url = "https://rickandmortyapi.com/api/character/${number}/"
+        val avatar = "https://rickandmortyapi.com/api/character/avatar/${number}.jpeg"
 
         return PersonDetailPresentation(
             name = model.name,
@@ -22,7 +22,7 @@ class PersonDetailMapper {
             type = model.type,
             gender = model.gender,
             id = model.id,
-            avatar = model.avatar,
+            avatar = avatar,
             url = url
         )
     }

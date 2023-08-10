@@ -88,7 +88,7 @@ class DetailPersonFragment : ComposeFragment() {
             Column(modifier = Modifier.background(AppTheme.colors.background)) {
 
                 Toolbar(
-                    title = state.person.name,
+                    title = state.person.name?:"Empty",
                     onBackClick = { }
                 )
                 Column(
@@ -157,7 +157,7 @@ class DetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = state.person.name,
+                                text = state.person.name?:"Empty",
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -170,7 +170,7 @@ class DetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = state.person.url,
+                                text = state.person.url?:"Empty",
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,

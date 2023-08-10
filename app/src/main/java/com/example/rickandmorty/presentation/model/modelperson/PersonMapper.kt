@@ -15,7 +15,6 @@ class PersonMapper {
         }
         val url = "https://rickandmortyapi.com/api/character/${number}"
         val avatar = "https://rickandmortyapi.com/api/character/avatar/${number}.jpeg"
-        val ids = "https://rickandmortyapi.com/api/character/${number}"
 
         return PersonPresentation(
             name = model.name,
