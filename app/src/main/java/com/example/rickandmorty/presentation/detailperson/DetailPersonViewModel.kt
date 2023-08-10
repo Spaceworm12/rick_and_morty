@@ -15,7 +15,6 @@ class DetailPersonViewModel(
     private val networkRepository: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getRickAndMortyApi())
 ) : ViewModel() {
     private val disposables = CompositeDisposable()
-    val person = MutableLiveData<PersonDetail>()
     private val _viewState = MutableLiveData(DetailPersonViewState())
     val viewStateObs: LiveData<DetailPersonViewState> get() = _viewState
     private var viewState: DetailPersonViewState
@@ -23,7 +22,6 @@ class DetailPersonViewModel(
         set(value) {
             _viewState.value = value
         }
-
 
     fun submitUIEvent(event: DetailPersonEvent) {
         handleUIEvent(event)
@@ -42,13 +40,13 @@ class DetailPersonViewModel(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { resource ->
                     when (resource) {
-                        Resource.Loading -> viewState.isLoading = true
-                        is Resource.Data -> {
-                            person.postValue((resource.data ?: viewState.getEmptyPerson()))
+                        Resource.Loading -> viewState = viewState.copy(isLoading = true)
+                        is Resource.Data -> {viewState=
+                            viewState.copy(person =resource.data, isLoading = false, exit = false)
                             viewState.isLoading = true
                         }
 
-                        is Resource.Error -> viewState.isLoading = true
+                        is Resource.Error -> viewState = viewState.copy(isLoading = false)
                     }
 
                 }

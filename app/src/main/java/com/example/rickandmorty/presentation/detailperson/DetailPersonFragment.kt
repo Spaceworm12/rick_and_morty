@@ -62,126 +62,125 @@ class DetailPersonFragment : ComposeFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return super.onCreateView(inflater, container, savedInstanceState)
         val identifyNumber = arguments?.getInt(KEY)
         viewModel.submitUIEvent(DetailPersonEvent.ShowPerson(identifyNumber!!))
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     @Composable
     override fun GetContent() {
         val state = viewModel.viewStateObs.observeAsState().value ?: return
-        val person = viewModel.person.observeAsState().value ?: return
-        val identifyNumber = requireArguments().getInt(KEY)
-        viewModel.submitUIEvent(DetailPersonEvent.ShowPerson(identifyNumber))
         RickAndMortyMainTheme {
-            DetailPersonListScreen(person, state.exit, state.isLoading)
-            if (state.isLoading) {
-                LoaderBlock()
-            }
-            if (state.exit) {
-                goBack()
+                DetailPersonListScreen(state)
             }
         }
-    }
 
     @Composable
-    private fun DetailPersonListScreen(person: PersonDetail, exit: Boolean, loading: Boolean) {
+    private fun DetailPersonListScreen(state:DetailPersonViewState) {
+        // state в конструктор и все
+        if (state.isLoading) {
+            LoaderBlock()
+        }
+        if (state.exit) {
+            goBack()
+        }
+        if (state.person != null) {
+            Column(modifier = Modifier.background(AppTheme.colors.background)) {
 
-        Column(modifier = Modifier.background(AppTheme.colors.background)) {
-
-            Toolbar(
-                title = person.name,
-                onBackClick = { }
-            )
-            Column(
-                modifier = Modifier
-                    .padding(AppTheme.dimens.contentMargin)
-                    .width(100.dp),
-                horizontalAlignment = Alignment.Start
-            ) {
-
-                Row(
-                    modifier = Modifier.background(
-                        color = AppTheme.colors.rippleColor,
-                        shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
-                    )
+                Toolbar(
+                    title = state.person.name,
+                    onBackClick = { }
+                )
+                Column(
+                    modifier = Modifier
+                        .padding(AppTheme.dimens.contentMargin)
+                        .width(100.dp),
+                    horizontalAlignment = Alignment.Start
                 ) {
-                    Card(
-                        modifier = Modifier
-                            .size(
-                                width = 100.dp,
-                                height = 100.dp
-                            )
-                            .clickable(
-                                indication = null,
-                                interactionSource = remember { MutableInteractionSource() },
-                                onClick = { }
-                            ),
-                        shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
+
+                    Row(
+                        modifier = Modifier.background(
+                            color = AppTheme.colors.rippleColor,
+                            shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
+                        )
                     ) {
-
-                        val painterImage = rememberImagePainter(data = person.avatar)
-
-                        when (painterImage.state) {
-                            is ImagePainter.State.Loading -> {
-                                Box(
-                                    modifier = Modifier
-                                        .shimmerBackground(RoundedCornerShape(AppTheme.dimens.halfContentMargin))
+                        Card(
+                            modifier = Modifier
+                                .size(
+                                    width = 100.dp,
+                                    height = 100.dp
                                 )
-                            }
+                                .clickable(
+                                    indication = null,
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    onClick = { }
+                                ),
+                            shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
+                        ) {
 
-                            is ImagePainter.State.Error -> {
-                                Image(
-                                    painter = painterResource(id = android.R.drawable.stat_notify_error),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .fillMaxSize(),
-                                    contentScale = ContentScale.Crop
-                                )
-                            }
+                            val painterImage = rememberImagePainter(data = state.person.avatar)
 
-                            else -> {
-                                Image(
-                                    painter = painterImage,
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .fillMaxSize(),
-                                    contentScale = ContentScale.Crop
-                                )
+                            when (painterImage.state) {
+                                is ImagePainter.State.Loading -> {
+                                    Box(
+                                        modifier = Modifier
+                                            .shimmerBackground(RoundedCornerShape(AppTheme.dimens.halfContentMargin))
+                                    )
+                                }
+
+                                is ImagePainter.State.Error -> {
+                                    Image(
+                                        painter = painterResource(id = android.R.drawable.stat_notify_error),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .fillMaxSize(),
+                                        contentScale = ContentScale.Crop
+                                    )
+                                }
+
+                                else -> {
+                                    Image(
+                                        painter = painterImage,
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .fillMaxSize(),
+                                        contentScale = ContentScale.Crop
+                                    )
+                                }
                             }
                         }
-                    }
-                    Column() {
-                        Text(
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .padding(
-                                    bottom = AppTheme.dimens.halfContentMargin,
-                                    top = AppTheme.dimens.halfContentMargin
-                                ),
-                            text = person.name,
-                            style = AppTheme.typography.body1,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            textAlign = TextAlign.Center,
-                        )
-                        Text(
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .padding(
-                                    bottom = AppTheme.dimens.halfContentMargin,
-                                    top = AppTheme.dimens.halfContentMargin
-                                ),
-                            text = person.url,
-                            style = AppTheme.typography.body1,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            textAlign = TextAlign.Center,
-                        )
+                        Column() {
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = state.person.name,
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = state.person.url,
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                            )
+                        }
                     }
                 }
-            }
 
+            }
         }
     }
 
@@ -191,12 +190,13 @@ class DetailPersonFragment : ComposeFragment() {
     @Composable
     private fun DetailPersonScreenPreview() {
         RickAndMortyMainTheme {
+            val state = DetailPersonViewState()
             val person = PersonDetail(
                 name = "Витька",
                 url = "урл",
                 avatar = ""
             )
-            DetailPersonListScreen(person, exit = false, loading = false)
+            DetailPersonListScreen(state)
 
         }
     }
