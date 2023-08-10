@@ -56,7 +56,8 @@ dependencies {
     implementation ("androidx.room:room-common:2.5.2")
     implementation("com.google.android.engage:engage-core:1.2.0")
 
-
+    implementation("com.squareup.okhttp3:logging-interceptor:4.7.2")
+    implementation("com.squareup.okhttp3:okhttp:4.7.2")
     //room db
     kapt ("androidx.room:room-compiler:2.5.1")
     implementation ("androidx.room:room-runtime")
