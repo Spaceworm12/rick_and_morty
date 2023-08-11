@@ -39,6 +39,7 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.rickandmorty.R
+import com.example.rickandmorty.presentation.category.CategoryListFragment
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
@@ -194,12 +195,14 @@ class PersonListFragment : ComposeFragment() {
 
     }
 
-    private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
+    private fun goBack() = requireActivity().supportFragmentManager.beginTransaction()
+        .replace(R.id.fragment_container, CategoryListFragment()).commit()
     private fun goToPerson(id: Int) {
         requireActivity()
             .supportFragmentManager
             .beginTransaction()
             .add(R.id.fragment_container, DetailPersonFragment.newInstance(id))
+            .addToBackStack("")
             .commit()
     }
 

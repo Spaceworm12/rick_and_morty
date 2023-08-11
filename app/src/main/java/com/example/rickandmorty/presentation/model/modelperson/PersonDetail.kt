@@ -9,5 +9,5 @@ data class PersonDetail(
     val species: String?="",
     val type: String?="",
     val gender:String?="",
-    val id: Int?=123,
+    val id: Int?=null,
 )

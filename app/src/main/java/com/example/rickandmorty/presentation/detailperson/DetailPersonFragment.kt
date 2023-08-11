@@ -8,12 +8,11 @@ import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,6 +21,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -46,9 +49,11 @@ import com.example.rickandmorty.R
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
+import com.example.rickandmorty.presentation.composecomponents.buttons.PrimaryButton
 import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlock
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
+import com.example.rickandmorty.presentation.listperson.PersonListFragment
 import com.example.rickandmorty.presentation.model.modelperson.PersonDetail
 
 class DetailPersonFragment : ComposeFragment() {
@@ -65,9 +70,7 @@ class DetailPersonFragment : ComposeFragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         val identifyNumber = arguments?.getInt(KEY)
         viewModel.submitUIEvent(DetailPersonEvent.ShowPerson(identifyNumber!!))
@@ -76,12 +79,10 @@ class DetailPersonFragment : ComposeFragment() {
 
     @Composable
     override fun GetContent() {
-        val person = PersonDetail()
-        val isLoading: Boolean = false
-        val exit: Boolean = false
         val state = viewModel.viewStateObs.observeAsState().value ?: return
+        var currentId = arguments?.getInt(KEY)
         RickAndMortyMainTheme {
-            DetailPersonListScreen(person, isLoading, exit)
+            DetailPersonListScreen(state)
             if (state.isLoading) {
                 LoaderBlock()
             }
@@ -92,11 +93,12 @@ class DetailPersonFragment : ComposeFragment() {
     }
 
     @Composable
-    private fun DetailPersonListScreen(person: PersonDetail, isLoading: Boolean, exit: Boolean) {
-        if (isLoading) {
+    private fun DetailPersonListScreen(state: DetailPersonViewState) {
+        var currentId = arguments?.getInt(KEY)
+        if (state.isLoading) {
             LoaderBlock()
         }
-        if (exit) {
+        if (state.exit) {
             goBack()
         }
 
@@ -105,6 +107,13 @@ class DetailPersonFragment : ComposeFragment() {
             Toolbar(
                 title = stringResource(id = R.string.about_person),
                 onBackClick = { goBack() },
+                actions = {
+                    IconButton(onClick = {}) {
+                        Icon(
+                            Icons.Filled.Favorite, contentDescription = ""
+                        )
+                    }
+                },
             )
             Column(
                 modifier = Modifier
@@ -112,46 +121,48 @@ class DetailPersonFragment : ComposeFragment() {
                     .padding(AppTheme.dimens.contentMargin),
                 horizontalAlignment = Alignment.Start
             ) {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                bottom = AppTheme.dimens.halfContentMargin,
-                                top = AppTheme.dimens.halfContentMargin
-                            ),
-                        text = person.name ?: "Not identified",
-                        style = AppTheme.typography.body1,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight(700),
-                        fontFamily = FontFamily.Monospace,
-                        fontSize = 25.sp,
-                    )
-                Column(horizontalAlignment = Alignment.CenterHorizontally
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            bottom = AppTheme.dimens.halfContentMargin,
+                            top = AppTheme.dimens.halfContentMargin
+                        ),
+                    text = state.person?.name ?: "Not identified",
+                    style = AppTheme.typography.body1,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight(700),
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 25.sp,
+                )
+                Column(modifier=Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Card(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .width(300.dp)
-                            .height(300.dp)
+                            .height(400.dp)
+                            .width(400.dp)
+                            .wrapContentSize()
                             .padding(AppTheme.dimens.contentMargin)
-                            .clickable(
-                                indication = null,
+                            .clickable(indication = null,
                                 interactionSource = remember { MutableInteractionSource() },
-                                onClick = { }
-                            ),
+                                onClick = { }),
 
                         shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
                     ) {
 
-                        val painterImage = rememberImagePainter(data = person.avatar)
+                        val painterImage = rememberImagePainter(data = state.person?.avatar)
 
                         when (painterImage.state) {
                             is ImagePainter.State.Loading -> {
                                 Box(
-                                    modifier = Modifier
-                                        .shimmerBackground(RoundedCornerShape(AppTheme.dimens.halfContentMargin))
+                                    modifier = Modifier.shimmerBackground(
+                                        RoundedCornerShape(
+                                            AppTheme.dimens.halfContentMargin
+                                        )
+                                    )
                                 )
                             }
 
@@ -159,8 +170,7 @@ class DetailPersonFragment : ComposeFragment() {
                                 Image(
                                     painter = painterResource(id = android.R.drawable.stat_notify_error),
                                     contentDescription = null,
-                                    modifier = Modifier
-                                        .fillMaxSize(),
+                                    modifier = Modifier.fillMaxSize(),
                                     contentScale = ContentScale.Crop
                                 )
                             }
@@ -169,9 +179,8 @@ class DetailPersonFragment : ComposeFragment() {
                                 Image(
                                     painter = painterImage,
                                     contentDescription = null,
-                                    modifier = Modifier
-                                        .fillMaxSize(),
-                                    contentScale = ContentScale.Crop
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentScale = ContentScale.Fit
                                 )
                             }
                         }
@@ -210,7 +219,7 @@ class DetailPersonFragment : ComposeFragment() {
                                     bottom = AppTheme.dimens.halfContentMargin,
                                     top = AppTheme.dimens.halfContentMargin
                                 ),
-                            text = person.id.toString(),
+                            text = state.person?.id.toString(),
                             style = AppTheme.typography.body1,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -243,7 +252,7 @@ class DetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = person.gender.toString(),
+                                text = state.person?.gender.toString(),
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -277,7 +286,7 @@ class DetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = person.species.toString(),
+                                text = state.person?.species.toString(),
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -311,7 +320,7 @@ class DetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = person.type.toString(),
+                                text = state.person?.type.toString(),
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -345,7 +354,7 @@ class DetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = person.status.toString(),
+                                text = state.person?.status.toString(),
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -356,21 +365,81 @@ class DetailPersonFragment : ComposeFragment() {
                         }
                     }
                 }
+                if (state.person?.id != 1) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter
+                    ) {
+                        Row {
+                            PrimaryButton(
+                                text = stringResource(id = R.string.go_back),
+                                isEnabled = true,
+                                onClick = {
+                                    currentId = currentId!! - 1
+                                    goNextPerson(currentId!!)
+                                })
+                            Spacer(Modifier.weight(1f, true))
+                            PrimaryButton(text = stringResource(id = R.string.go_next),
+                                isEnabled = true,
+                                onClick = {
+                                    currentId = currentId!! + 1
+                                    goNextPerson(currentId!!)
+                                })
+                        }
+                    }
+                } else {
+                    Box(
+                        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd
+                    ) {
+                        PrimaryButton(text = stringResource(id = R.string.go_next),
+                            isEnabled = true,
+                            onClick = {
+                                currentId = currentId!! + 1
+                                goNextPerson(currentId!!)
+                            })
+                    }
+                }
             }
         }
     }
 
-    private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
+    private fun goBack() = requireActivity().supportFragmentManager.beginTransaction()
+        .replace(R.id.fragment_container, PersonListFragment()).commit()
+
+    private fun goNextPerson(id: Int) =
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, DetailPersonFragment.newInstance(id))
+            .addToBackStack("")
+            .commit()
 
     @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
     private fun DetailPersonScreenPreview() {
         RickAndMortyMainTheme {
             val person =
-                PersonDetail("name", "url", "avatar", "status", "species", "type", "genderm", 123)
-            val isLoading: Boolean = false
-            val exit: Boolean = false
-            DetailPersonListScreen(person, isLoading, exit)
+                PersonDetail(
+                    "name",
+                    "url",
+                    "avatar",
+                    "status",
+                    "species",
+                    "type",
+                    "genderm",
+                    123
+                )
+            val state = DetailPersonViewState(isLoading = false, exit = false, person = null)
+
+            val person2 = PersonDetail(
+                name = null,
+                url = null,
+                avatar = null,
+                status = null,
+                species = null,
+                type = null,
+                gender = null,
+                id = null
+            )
+
+            DetailPersonListScreen(state)
         }
     }
 }
