@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,10 +31,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import coil.compose.ImagePainter
@@ -100,22 +104,14 @@ class DetailPersonFragment : ComposeFragment() {
 
             Toolbar(
                 title = stringResource(id = R.string.about_person),
-                onBackClick = { goBack() }
+                onBackClick = { goBack() },
             )
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(AppTheme.dimens.contentMargin)
-                ,
+                    .padding(AppTheme.dimens.contentMargin),
                 horizontalAlignment = Alignment.Start
             ) {
-                Row(
-                    modifier = Modifier
-                        .background(
-                            color = AppTheme.colors.rippleColor,
-                            shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
-                        )
-                ) {
                     Text(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -128,19 +124,18 @@ class DetailPersonFragment : ComposeFragment() {
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         textAlign = TextAlign.Center,
+                        fontWeight = FontWeight(700),
+                        fontFamily = FontFamily.Monospace,
+                        fontSize = 25.sp,
                     )
-                }
-                Column(
-                    modifier = Modifier
-                        .wrapContentSize().padding(AppTheme.dimens.contentMargin),
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                Column(horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Card(
                         modifier = Modifier
+                            .fillMaxWidth()
                             .width(300.dp)
                             .height(300.dp)
-                            .padding(start=40.dp)
+                            .padding(AppTheme.dimens.contentMargin)
                             .clickable(
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() },
@@ -192,84 +187,174 @@ class DetailPersonFragment : ComposeFragment() {
                         .padding(AppTheme.dimens.contentMargin),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    Text(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(
-                                bottom = AppTheme.dimens.halfContentMargin,
-                                top = AppTheme.dimens.halfContentMargin
-                            ),
-                        text = stringResource(id = R.string.id_person),
-                        style = AppTheme.typography.body1,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center,
-                    )
-                    Text(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(
-                                bottom = AppTheme.dimens.halfContentMargin,
-                                top = AppTheme.dimens.halfContentMargin
-                            ),
-                        text = stringResource(id = R.string.gender_person),
-                        style = AppTheme.typography.body1,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center,
-                    )
-                    Text(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(
-                                bottom = AppTheme.dimens.halfContentMargin,
-                                top = AppTheme.dimens.halfContentMargin
-                            ),
-                        text = stringResource(id = R.string.status_person),
-                        style = AppTheme.typography.body1,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center,
-                    )
-                    Text(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(
-                                bottom = AppTheme.dimens.halfContentMargin,
-                                top = AppTheme.dimens.halfContentMargin
-                            ),
-                        text = stringResource(id = R.string.species_person),
-                        style = AppTheme.typography.body1,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center,
-                    )
-                    Text(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(
-                                bottom = AppTheme.dimens.halfContentMargin,
-                                top = AppTheme.dimens.halfContentMargin
-                            ),
-                        text = stringResource(id = R.string.url_person),
-                        style = AppTheme.typography.body1,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center,
-                    )
-                    Text(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(
-                                bottom = AppTheme.dimens.halfContentMargin,
-                                top = AppTheme.dimens.halfContentMargin
-                            ),
-                        text = stringResource(id = R.string.id_person),
-                        style = AppTheme.typography.body1,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center,
-                    )
+                    Row() {
+                        Text(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(
+                                    bottom = AppTheme.dimens.halfContentMargin,
+                                    top = AppTheme.dimens.halfContentMargin
+                                ),
+                            text = stringResource(id = R.string.id_person),
+                            style = AppTheme.typography.body1,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight(700),
+                            fontFamily = FontFamily.Monospace
+                        )
+                        Text(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(
+                                    bottom = AppTheme.dimens.halfContentMargin,
+                                    top = AppTheme.dimens.halfContentMargin
+                                ),
+                            text = person.id.toString(),
+                            style = AppTheme.typography.body1,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight(700),
+                            fontFamily = FontFamily.Monospace
+                        )
+                    }
+                    Column {
+                        Row {
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = stringResource(id = R.string.gender_person),
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.Monospace
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = person.gender.toString(),
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.Monospace
+                            )
+                        }
+                    }
+                    Column {
+                        Row {
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = stringResource(id = R.string.species_person),
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.Monospace
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = person.species.toString(),
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.Monospace
+                            )
+                        }
+                    }
+                    Column {
+                        Row {
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = stringResource(id = R.string.type_person),
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.Monospace
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = person.type.toString(),
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.Monospace
+                            )
+                        }
+                    }
+                    Column {
+                        Row {
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = stringResource(id = R.string.status_person),
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.Monospace
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = person.status.toString(),
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.Monospace
+                            )
+                        }
+                    }
                 }
             }
         }

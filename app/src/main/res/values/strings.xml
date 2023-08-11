@@ -17,8 +17,8 @@
     <string name="url_person">Ссылка:</string>
     <string name="avatar_person"> Фото объекта</string>
     <string name="status_person">Статус:</string>
-    <string name="species_person">Особенности:</string>
-    <string name="type">Тип персонажа:</string>
+    <string name="species_person">Расса:</string>
+    <string name="type_person">Тип персонажа:</string>
     <string name="gender_person">Пол:</string>
     <string name="id_person">Идентификатор персонажа:</string>
     <string name="not_identify">Неизвестно</string>
