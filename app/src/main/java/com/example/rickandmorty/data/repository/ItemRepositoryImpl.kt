@@ -16,16 +16,16 @@ class ItemRepositoryImpl(private val exampleDao: ExampleDao) : ItemRepository {
             .subscribeOn(Schedulers.io())
     }
 
-    override fun insertExample(example: ExampleEntity): Observable<Resource<Int>> {
+    override fun insertExample(example: ExampleEntity): Observable<Resource<Long>> {
         return exampleDao.insertExample(example)
             .toObservable()
-            .map<Resource<Int>> { Resource.Data(it) }
+            .map<Resource<Long>> { Resource.Data(it) }
             .onErrorReturn { Resource.Error(it) }
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())
     }
 
-    override fun deleteExample(id: Int): Observable<Resource<Unit>> {
+    override fun deleteExample(id: Long): Observable<Resource<Unit>> {
         return exampleDao.deleteExample(id)
             .andThen(Observable.just(Resource.Success))
             .onErrorReturn { Resource.Error(it) }

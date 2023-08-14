@@ -8,7 +8,7 @@ import com.example.rickandmorty.util.Resource
 interface ItemRepository {
     fun getItems(): Observable<Resource<List<ExampleEntity>>>
 
-    fun insertExample(example: ExampleEntity): Observable<Resource<Int>>
+    fun insertExample(example: ExampleEntity): Observable<Resource<Long>>
 
-    fun deleteExample(id: Int): Observable<Resource<Unit>>
+    fun deleteExample(id: Long): Observable<Resource<Unit>>
 }

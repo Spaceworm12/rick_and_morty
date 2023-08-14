@@ -3,7 +3,7 @@ package com.example.rickandmorty.data.db.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-private const val TABLE_NAME = "list_of_favorites_persons"
+private const val TABLE_NAME = "example_table"
 
 @Entity(tableName = TABLE_NAME)
 data class ExampleEntity(
