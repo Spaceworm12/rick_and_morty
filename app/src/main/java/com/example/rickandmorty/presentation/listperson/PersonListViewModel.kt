@@ -18,9 +18,9 @@ class PersonListViewModel(
 ): ViewModel() {
     private val disposables = CompositeDisposable()
     val persons = MutableLiveData<List<Person>>(emptyList())
-    private val _viewState = MutableLiveData(InFavoritesListViewState())
-    val viewStateObs: LiveData<InFavoritesListViewState> get() = _viewState
-    private var viewState: InFavoritesListViewState
+    private val _viewState = MutableLiveData(PersonListViewState())
+    val viewStateObs: LiveData<PersonListViewState> get() = _viewState
+    private var viewState: PersonListViewState
         get() = _viewState.value!!
         set(value) {
             _viewState.value = value

@@ -34,6 +34,10 @@ class App : Application() {
             checkDb()
             return db!!.exampleDao()
         }
+        fun getDb(): ExampleDataBase {
+            checkDb()
+            return db!!
+        }
 
         private fun checkDb() {
             if (db == null) {

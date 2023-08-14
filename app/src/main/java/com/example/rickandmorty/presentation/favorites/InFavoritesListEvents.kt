@@ -1,7 +1,9 @@
 package com.example.rickandmorty.presentation.favorites
 
+import com.example.rickandmorty.presentation.model.modelperson.Person
+
 
 sealed class InFavoritesListEvents {
-    class LikePerson(val inFavorites: Boolean=false): InFavoritesListEvents()
-    class ShowPerson(val id: Int) : InFavoritesListEvents()
+    class LikePerson(person: Person) : InFavoritesListEvents()
+    class ShowPerson(person: Person) : InFavoritesListEvents()
 }

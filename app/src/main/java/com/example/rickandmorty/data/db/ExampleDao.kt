@@ -14,9 +14,9 @@ interface ExampleDao {
     fun getAllExamples(): Observable<List<ExampleEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertExample(example: ExampleEntity): Single<Long>
+    fun insertExample(example: ExampleEntity): Single<Int>
 
     @Query("DELETE FROM example_table WHERE id = :id")
-    fun deleteExample(id: Long): Completable
+    fun deleteExample(id: Int): Completable
 
 }

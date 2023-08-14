@@ -10,6 +10,13 @@ object Mapper {
         return ExampleModelPresentation(
             id = model.id,
             name = model.name,
+            species = model.species,
+            type = model.type,
+            avatar = model.avatar,
+            gender = model.gender,
+            inFavorites = model.inFavorites,
+            status = model.status,
+            url = model.url
         )
     }
 
