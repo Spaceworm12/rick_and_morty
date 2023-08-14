@@ -81,16 +81,9 @@ class InFavoritesListFragment : ComposeFragment() {
                 .background(AppTheme.colors.background)
         ) {
             Toolbar(
-                title = stringResource(id = R.string.rik_wiki),
+                title = stringResource(id = R.string.Favorites),
                 elevation = AppTheme.dimens.halfContentMargin,
                 onBackClick = { goBack() },
-                actions = {
-                    IconButton(onClick = {}) {
-                        Icon(
-                            Icons.Filled.Favorite, contentDescription = ""
-                        )
-                    }
-                }
             )
             LazyVerticalGrid(
                 columns = GridCells.Fixed(count = 1),
@@ -191,7 +184,8 @@ class InFavoritesListFragment : ComposeFragment() {
                 modifier = Modifier
                     .size(fabSize)
                     .padding(AppTheme.dimens.sideMargin),
-                onClick = {
+                onClick = {!person.inFavorites
+                viewModel.submitUIEvent(InFavoritesListEvents.LikePerson(person))
                 }
             ) {
                 if(person.inFavorites)

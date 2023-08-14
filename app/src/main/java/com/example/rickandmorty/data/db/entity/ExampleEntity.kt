@@ -8,6 +8,7 @@ private const val TABLE_NAME = "example_table"
 @Entity(tableName = TABLE_NAME)
 data class ExampleEntity(
     @PrimaryKey(autoGenerate = true)
+    val id: Int?=null,
     val name: String?="",
     val url: String?="",
     val avatar: String?="",
@@ -15,6 +16,5 @@ data class ExampleEntity(
     val species: String?="",
     val type: String?="",
     val gender:String?="",
-    val id: Int?=null,
     val inFavorites:Boolean=false,
 )

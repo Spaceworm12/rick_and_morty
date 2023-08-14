@@ -6,7 +6,7 @@ import android.app.Person
 data class InFavoritesListViewState(
     var isLoading: Boolean = false,
     val exit: Boolean = false,
-    val persons: Person
+    val errorText: String = "",
 ){
 }
 

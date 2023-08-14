@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.rickandmorty.application.App
 import com.example.rickandmorty.data.repository.LocalRepository
 import com.example.rickandmorty.data.repository.LocalRepositoryImplement
+import com.example.rickandmorty.presentation.detailperson.DetailPersonEvent
 import com.example.rickandmorty.presentation.model.Mapper
 import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.util.Resource
@@ -31,14 +32,24 @@ class InFavoritesListViewModel(
     init {
         loadLocalPersons()
     }
-    private fun savePersonToListFavorites(id: Long) {
+    fun submitUIEvent(event: InFavoritesListEvents) {
+        handleUIEvent(event)
+    }
+
+    private fun handleUIEvent(event: InFavoritesListEvents) {
+        when (event) {
+            is InFavoritesListEvents.LikePerson -> person.value?.let { savePersonToListFavorites(it.id) }
+            is InFavoritesListEvents.ShowPerson -> loadLocalPersons()
+        }
+    }
+    private fun savePersonToListFavorites(id: Int) {
         repo.addPersonToFavorite(Mapper.transformToData(person.value!!.copy(id=id)))
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 when (result) {
                     Resource.Loading -> {}
-                    is Resource.Data -> exit.postValue(true)
-                    is Resource.Error -> errorText.postValue(result.error.message ?: "")
+                    is Resource.Data -> viewState=viewState.copy(exit = true)
+                    is Resource.Error -> viewState=viewState.copy(errorText = result.error.message ?: "")
                 }
             }
             .addTo(disposables)
