@@ -25,6 +25,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -53,7 +54,7 @@ import com.example.rickandmorty.presentation.composecomponents.buttons.PrimaryBu
 import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlock
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
-import com.example.rickandmorty.presentation.listperson.PersonListFragment
+import com.example.rickandmorty.presentation.favorites.InFavoritesListFragment
 import com.example.rickandmorty.presentation.model.modelperson.PersonDetail
 
 class DetailPersonFragment : ComposeFragment() {
@@ -108,10 +109,15 @@ class DetailPersonFragment : ComposeFragment() {
                 title = stringResource(id = R.string.about_person),
                 onBackClick = { goBack() },
                 actions = {
-                    IconButton(onClick = {}) {
-                        Icon(
-                            Icons.Filled.Favorite, contentDescription = ""
-                        )
+                    IconButton(onClick = {!state.person?.inFavorites!! }) {
+                        if (state.person?.inFavorites == true) {
+                            Icon(
+                                Icons.Filled.Favorite, contentDescription = ""
+                            )
+                        } else {
+                            Icon(
+                                Icons.Filled.FavoriteBorder, contentDescription = "")
+                        }
                     }
                 },
             )
@@ -137,7 +143,8 @@ class DetailPersonFragment : ComposeFragment() {
                     fontFamily = FontFamily.Monospace,
                     fontSize = 25.sp,
                 )
-                Column(modifier=Modifier.fillMaxWidth(),
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Card(
@@ -204,7 +211,7 @@ class DetailPersonFragment : ComposeFragment() {
                                     bottom = AppTheme.dimens.halfContentMargin,
                                     top = AppTheme.dimens.halfContentMargin
                                 ),
-                            text = stringResource(id = R.string.id_person),
+                            text = stringResource(id = R.string.id_person)?: "Not identified",
                             style = AppTheme.typography.body1,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -219,7 +226,7 @@ class DetailPersonFragment : ComposeFragment() {
                                     bottom = AppTheme.dimens.halfContentMargin,
                                     top = AppTheme.dimens.halfContentMargin
                                 ),
-                            text = state.person?.id.toString(),
+                            text = state.person?.id.toString()?: "Not identified",
                             style = AppTheme.typography.body1,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -237,7 +244,7 @@ class DetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = stringResource(id = R.string.gender_person),
+                                text = stringResource(id = R.string.gender_person)?: "Not identified",
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -252,41 +259,7 @@ class DetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = state.person?.gender.toString(),
-                                style = AppTheme.typography.body1,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight(700),
-                                fontFamily = FontFamily.Monospace
-                            )
-                        }
-                    }
-                    Column {
-                        Row {
-                            Text(
-                                modifier = Modifier
-                                    .wrapContentSize()
-                                    .padding(
-                                        bottom = AppTheme.dimens.halfContentMargin,
-                                        top = AppTheme.dimens.halfContentMargin
-                                    ),
-                                text = stringResource(id = R.string.species_person),
-                                style = AppTheme.typography.body1,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight(700),
-                                fontFamily = FontFamily.Monospace
-                            )
-                            Text(
-                                modifier = Modifier
-                                    .wrapContentSize()
-                                    .padding(
-                                        bottom = AppTheme.dimens.halfContentMargin,
-                                        top = AppTheme.dimens.halfContentMargin
-                                    ),
-                                text = state.person?.species.toString(),
+                                text = state.person?.gender.toString()?: "Not identified",
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -305,7 +278,7 @@ class DetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = stringResource(id = R.string.type_person),
+                                text = stringResource(id = R.string.species_person)?: "Not identified",
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -320,7 +293,7 @@ class DetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = state.person?.type.toString(),
+                                text = state.person?.species.toString()?: "Not identified",
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -339,7 +312,7 @@ class DetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = stringResource(id = R.string.status_person),
+                                text = stringResource(id = R.string.type_person)?: "Not identified",
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -354,7 +327,41 @@ class DetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = state.person?.status.toString(),
+                                text = state.person?.type.toString()?: "Not identified",
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.Monospace
+                            )
+                        }
+                    }
+                    Column {
+                        Row {
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = stringResource(id = R.string.status_person)?: "Not identified",
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.Monospace
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = state.person?.status.toString()?: "Not identified",
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -403,7 +410,7 @@ class DetailPersonFragment : ComposeFragment() {
     }
 
     private fun goBack() = requireActivity().supportFragmentManager.beginTransaction()
-        .replace(R.id.fragment_container, PersonListFragment()).commit()
+        .replace(R.id.fragment_container, InFavoritesListFragment()).commit()
 
     private fun goNextPerson(id: Int) =
         requireActivity().supportFragmentManager.beginTransaction()
@@ -429,14 +436,14 @@ class DetailPersonFragment : ComposeFragment() {
             val state = DetailPersonViewState(isLoading = false, exit = false, person = null)
 
             val person2 = PersonDetail(
-                name = null,
-                url = null,
-                avatar = null,
-                status = null,
-                species = null,
-                type = null,
-                gender = null,
-                id = null
+                name = "-",
+                url = "-",
+                avatar = "-",
+                status = "-",
+                species = "-",
+                type = "-",
+                gender = "-",
+                id = 1
             )
 
             DetailPersonListScreen(state)

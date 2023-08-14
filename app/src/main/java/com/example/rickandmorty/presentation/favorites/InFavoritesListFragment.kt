@@ -1,4 +1,4 @@
-package com.example.rickandmorty.presentation.listperson
+package com.example.rickandmorty.presentation.favorites
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -49,11 +49,10 @@ import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlo
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.detailperson.DetailPersonFragment
-import com.example.rickandmorty.presentation.favorites.InFavoritesListViewModel
 import com.example.rickandmorty.presentation.model.modelperson.Person
 
 
-class PersonListFragment : ComposeFragment() {
+class InFavoritesListFragment : ComposeFragment() {
 
     private val viewModel: InFavoritesListViewModel by lazy {
         ViewModelProvider(this)[InFavoritesListViewModel::class.java]

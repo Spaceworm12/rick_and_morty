@@ -24,7 +24,7 @@ class PersonDetailMapper {
             gender = model.gender?:"",
             id = model.id,
             avatar = avatar,
-            url = url
+            url = url,
         )
     }
 

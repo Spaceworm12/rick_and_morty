@@ -28,7 +28,7 @@ import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
 import com.example.rickandmorty.presentation.composecomponents.buttons.HorizontalBtn
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
-import com.example.rickandmorty.presentation.listperson.PersonListFragment
+import com.example.rickandmorty.presentation.favorites.InFavoritesListFragment
 
 
 class CategoryListFragment : ComposeFragment() {
@@ -112,7 +112,7 @@ class CategoryListFragment : ComposeFragment() {
                             .beginTransaction()
                             .replace(
                                 R.id.fragment_container,
-                                PersonListFragment()
+                                InFavoritesListFragment()
                             )
                             .addToBackStack("")
                             .commit()
@@ -123,7 +123,7 @@ class CategoryListFragment : ComposeFragment() {
                             .beginTransaction()
                             .replace(
                                 R.id.fragment_container,
-                                PersonListFragment()
+                                InFavoritesListFragment()
                             )
                             .addToBackStack("")
                             .commit()
@@ -133,7 +133,7 @@ class CategoryListFragment : ComposeFragment() {
                             .beginTransaction()
                             .replace(
                                 R.id.fragment_container,
-                                PersonListFragment()
+                                InFavoritesListFragment()
                             )
                             .addToBackStack("")
                             .commit()
