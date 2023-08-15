@@ -89,7 +89,7 @@ class PersonListFragment : ComposeFragment() {
                 actions = {
                     IconButton(onClick = {goToFavorites()}) {
                         Icon(
-                            Icons.Filled.Grade, contentDescription = ""
+                            Icons.Filled.Grade, contentDescription = "",Modifier.size(35.dp)
                         )
                     }
                 }
