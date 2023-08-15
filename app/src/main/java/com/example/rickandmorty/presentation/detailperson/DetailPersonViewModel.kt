@@ -60,10 +60,10 @@ class DetailPersonViewModel(
         repo.addPersonToFavorite(LocalMapper.transformToData(viewState.person!!))
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
-                when (result) {
-                    Resource.Loading -> {}
-                    is Resource.Data -> viewState=viewState.copy(exit = true)
-                    is Resource.Error -> viewState=viewState.copy(errorText=(result.error.message ?: ""))
+                viewState = when (result) {
+                    is Resource.Loading -> viewState.copy(isLoading = true)
+                    is Resource.Data -> viewState.copy(isLoading = false)
+                    is Resource.Error -> viewState.copy(errorText=(result.error.message ?: ""))
                 }
             }
             .addTo(disposables)

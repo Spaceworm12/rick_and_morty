@@ -62,10 +62,9 @@ class PersonListFragment : ComposeFragment() {
 
     @Composable
     override fun GetContent() {
-        val persons = viewModel.persons.observeAsState().value ?: return
         val state = viewModel.viewStateObs.observeAsState().value ?: return
         RickAndMortyMainTheme {
-            PersonListScreen(persons, state.isLoading, state.exit)
+            PersonListScreen(state.persons, state.isLoading, state.exit)
             if (state.isLoading) {
                 LoaderBlock()
             }
@@ -177,7 +176,7 @@ class PersonListFragment : ComposeFragment() {
                             bottom = AppTheme.dimens.halfContentMargin,
                             top = AppTheme.dimens.halfContentMargin
                         ),
-                    text = person.name,
+                    text = person.name?:"",
                     style = AppTheme.typography.body1,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -241,22 +240,22 @@ class PersonListFragment : ComposeFragment() {
                 Person(
                     "1",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg", 1
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg","asd","asd","asd","asd",1,false
                 ),
                 Person(
-                    "2",
+                    "1",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg", 2,true
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg","asd","asd","asd","asd",1,false
                 ),
                 Person(
-                    "3",
+                    "1",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg", 4,true
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg","asd","asd","asd","asd",1,false
                 ),
                 Person(
-                    "4",
+                    "1",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg", 3
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg","asd","asd","asd","asd",1,false
                 )
             )
 

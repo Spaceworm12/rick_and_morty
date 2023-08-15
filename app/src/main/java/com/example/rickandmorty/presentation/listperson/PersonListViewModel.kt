@@ -16,7 +16,6 @@ class PersonListViewModel(
     private val networkRepository: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getRickAndMortyApi())
 ): ViewModel() {
     private val disposables = CompositeDisposable()
-    val persons = MutableLiveData<List<Person>>(emptyList())
     private val _viewState = MutableLiveData(PersonListViewState())
     val viewStateObs: LiveData<PersonListViewState> get() = _viewState
     private var viewState: PersonListViewState
@@ -34,14 +33,13 @@ class PersonListViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { resource ->
                 when (resource) {
-                    Resource.Loading -> viewState.isLoading = true
-
+                    Resource.Loading -> viewState = viewState.copy(isLoading = true)
                     is Resource.Data -> {
-                        persons.postValue(resource.data ?: emptyList())
-                        viewState.isLoading = false
+                        viewState = viewState.copy(isLoading = false)
+                        viewState = viewState.copy(persons = (resource.data ?: emptyList()))
                     }
 
-                    is Resource.Error -> viewState.isLoading = false
+                    is Resource.Error -> viewState = viewState.copy(isLoading = false)
                 }
             }
             .addTo(disposables)

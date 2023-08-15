@@ -8,9 +8,7 @@ import com.example.rickandmorty.presentation.model.modelperson.PersonMapper
 import com.example.rickandmorty.util.Resource
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
-import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
 
 
 class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepository {
@@ -18,7 +16,6 @@ class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepositor
     private val personMapper = PersonMapper()
     private val personDetailMapper = PersonDetailMapper()
     val interceptor = HttpLoggingInterceptor()
-
 
 
     override fun getPersons(): Observable<Resource<List<Person>>> {

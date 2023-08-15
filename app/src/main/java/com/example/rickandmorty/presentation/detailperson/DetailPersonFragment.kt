@@ -81,7 +81,6 @@ class DetailPersonFragment : ComposeFragment() {
     @Composable
     override fun GetContent() {
         val state = viewModel.viewStateObs.observeAsState().value ?: return
-        var currentId = arguments?.getInt(KEY)
         RickAndMortyMainTheme {
             DetailPersonListScreen(state)
             if (state.isLoading) {

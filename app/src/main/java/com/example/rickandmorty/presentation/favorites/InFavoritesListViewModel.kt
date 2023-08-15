@@ -18,8 +18,6 @@ class InFavoritesListViewModel(
     private val repo: LocalRepository = LocalRepositoryImplement(App.dao(),App.getDb())
 ): ViewModel() {
     private val disposables = CompositeDisposable()
-    val persons = MutableLiveData<List<Person>>(emptyList())
-    val person = MutableLiveData<Person>()
     private val _viewState = MutableLiveData(InFavoritesListViewState())
     val viewStateObs: LiveData<InFavoritesListViewState> get() = _viewState
     private var viewState: InFavoritesListViewState
@@ -36,14 +34,14 @@ class InFavoritesListViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { resource ->
                 when (resource) {
-                    Resource.Loading -> viewState.isLoading = true
+                    Resource.Loading -> viewState = viewState.copy(isLoading = true)
 
                     is Resource.Data -> {
-                        persons.postValue((resource.data ?: emptyList()))
-                        viewState.isLoading = false
+                        viewState = viewState.copy(isLoading = false)
+                        viewState=viewState.copy(persons=((resource.data ?: emptyList())))
                     }
 
-                    is Resource.Error -> viewState.isLoading = false
+                    is Resource.Error -> viewState = viewState.copy(isLoading = true)
                 }
             }
             .addTo(disposables)
