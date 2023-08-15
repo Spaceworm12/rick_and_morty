@@ -49,6 +49,7 @@ import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlo
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.detailperson.DetailPersonFragment
+import com.example.rickandmorty.presentation.favorites.InFavoritesListFragment
 import com.example.rickandmorty.presentation.model.modelperson.Person
 
 
@@ -85,7 +86,7 @@ class PersonListFragment : ComposeFragment() {
                 elevation = AppTheme.dimens.halfContentMargin,
                 onBackClick = { goBack() },
                 actions = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {goToFavorites()}) {
                         Icon(
                             Icons.Filled.Favorite, contentDescription = ""
                         )
@@ -224,7 +225,7 @@ class PersonListFragment : ComposeFragment() {
         requireActivity()
             .supportFragmentManager
             .beginTransaction()
-            .add(R.id.fragment_container, DetailPersonFragment.newInstance(id))
+            .add(R.id.fragment_container, InFavoritesListFragment())
             .addToBackStack("")
             .commit()
     }

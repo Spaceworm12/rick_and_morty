@@ -109,7 +109,9 @@ class DetailPersonFragment : ComposeFragment() {
                 title = stringResource(id = R.string.about_person),
                 onBackClick = { goBack() },
                 actions = {
-                    IconButton(onClick = {!state.person?.inFavorites!! }) {
+                    IconButton(onClick = {viewModel.submitUIEvent(DetailPersonEvent.AddToFavorite(
+                        state.person!!
+                    ))}) {
                         if (state.person?.inFavorites == true) {
                             Icon(
                                 Icons.Filled.Favorite, contentDescription = ""

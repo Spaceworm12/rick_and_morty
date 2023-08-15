@@ -28,6 +28,7 @@ import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
 import com.example.rickandmorty.presentation.composecomponents.buttons.HorizontalBtn
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
+import com.example.rickandmorty.presentation.favorites.InFavoritesListFragment
 import com.example.rickandmorty.presentation.listperson.PersonListFragment
 
 
@@ -39,8 +40,7 @@ class CategoryListFragment : ComposeFragment() {
             CategoryListScreen(
                 listOf(
                     stringResource(R.string.characters),
-                    stringResource(R.string.episodes),
-                    stringResource(R.string.locations)
+                    stringResource(R.string.Favorites),
                 )
             )
         }
@@ -117,27 +117,16 @@ class CategoryListFragment : ComposeFragment() {
                             .addToBackStack("")
                             .commit()
                     }
-                    if (category == R.string.locations.toString()) {
+                    if (category == R.string.Favorites.toString()) {
                         requireActivity()
                             .supportFragmentManager
                             .beginTransaction()
                             .replace(
                                 R.id.fragment_container,
-                                PersonListFragment()
+                                InFavoritesListFragment()
                             )
                             .addToBackStack("")
                             .commit()
-                    } else {
-                        requireActivity()
-                            .supportFragmentManager
-                            .beginTransaction()
-                            .replace(
-                                R.id.fragment_container,
-                                PersonListFragment()
-                            )
-                            .addToBackStack("")
-                            .commit()
-
                     }
                 })
 

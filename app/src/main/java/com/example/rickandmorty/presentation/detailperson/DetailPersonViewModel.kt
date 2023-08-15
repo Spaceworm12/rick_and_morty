@@ -5,6 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.rickandmorty.application.App
 import com.example.rickandmorty.data.network.networkrepo.NetworkRepositoryImpl
+import com.example.rickandmorty.data.repository.LocalRepository
+import com.example.rickandmorty.data.repository.LocalRepositoryImplement
+import com.example.rickandmorty.presentation.model.LocalMapper
 import com.example.rickandmorty.presentation.model.modelperson.PersonDetail
 import com.example.rickandmorty.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,7 +15,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 
 class DetailPersonViewModel(
-    private val networkRepository: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getRickAndMortyApi())
+    private val networkRepository: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getRickAndMortyApi()),
+    private val repo: LocalRepository = LocalRepositoryImplement(App.dao(), App.getDb())
 ) : ViewModel() {
     private val disposables = CompositeDisposable()
     private val _viewState = MutableLiveData(DetailPersonViewState())
@@ -29,7 +33,7 @@ class DetailPersonViewModel(
 
     private fun handleUIEvent(event: DetailPersonEvent) {
         when (event) {
-            is DetailPersonEvent.LikePerson -> {}
+            is DetailPersonEvent.AddToFavorite -> {savePersonToListFavorites(viewState.person!!)}
             is DetailPersonEvent.ShowPerson -> {loadPersonInfo(event.id)
             }
         }
@@ -50,6 +54,18 @@ class DetailPersonViewModel(
                     }
 
                 }
+            .addTo(disposables)
+    }
+    private fun savePersonToListFavorites(person: PersonDetail) {
+        repo.addPersonToFavorite(LocalMapper.transformToData(viewState.person!!))
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                when (result) {
+                    Resource.Loading -> {}
+                    is Resource.Data -> viewState=viewState.copy(exit = true)
+                    is Resource.Error -> viewState=viewState.copy(errorText=(result.error.message ?: ""))
+                }
+            }
             .addTo(disposables)
     }
 

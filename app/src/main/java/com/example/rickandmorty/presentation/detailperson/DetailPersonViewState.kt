@@ -7,4 +7,5 @@ data class DetailPersonViewState(
     var isLoading: Boolean = false,
     val exit: Boolean = false,
     val person: PersonDetail? = null,
+    val errorText:String = ""
 )
