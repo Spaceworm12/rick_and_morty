@@ -54,7 +54,7 @@ import com.example.rickandmorty.presentation.composecomponents.buttons.PrimaryBu
 import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlock
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
-import com.example.rickandmorty.presentation.favorites.InFavoritesListFragment
+import com.example.rickandmorty.presentation.listperson.PersonListFragment
 import com.example.rickandmorty.presentation.model.modelperson.PersonDetail
 
 class DetailPersonFragment : ComposeFragment() {
@@ -410,7 +410,7 @@ class DetailPersonFragment : ComposeFragment() {
     }
 
     private fun goBack() = requireActivity().supportFragmentManager.beginTransaction()
-        .replace(R.id.fragment_container, InFavoritesListFragment()).commit()
+        .replace(R.id.fragment_container, PersonListFragment()).commit()
 
     private fun goNextPerson(id: Int) =
         requireActivity().supportFragmentManager.beginTransaction()

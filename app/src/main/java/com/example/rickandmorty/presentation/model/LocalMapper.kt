@@ -26,7 +26,7 @@ object LocalMapper {
 
     fun transformToData(model: ExampleModelPresentation): PersonEntity {
         return PersonEntity(
-            id = model.id,
+            id = model.id!!,
             name = model.name,
             species = model.species,
             type = model.type,
