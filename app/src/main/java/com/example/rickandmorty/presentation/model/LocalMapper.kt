@@ -4,7 +4,6 @@ package com.example.rickandmorty.presentation.model
 import com.example.rickandmorty.data.db.entity.PersonEntity
 import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.presentation.model.modelperson.PersonDetail
-import com.example.rickandmorty.presentation.model.ExamplePersonModel as ExampleModelPresentation
 
 object LocalMapper {
 
@@ -18,7 +17,20 @@ object LocalMapper {
         return task.map { transformToPresentation(it) }
     }
 
-    fun transformToData(model: PersonDetail): PersonEntity {
+    fun transformToDataDetail(model: PersonDetail): PersonEntity {
+        return PersonEntity(
+            id = model.id!!,
+            name = model.name,
+            species = model.species,
+            type = model.type,
+            avatar = model.avatar,
+            gender = model.gender,
+            inFavorites = true,
+            status = model.status,
+            url = model.url
+        )
+    }
+    fun transformToData(model: Person): PersonEntity {
         return PersonEntity(
             id = model.id!!,
             name = model.name,

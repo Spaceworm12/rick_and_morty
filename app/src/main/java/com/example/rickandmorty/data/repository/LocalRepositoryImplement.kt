@@ -28,7 +28,7 @@ class LocalRepositoryImplement(private val dao: Dao, private val db: Db) : Local
             .subscribeOn(Schedulers.io())
     }
 
-    override fun deletePersonFromFavorite(id: Long): Observable<Resource<Unit>> {
+    override fun deletePersonFromFavorite(id: Int): Observable<Resource<Unit>> {
         return dao.deleteExample(id)
             .andThen(Observable.just(Resource.Success))
             .onErrorReturn { Resource.Error(it) }

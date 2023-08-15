@@ -41,7 +41,6 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.rickandmorty.R
-import com.example.rickandmorty.presentation.category.CategoryListFragment
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
@@ -53,10 +52,10 @@ import com.example.rickandmorty.presentation.listperson.PersonListFragment
 import com.example.rickandmorty.presentation.model.modelperson.Person
 
 
-class InFavoritesListFragment : ComposeFragment() {
+class FavoritesListFragment : ComposeFragment() {
 
-    private val viewModel: InFavoritesListViewModel by lazy {
-        ViewModelProvider(this)[InFavoritesListViewModel::class.java]
+    private val viewModel: FavoritesListViewModel by lazy {
+        ViewModelProvider(this)[FavoritesListViewModel::class.java]
     }
 
     @Composable
@@ -191,7 +190,8 @@ class InFavoritesListFragment : ComposeFragment() {
                 modifier = Modifier
                     .size(fabSize)
                     .padding(AppTheme.dimens.sideMargin),
-                onClick = {
+                onClick = { !person.inFavorites
+                    viewModel.submitUIEvent(FavoritesListEvents.DeleteFromFavorites(person.id))
                 }
             ) {
                 if(person.inFavorites)

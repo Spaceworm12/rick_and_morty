@@ -57,7 +57,7 @@ class DetailPersonViewModel(
             .addTo(disposables)
     }
     private fun savePersonToListFavorites(person: PersonDetail) {
-        repo.addPersonToFavorite(LocalMapper.transformToData(viewState.person!!))
+        repo.addPersonToFavorite(LocalMapper.transformToDataDetail(viewState.person!!))
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 viewState = when (result) {

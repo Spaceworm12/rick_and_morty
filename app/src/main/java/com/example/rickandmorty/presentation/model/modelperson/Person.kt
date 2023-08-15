@@ -10,5 +10,5 @@ data class Person(
     val type: String?="",
     val gender:String?="",
     val id: Int,
-    val inFavorites:Boolean=false,
+    var inFavorites:Boolean=false,
 )

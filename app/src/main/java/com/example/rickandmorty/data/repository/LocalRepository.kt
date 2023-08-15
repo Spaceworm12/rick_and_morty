@@ -11,5 +11,5 @@ interface LocalRepository {
 
     fun addPersonToFavorite(example: PersonEntity): Observable<Resource<Long>>
 
-    fun deletePersonFromFavorite(id: Long): Observable<Resource<Unit>>
+    fun deletePersonFromFavorite(id: Int): Observable<Resource<Unit>>
 }

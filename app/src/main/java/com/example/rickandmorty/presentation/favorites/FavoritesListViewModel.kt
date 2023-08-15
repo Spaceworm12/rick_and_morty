@@ -6,25 +6,33 @@ import androidx.lifecycle.ViewModel
 import com.example.rickandmorty.application.App
 import com.example.rickandmorty.data.repository.LocalRepository
 import com.example.rickandmorty.data.repository.LocalRepositoryImplement
-import com.example.rickandmorty.presentation.model.LocalMapper
-import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 
 
-class InFavoritesListViewModel(
+class FavoritesListViewModel(
     private val repo: LocalRepository = LocalRepositoryImplement(App.dao(),App.getDb())
 ): ViewModel() {
     private val disposables = CompositeDisposable()
-    private val _viewState = MutableLiveData(InFavoritesListViewState())
-    val viewStateObs: LiveData<InFavoritesListViewState> get() = _viewState
-    private var viewState: InFavoritesListViewState
+    private val _viewState = MutableLiveData(FavoritesListViewState())
+    val viewStateObs: LiveData<FavoritesListViewState> get() = _viewState
+    private var viewState: FavoritesListViewState
         get() = _viewState.value!!
         set(value) {
             _viewState.value = value
         }
+    fun submitUIEvent(event: FavoritesListEvents) {
+        handleUIEvent(event)
+    }
+
+    private fun handleUIEvent(event: FavoritesListEvents) {
+        when (event) {
+            is FavoritesListEvents.GetFavoritePersons -> loadLocalPersons()
+            is FavoritesListEvents.DeleteFromFavorites -> {deleteFromFavorites(event.id)}
+        }
+    }
 
     init {
         loadLocalPersons()
@@ -42,6 +50,19 @@ class InFavoritesListViewModel(
                     }
 
                     is Resource.Error -> viewState = viewState.copy(isLoading = true)
+                }
+            }
+            .addTo(disposables)
+    }
+    private fun deleteFromFavorites(id: Int) {
+        repo.deletePersonFromFavorite(id)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { resource ->
+                when (resource) {
+                    is Resource.Loading -> viewState = viewState.copy(isLoading = true)
+                    is Resource.Data -> {viewState = viewState.copy(isLoading = false)
+                    FavoritesListEvents.GetFavoritePersons}
+                    is Resource.Error -> viewState=viewState.copy(isLoading = false, errorText = "error")
                 }
             }
             .addTo(disposables)

@@ -19,6 +19,6 @@ interface Dao {
     fun create(example: PersonEntity): Single<Long>
 
     @Query("DELETE FROM example_table WHERE id = :id")
-    fun deleteExample(id: Long): Completable
+    fun deleteExample(id: Int): Completable
 
 }

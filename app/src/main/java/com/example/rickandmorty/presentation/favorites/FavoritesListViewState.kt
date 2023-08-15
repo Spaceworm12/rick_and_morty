@@ -1,10 +1,9 @@
 package com.example.rickandmorty.presentation.favorites
 
-import androidx.lifecycle.MutableLiveData
 import com.example.rickandmorty.presentation.model.modelperson.Person
 
 
-data class InFavoritesListViewState(
+data class FavoritesListViewState(
     val persons:List<Person> = emptyList(),
     val errorText:String = "",
     val person:Person?=null,

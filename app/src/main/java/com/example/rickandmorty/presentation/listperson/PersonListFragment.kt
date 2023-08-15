@@ -50,7 +50,7 @@ import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlo
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.detailperson.DetailPersonFragment
-import com.example.rickandmorty.presentation.favorites.InFavoritesListFragment
+import com.example.rickandmorty.presentation.favorites.FavoritesListFragment
 import com.example.rickandmorty.presentation.model.modelperson.Person
 
 
@@ -86,9 +86,9 @@ class PersonListFragment : ComposeFragment() {
                 elevation = AppTheme.dimens.halfContentMargin,
                 onBackClick = { goBack() },
                 actions = {
-                    IconButton(onClick = {goToFavorites()}) {
+                    IconButton(onClick = { goToFavorites() }) {
                         Icon(
-                            Icons.Filled.Grade, contentDescription = "",Modifier.size(35.dp)
+                            Icons.Filled.Grade, contentDescription = "", Modifier.size(35.dp)
                         )
                     }
                 }
@@ -176,7 +176,7 @@ class PersonListFragment : ComposeFragment() {
                             bottom = AppTheme.dimens.halfContentMargin,
                             top = AppTheme.dimens.halfContentMargin
                         ),
-                    text = person.name?:"",
+                    text = person.name ?: "",
                     style = AppTheme.typography.body1,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -193,18 +193,25 @@ class PersonListFragment : ComposeFragment() {
                     .size(fabSize)
                     .padding(AppTheme.dimens.sideMargin),
                 onClick = {
-                }
-            ) {
-                if(person.inFavorites)
-                Icon(
-                    imageVector = Icons.Filled.Favorite,
-                    contentDescription = null,
-                    tint = AppTheme.colors.background
-                )else{
+                    if (person.inFavorites) {
+                        viewModel.submitUIEvent(PersonListEvents.DeleteFromFavorites(person.id))
+                    } else {
+                        viewModel.submitUIEvent(PersonListEvents.AddToFavorite(person))
+                    }
+                }) {
+                if (person.inFavorites) {
                     Icon(
                         imageVector = Icons.Filled.FavoriteBorder,
                         contentDescription = null,
-                        tint = AppTheme.colors.background)
+                        tint = AppTheme.colors.background
+                    )
+                }
+                if (!person.inFavorites) {
+                    Icon(
+                        imageVector = Icons.Filled.Favorite,
+                        contentDescription = null,
+                        tint = AppTheme.colors.background
+                    )
                 }
             }
         }
@@ -213,6 +220,7 @@ class PersonListFragment : ComposeFragment() {
 
     private fun goBack() = requireActivity().supportFragmentManager.beginTransaction()
         .replace(R.id.fragment_container, CategoryListFragment()).commit()
+
     private fun goToPerson(id: Int) {
         requireActivity()
             .supportFragmentManager
@@ -221,11 +229,12 @@ class PersonListFragment : ComposeFragment() {
             .addToBackStack("")
             .commit()
     }
+
     private fun goToFavorites() {
         requireActivity()
             .supportFragmentManager
             .beginTransaction()
-            .add(R.id.fragment_container, InFavoritesListFragment())
+            .add(R.id.fragment_container, FavoritesListFragment())
             .addToBackStack("")
             .commit()
     }
@@ -240,22 +249,46 @@ class PersonListFragment : ComposeFragment() {
                 Person(
                     "1",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg","asd","asd","asd","asd",1,false
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
+                    "asd",
+                    "asd",
+                    "asd",
+                    "asd",
+                    1,
+                    false
                 ),
                 Person(
                     "1",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg","asd","asd","asd","asd",1,false
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
+                    "asd",
+                    "asd",
+                    "asd",
+                    "asd",
+                    1,
+                    false
                 ),
                 Person(
                     "1",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg","asd","asd","asd","asd",1,false
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
+                    "asd",
+                    "asd",
+                    "asd",
+                    "asd",
+                    1,
+                    false
                 ),
                 Person(
                     "1",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg","asd","asd","asd","asd",1,false
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
+                    "asd",
+                    "asd",
+                    "asd",
+                    "asd",
+                    1,
+                    false
                 )
             )
 
@@ -265,7 +298,7 @@ class PersonListFragment : ComposeFragment() {
                 exit = false
             )
         }
-}
+    }
 }
 
 
