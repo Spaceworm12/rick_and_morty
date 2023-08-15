@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.rickandmorty.application.App
 import com.example.rickandmorty.data.repository.LocalRepository
 import com.example.rickandmorty.data.repository.LocalRepositoryImplement
-import com.example.rickandmorty.presentation.model.Mapper
+import com.example.rickandmorty.presentation.model.LocalMapper
 import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,7 +15,7 @@ import io.reactivex.rxkotlin.addTo
 
 
 class InFavoritesListViewModel(
-    private val repo: LocalRepository = LocalRepositoryImplement(App.getExampleDao())
+    private val repo: LocalRepository = LocalRepositoryImplement(App.dao(),App.getDb())
 ): ViewModel() {
     private val disposables = CompositeDisposable()
     val persons = MutableLiveData<List<Person>>(emptyList())
@@ -32,7 +32,7 @@ class InFavoritesListViewModel(
         loadLocalPersons()
     }
     private fun savePersonToListFavorites(id: Long) {
-        repo.addPersonToFavorite(Mapper.transformToData(person.value!!.copy(id=id)))
+        repo.addPersonToFavorite(LocalMapper.transformToData(person.value!!.copy(id=id)))
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 when (result) {

@@ -4,8 +4,8 @@ import android.app.Application
 import android.content.SharedPreferences
 import androidx.room.Room
 import androidx.room.RoomMasterTable
-import com.example.rickandmorty.data.db.ExampleDao
-import com.example.rickandmorty.data.db.ExampleDataBase
+import com.example.rickandmorty.data.db.Dao
+import com.example.rickandmorty.data.db.Db
 import com.example.rickandmorty.data.network.networkrepo.RickAndMortyApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -26,15 +26,15 @@ class App : Application() {
     companion object {
 
         private var appInstance: App? = null
-        private var db: ExampleDataBase? = null
+        private var db: Db? = null
         private var sharedPreferences: SharedPreferences? = null
         private var api: RickAndMortyApi? = null
 
-        fun getExampleDao(): ExampleDao {
+        fun dao(): Dao {
             checkDb()
             return db!!.exampleDao()
         }
-        fun getDb(): ExampleDataBase {
+        fun getDb(): Db {
             checkDb()
             return db!!
         }
@@ -43,7 +43,7 @@ class App : Application() {
             if (db == null) {
                 val builder = Room.databaseBuilder(
                     appInstance!!.applicationContext,
-                    ExampleDataBase::class.java,
+                    Db::class.java,
                     RoomMasterTable.TABLE_NAME
                 )
                 db = builder

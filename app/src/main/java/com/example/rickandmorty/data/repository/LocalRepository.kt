@@ -1,14 +1,14 @@
 package com.example.rickandmorty.data.repository
 
 import io.reactivex.Observable
-import com.example.rickandmorty.data.db.entity.ExampleEntity
+import com.example.rickandmorty.data.db.entity.PersonEntity
 import com.example.rickandmorty.util.Resource
 
 
 interface LocalRepository {
-    fun getFavoritePersons(): Observable<Resource<List<ExampleEntity>>>
+    fun getFavoritePersons(): Observable<Resource<List<PersonEntity>>>
 
-    fun addPersonToFavorite(example: ExampleEntity): Observable<Resource<Int>>
+    fun addPersonToFavorite(example: PersonEntity): Observable<Resource<Long>>
 
-    fun deletePersonFromFavorite(id: Int): Observable<Resource<Unit>>
+    fun deletePersonFromFavorite(id: Long): Observable<Resource<Unit>>
 }

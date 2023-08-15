@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 private const val TABLE_NAME = "example_table"
 
 @Entity(tableName = TABLE_NAME)
-data class ExampleEntity(
+data class PersonEntity(
     @PrimaryKey(autoGenerate = true)
     val name: String?="",
     val url: String?="",
