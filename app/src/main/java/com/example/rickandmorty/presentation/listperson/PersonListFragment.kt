@@ -24,6 +24,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Grade
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
@@ -88,7 +89,7 @@ class PersonListFragment : ComposeFragment() {
                 actions = {
                     IconButton(onClick = {goToFavorites()}) {
                         Icon(
-                            Icons.Filled.Favorite, contentDescription = ""
+                            Icons.Filled.Grade, contentDescription = ""
                         )
                     }
                 }
