@@ -39,7 +39,7 @@ class InFavoritesListViewModel(
                     Resource.Loading -> viewState.isLoading = true
 
                     is Resource.Data -> {
-                        persons.postValue((resource.data ?: emptyList()) as List<Person>?)
+                        persons.postValue((resource.data ?: emptyList()))
                         viewState.isLoading = false
                     }
 
