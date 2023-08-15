@@ -5,13 +5,15 @@ import io.reactivex.schedulers.Schedulers
 import com.example.rickandmorty.data.db.Dao
 import com.example.rickandmorty.data.db.Db
 import com.example.rickandmorty.data.db.entity.PersonEntity
+import com.example.rickandmorty.presentation.model.LocalMapper
+import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.util.Resource
 
 
 class LocalRepositoryImplement(private val dao: Dao, private val db: Db) : LocalRepository {
-    override fun getFavoritePersons(): Observable<Resource<List<PersonEntity>>> {
+    override fun getFavoritePersons(): Observable<Resource<List<Person>>> {
         return dao.getAll()
-            .map<Resource<List<PersonEntity>>> { Resource.Data(it) }
+            .map<Resource<List<Person>>> { Resource.Data(LocalMapper.transformToPresentation(it)) }
             .onErrorReturn { Resource.Error(it) }
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())
