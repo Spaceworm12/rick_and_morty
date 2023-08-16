@@ -1,6 +1,7 @@
 package com.example.rickandmorty.presentation.favorites
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -48,6 +49,7 @@ import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlo
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.detailperson.DetailPersonFragment
+import com.example.rickandmorty.presentation.favoritesdetail.FavoritesDetailPersonFragment
 import com.example.rickandmorty.presentation.listperson.PersonListFragment
 import com.example.rickandmorty.presentation.model.modelperson.Person
 
@@ -185,6 +187,7 @@ class FavoritesListFragment : ComposeFragment() {
                     .padding(AppTheme.dimens.sideMargin),
                 onClick = { !person.inFavorites
                     viewModel.submitUIEvent(FavoritesListEvents.DeleteFromFavorites(person.id))
+                    Toast.makeText(requireContext(),"Добавлен в избранное",Toast.LENGTH_SHORT).show()
                 }
             ) {
                 if(person.inFavorites)
@@ -209,7 +212,7 @@ class FavoritesListFragment : ComposeFragment() {
         requireActivity()
             .supportFragmentManager
             .beginTransaction()
-            .add(R.id.fragment_container, DetailPersonFragment.newInstance(id))
+            .add(R.id.fragment_container, FavoritesDetailPersonFragment.newInstance(id))
             .addToBackStack("")
             .commit()
     }

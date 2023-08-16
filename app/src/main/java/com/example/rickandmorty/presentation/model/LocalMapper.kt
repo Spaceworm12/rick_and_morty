@@ -9,7 +9,8 @@ object LocalMapper {
 
     fun transformToPresentation(model: PersonEntity): Person {
         return Person(
-            name = model.name!!, url = model.url!!, avatar = model.avatar!!, id = model.id, inFavorites = true
+            name = model.name!!, url = model.url!!, avatar = model.avatar!!, id = model.id, inFavorites = model.inFavorites,
+            species = model.species, type =  model.type, gender =  model.gender, status =  model.status
         )
     }
 
