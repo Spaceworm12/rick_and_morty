@@ -19,10 +19,9 @@ class LocalRepositoryImplement(private val dao: Dao, private val db: Db) : Local
             .subscribeOn(Schedulers.io())
     }
 
-    override fun getFavoritePersonInfo(example: PersonEntity): Observable<Resource<Long>> {
-        return dao.create(example)
-            .toObservable()
-            .map<Resource<Long>> { Resource.Data(it) }
+    override fun getFavoritePersonInfo(id: Int): Observable<Resource<Person>> {
+        return dao.getInfo(id)
+            .map<Resource<Person>> { Resource.Data(LocalMapper.transformToPresentation(it)) }
             .onErrorReturn { Resource.Error(it) }
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())

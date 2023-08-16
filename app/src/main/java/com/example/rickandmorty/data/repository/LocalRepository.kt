@@ -8,7 +8,7 @@ import com.example.rickandmorty.util.Resource
 
 interface LocalRepository {
     fun getFavoritePersons(): Observable<Resource<List<Person>>>
-    fun getFavoritePersonInfo(example: PersonEntity): Observable<Resource<Long>>
+    fun getFavoritePersonInfo(id: Int): Observable<Resource<Person>>
 
     fun addPersonToFavorite(example: PersonEntity): Observable<Resource<Long>>
 

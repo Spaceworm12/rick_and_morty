@@ -7,7 +7,7 @@ import com.example.rickandmorty.presentation.model.modelperson.PersonDetail
 
 object LocalMapper {
 
-    private fun transformToPresentation(model: PersonEntity): Person {
+    fun transformToPresentation(model: PersonEntity): Person {
         return Person(
             name = model.name!!, url = model.url!!, avatar = model.avatar!!, id = model.id, inFavorites = true
         )
