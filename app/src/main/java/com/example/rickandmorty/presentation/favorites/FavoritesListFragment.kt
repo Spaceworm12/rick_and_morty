@@ -83,13 +83,6 @@ class FavoritesListFragment : ComposeFragment() {
                 title = stringResource(id = R.string.rik_wiki),
                 elevation = AppTheme.dimens.halfContentMargin,
                 onBackClick = { goBack() },
-                actions = {
-                    IconButton(onClick = {}) {
-                        Icon(
-                            Icons.Filled.Favorite, contentDescription = ""
-                        )
-                    }
-                }
             )
             LazyVerticalGrid(
                 columns = GridCells.Fixed(count = 1),
