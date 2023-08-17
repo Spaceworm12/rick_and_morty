@@ -47,6 +47,7 @@ import androidx.lifecycle.ViewModelProvider
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.rickandmorty.R
+import com.example.rickandmorty.presentation.category.CategoryListFragment
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
@@ -55,6 +56,7 @@ import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlo
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.detailperson.DetailPersonFragment
+import com.example.rickandmorty.presentation.favorites.FavoritesListFragment
 import com.example.rickandmorty.presentation.listperson.PersonListFragment
 import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.presentation.model.modelperson.PersonDetail
@@ -76,7 +78,6 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
     override fun GetContent() {
         var currentId = arguments?.getInt(KEY)
         val state = viewModel.viewStateObs.observeAsState().value ?: return
-        viewModel.submitUIEvent(FavoritesDetailPersonEvent.ShowPerson(currentId!!))
         RickAndMortyMainTheme {
             DetailPersonListScreen(state)
             if (state.isLoading) {
@@ -91,6 +92,9 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
     @Composable
     private fun DetailPersonListScreen(state: FavoritesDetailPersonViewState) {
         var currentId = arguments?.getInt(KEY)
+        if(currentId!=null) {
+            viewModel.submitUIEvent(FavoritesDetailPersonEvent.ShowPerson(currentId!!))
+        }else{goToMainScreen()}
         if (state.isLoading) {
             LoaderBlock()
         }
@@ -370,45 +374,14 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                         }
                     }
                 }
-                if (state.person?.id != 1) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter
-                    ) {
-                        Row {
-                            PrimaryButton(
-                                text = stringResource(id = R.string.go_back),
-                                isEnabled = true,
-                                onClick = {
-                                    currentId = currentId!! - 1
-                                    goNextPerson(currentId!!)
-                                })
-                            Spacer(Modifier.weight(1f, true))
-                            PrimaryButton(text = stringResource(id = R.string.go_next),
-                                isEnabled = true,
-                                onClick = {
-                                    currentId = currentId!! + 1
-                                    goNextPerson(currentId!!)
-                                })
-                        }
-                    }
-                } else {
-                    Box(
-                        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd
-                    ) {
-                        PrimaryButton(text = stringResource(id = R.string.go_next),
-                            isEnabled = true,
-                            onClick = {
-                                currentId = currentId!! + 1
-                                goNextPerson(currentId!!)
-                            })
-                    }
-                }
             }
         }
     }
 
     private fun goBack() = requireActivity().supportFragmentManager.beginTransaction()
         .replace(R.id.fragment_container, FavoritesDetailPersonFragment()).commit()
+    private fun goToMainScreen() = requireActivity().supportFragmentManager.beginTransaction()
+        .replace(R.id.fragment_container, FavoritesListFragment()).commit()
 
     private fun goNextPerson(id: Int) =
         requireActivity().supportFragmentManager.beginTransaction()

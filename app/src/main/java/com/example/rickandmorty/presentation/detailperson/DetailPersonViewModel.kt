@@ -45,9 +45,9 @@ class DetailPersonViewModel(
                 .subscribe { resource ->
                     when (resource) {
                         Resource.Loading -> viewState = viewState.copy(isLoading = true)
-                        is Resource.Data -> {viewState=
-                            viewState.copy(person =resource.data, isLoading = false, exit = false)
+                        is Resource.Data -> {
                             viewState.isLoading = false
+                            viewState= viewState.copy(person =resource.data, isLoading = false, exit = false)
                         }
 
                         is Resource.Error -> viewState = viewState.copy(isLoading = false)

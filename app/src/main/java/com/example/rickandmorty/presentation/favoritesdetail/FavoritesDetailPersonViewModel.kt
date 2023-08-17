@@ -45,10 +45,10 @@ class FavoritesDetailPersonViewModel(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { resource ->
                     when (resource) {
-                        is Resource.Loading -> viewState = viewState.copy(isLoading = true)
-                        is Resource.Data -> {viewState=
-                            viewState.copy(person =resource.data, isLoading = false, exit = false)
+                        is Resource.Loading -> viewState = viewState.copy(isLoading = false)
+                        is Resource.Data -> {
                             viewState.isLoading = false
+                            viewState= viewState.copy(person =resource.data, isLoading = false, exit = false)
                         }
 
                         is Resource.Error -> viewState = viewState.copy(isLoading = false)
@@ -58,7 +58,7 @@ class FavoritesDetailPersonViewModel(
             .addTo(disposables)
     }
     private fun savePersonToListFavorites(person: Person) {
-        repo.addPersonToFavorite(LocalMapper.transformToData(viewState.person))
+        repo.addPersonToFavorite(LocalMapper.transformToData(viewState.person!!))
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 viewState = when (result) {

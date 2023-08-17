@@ -52,7 +52,7 @@ android {
 }
 
 dependencies {
-
+    implementation ("me.saket.swipe:swipe:1.0.0")
     implementation ("androidx.room:room-common:2.5.2")
     implementation("com.google.android.engage:engage-core:1.2.0")
 
