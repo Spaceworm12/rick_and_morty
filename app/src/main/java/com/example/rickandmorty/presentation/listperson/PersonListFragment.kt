@@ -197,8 +197,12 @@ class PersonListFragment : ComposeFragment() {
                     .padding(AppTheme.dimens.sideMargin),
                 backgroundColor = Color.Red,
                 onClick = {
-                        viewModel.submitUIEvent(PersonListEvents.AddToFavorite(person))
-                        Toast.makeText(requireContext(),person.name +" Добавлен в избранное", Toast.LENGTH_SHORT).show()
+                        if(!person.inFavorites){viewModel.submitUIEvent(PersonListEvents.AddToFavorite(person))
+                            person.inFavorites=true
+                            Toast.makeText(requireContext(),person.name +" Удален из избранного", Toast.LENGTH_SHORT).show()}
+                    else{viewModel.submitUIEvent(PersonListEvents.DeleteFromFavorites(person.id))
+                            person.inFavorites=false
+                            Toast.makeText(requireContext(),person.name +" Добавлен в избранное", Toast.LENGTH_SHORT).show()}
                         viewModel.submitUIEvent(PersonListEvents.Refresh)
                 }) {
                 Box(contentAlignment = Alignment.Center) {
