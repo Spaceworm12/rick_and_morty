@@ -1,6 +1,7 @@
 package com.example.rickandmorty.presentation.listperson
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -50,6 +51,7 @@ import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlo
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.detailperson.DetailPersonFragment
+import com.example.rickandmorty.presentation.favorites.FavoritesListEvents
 import com.example.rickandmorty.presentation.favorites.FavoritesListFragment
 import com.example.rickandmorty.presentation.model.modelperson.Person
 
@@ -193,11 +195,8 @@ class PersonListFragment : ComposeFragment() {
                     .size(fabSize)
                     .padding(AppTheme.dimens.sideMargin),
                 onClick = {
-                    if (person.inFavorites) {
-                        viewModel.submitUIEvent(PersonListEvents.DeleteFromFavorites(person.id))
-                    } else {
                         viewModel.submitUIEvent(PersonListEvents.AddToFavorite(person))
-                    }
+                        Toast.makeText(requireContext(),person.name +" Добавлен в избранное", Toast.LENGTH_SHORT).show()
                 }) {
                 if (person.inFavorites) {
                     Icon(

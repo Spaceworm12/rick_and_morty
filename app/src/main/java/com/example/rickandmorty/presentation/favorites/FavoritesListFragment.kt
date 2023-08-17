@@ -187,7 +187,7 @@ class FavoritesListFragment : ComposeFragment() {
                     .padding(AppTheme.dimens.sideMargin),
                 onClick = { !person.inFavorites
                     viewModel.submitUIEvent(FavoritesListEvents.DeleteFromFavorites(person.id))
-                    Toast.makeText(requireContext(),"Добавлен в избранное",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),person.name +" Удален из избранного",Toast.LENGTH_SHORT).show()
                 }
             ) {
                 if(person.inFavorites)

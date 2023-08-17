@@ -1,6 +1,7 @@
 package com.example.rickandmorty.presentation.favoritesdetail
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -99,9 +100,11 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                 onBackClick = { goToMainScreen() },
                 actions = {
                     IconButton(onClick = {viewModel.submitUIEvent(
-                        FavoritesDetailPersonEvent.AddToFavorite(
-                        state.person!!
-                    ))}) {
+                        FavoritesDetailPersonEvent.DeletePersonFromFavorite(
+                        state.person?.id!!
+                    ))
+                        Toast.makeText(requireContext(),state.person.name + " Удален из избранного", Toast.LENGTH_SHORT).show()
+                    }) {
                         if (state.person?.inFavorites == true) {
                             Icon(
                                 Icons.Filled.Favorite, contentDescription = ""

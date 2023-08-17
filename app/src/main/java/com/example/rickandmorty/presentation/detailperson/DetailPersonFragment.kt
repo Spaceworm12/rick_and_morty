@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -130,11 +131,8 @@ class DetailPersonFragment : ComposeFragment() {
                 onBackClick = { goBack() },
                 actions = {
                     IconButton(onClick = {
-                        viewModel.submitUIEvent(
-                            DetailPersonEvent.AddToFavorite(
-                                state.person!!
-                            )
-                        )
+                        viewModel.submitUIEvent(DetailPersonEvent.AddToFavorite(state.person!!))
+                        Toast.makeText(requireContext(),state.person.name + " Добавлен в избранное", Toast.LENGTH_SHORT).show()
                     }) {
                         if (state.person?.inFavorites == true) {
                             Icon(
