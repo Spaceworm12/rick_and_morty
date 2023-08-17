@@ -9,7 +9,7 @@ class PersonMapper(private val localRepo: LocalRepository) {
 
     private val ids = localRepo.getPersonsIds()
 
-    private fun transformPersonForPresentation(model: Person): PersonPresentation {
+     fun transformPersonForPresentation(model: Person): PersonPresentation {
 
         val number = if (model.url.endsWith("/")) {
             model.url.dropLast(1).takeLastWhile { it.isDigit() }

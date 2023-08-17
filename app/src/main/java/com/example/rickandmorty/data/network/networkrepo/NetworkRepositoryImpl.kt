@@ -4,7 +4,6 @@ package com.example.rickandmorty.data.network.networkrepo
 import com.example.rickandmorty.application.App
 import com.example.rickandmorty.data.repository.LocalRepositoryImplement
 import com.example.rickandmorty.presentation.model.modelperson.Person
-import com.example.rickandmorty.presentation.model.modelperson.PersonDetailMapper
 import com.example.rickandmorty.presentation.model.modelperson.PersonMapper
 import com.example.rickandmorty.util.Resource
 import io.reactivex.Observable
@@ -15,7 +14,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepository {
 
     private val personMapper = PersonMapper(LocalRepositoryImplement(App.dao(), App.getDb()))
-    private val personDetailMapper = PersonDetailMapper()
     val interceptor = HttpLoggingInterceptor()
 
 
@@ -33,7 +31,7 @@ class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepositor
     override fun getPersonDetail(id: Int): Observable<Resource<Person>> {
         return api.getPersonInfo(id)
             .map<Resource<Person>> {
-                Resource.Data(personDetailMapper.transformPersonDetailForPresentation(it))
+                Resource.Data(personMapper.transformPersonForPresentation(it))
             }
             .onErrorReturn { Resource.Error(it) }
             .startWith(Resource.Loading)
