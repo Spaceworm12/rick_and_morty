@@ -37,6 +37,7 @@ class PersonListViewModel(
         when (event) {
             is PersonListEvents.AddToFavorite -> savePersonToListFavorites(event.person)
             is PersonListEvents.DeleteFromFavorites -> deleteFromFavorites(event.id)
+            is PersonListEvents.CheckStatus -> checkStatusPerson(event.person)
         }
     }
 
@@ -53,6 +54,22 @@ class PersonListViewModel(
                     is Resource.Data -> {
                         viewState = viewState.copy(isLoading = false)
                         viewState = viewState.copy(persons = (resource.data ?: emptyList()))
+                    }
+
+                    is Resource.Error -> viewState = viewState.copy(isLoading = false)
+                }
+            }
+            .addTo(disposables)
+    }
+    private fun checkStatusPerson(person:Person) {
+        repo.getStatusPerson(person.id)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { resource ->
+                when (resource) {
+                    Resource.Loading -> viewState = viewState.copy(isLoading = true)
+                    is Resource.Data -> {
+                        viewState = viewState.copy(isLoading = false)
+                        person.inFavorites=true
                     }
 
                     is Resource.Error -> viewState = viewState.copy(isLoading = false)

@@ -16,6 +16,8 @@ interface Dao {
     fun getAll(): Observable<List<PersonEntity>>
     @Query("SELECT * FROM example_table WHERE id = :id")
     fun getInfo(id: Int): Observable<PersonEntity>
+    @Query("SELECT id FROM example_table WHERE id = :id")
+    fun getStatusInfo(id: Int): Observable<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun create(example: PersonEntity): Single<Long>

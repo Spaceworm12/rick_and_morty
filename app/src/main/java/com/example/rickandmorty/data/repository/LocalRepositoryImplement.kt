@@ -26,9 +26,9 @@ class LocalRepositoryImplement(private val dao: Dao, private val db: Db) : Local
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())
     }
-    override fun checkPersonInDb(id: Int): Observable<Resource<Person>> {
-        return dao.getInfo(id)
-            .map<Resource<Person>> { Resource.Data(LocalMapper.transformToPresentation(it))}
+    override fun getStatusPerson(id: Int): Observable<Resource<Long>> {
+        return dao.getStatusInfo(id)
+            .map<Resource<Long>> { Resource.Data(it)}
             .onErrorReturn { Resource.Error(it) }
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())

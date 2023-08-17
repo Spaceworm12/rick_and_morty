@@ -110,7 +110,7 @@ class PersonListFragment : ComposeFragment() {
     @OptIn(ExperimentalCoilApi::class)
     @Composable
     private fun Person(person: Person) {
-
+    viewModel.submitUIEvent(PersonListEvents.CheckStatus(person))
         Column(
             modifier = Modifier
                 .padding(AppTheme.dimens.contentMargin)
