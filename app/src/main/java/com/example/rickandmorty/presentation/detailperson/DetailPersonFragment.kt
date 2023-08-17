@@ -451,6 +451,7 @@ class DetailPersonFragment : ComposeFragment() {
             .replace(R.id.fragment_container, DetailPersonFragment.newInstance(id))
             .addToBackStack("")
             .commit()
+    private fun checkingDb(id:Int){}
 
     @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable

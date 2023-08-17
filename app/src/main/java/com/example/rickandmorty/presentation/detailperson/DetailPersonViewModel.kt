@@ -68,6 +68,18 @@ class DetailPersonViewModel(
             }
             .addTo(disposables)
     }
+    private fun checkPersonDb(person: PersonDetail) {
+        repo.checkPersonInDb(LocalMapper.transformToDataDetail(viewState.person.id!!))
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                viewState = when (result) {
+                    is Resource.Loading -> viewState.copy(isLoading = true)
+                    is Resource.Data -> viewState.copy(isLoading = false)
+                    is Resource.Error -> viewState.copy(errorText=(result.error.message ?: ""))
+                }
+            }
+            .addTo(disposables)
+    }
 
     override fun onCleared() {
         disposables.clear()
