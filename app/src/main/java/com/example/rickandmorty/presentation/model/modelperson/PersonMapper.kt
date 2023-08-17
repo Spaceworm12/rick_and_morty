@@ -1,10 +1,13 @@
 package com.example.rickandmorty.presentation.model.modelperson
 
 import com.example.rickandmorty.data.network.person.Person
+import com.example.rickandmorty.data.repository.LocalRepository
 import com.example.rickandmorty.presentation.model.modelperson.Person as PersonPresentation
 
 
-class PersonMapper {
+class PersonMapper(private val localRepo: LocalRepository) {
+
+    private val ids = localRepo.getPersonsIds()
 
     private fun transformPersonForPresentation(model: Person): PersonPresentation {
 
@@ -16,6 +19,8 @@ class PersonMapper {
         val url = "https://rickandmortyapi.com/api/character/${number}"
         val avatar = "https://rickandmortyapi.com/api/character/avatar/${number}.jpeg"
 
+        val inFavorites = ids.any { it == model.id }
+
         return PersonPresentation(
             id = model.id!!,
             name = model.name,
@@ -23,7 +28,7 @@ class PersonMapper {
             type = model.type,
             avatar = avatar,
             gender = model.gender,
-            inFavorites = true,
+            inFavorites = inFavorites,
             status = model.status,
             url = url
         )

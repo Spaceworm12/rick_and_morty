@@ -112,6 +112,7 @@ class DetailPersonFragment : ComposeFragment() {
                 isUndo = true,
                 onSwipe = {
                     if(currentId!=1) {
+                        state.isLoading=true
                         currentId = currentId!! - 1
                         goNextPerson(currentId!!)
                     }else{}
@@ -122,6 +123,7 @@ class DetailPersonFragment : ComposeFragment() {
                 background = AppTheme.colors.background,
                 isUndo = true,
                 onSwipe = {
+                    state.isLoading=true
                     currentId = currentId!! + 1
                     goNextPerson(currentId!!)
                 }
@@ -414,6 +416,7 @@ class DetailPersonFragment : ComposeFragment() {
                                     text = stringResource(id = R.string.go_back),
                                     isEnabled = true,
                                     onClick = {
+                                        state.isLoading=true
                                         currentId = currentId!! - 1
                                         goNextPerson(currentId!!)
                                     })
@@ -421,6 +424,7 @@ class DetailPersonFragment : ComposeFragment() {
                                 PrimaryButton(text = stringResource(id = R.string.go_next),
                                     isEnabled = true,
                                     onClick = {
+                                        state.isLoading=true
                                         currentId = currentId!! + 1
                                         goNextPerson(currentId!!)
                                     })

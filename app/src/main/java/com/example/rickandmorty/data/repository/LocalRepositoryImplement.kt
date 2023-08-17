@@ -11,6 +11,10 @@ import com.example.rickandmorty.util.Resource
 
 
 class LocalRepositoryImplement(private val dao: Dao, private val db: Db) : LocalRepository {
+    override fun getPersonsIds(): List<Int> {
+        return dao.getAllNotObs().map { it.id  }
+    }
+
     override fun getFavoritePersons(): Observable<Resource<List<Person>>> {
         return dao.getAll()
             .map<Resource<List<Person>>> { Resource.Data(LocalMapper.transformToPresentation(it)) }
@@ -26,9 +30,9 @@ class LocalRepositoryImplement(private val dao: Dao, private val db: Db) : Local
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())
     }
-    override fun getStatusPerson(id: Int): Observable<Resource<Long>> {
-        return dao.getStatusInfo(id)
-            .map<Resource<Long>> { Resource.Data(it)}
+    override fun getStatusPerson(id: Int): Observable<Resource<Boolean>> {
+        return dao.exists(id)
+            .map<Resource<Boolean>> {Resource.Data(it)}
             .onErrorReturn { Resource.Error(it) }
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())

@@ -1,6 +1,8 @@
 package com.example.rickandmorty.data.network.networkrepo
 
 
+import com.example.rickandmorty.application.App
+import com.example.rickandmorty.data.repository.LocalRepositoryImplement
 import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.presentation.model.modelperson.PersonDetailMapper
 import com.example.rickandmorty.presentation.model.modelperson.PersonMapper
@@ -12,7 +14,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 
 class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepository {
 
-    private val personMapper = PersonMapper()
+    private val personMapper = PersonMapper(LocalRepositoryImplement(App.dao(), App.getDb()))
     private val personDetailMapper = PersonDetailMapper()
     val interceptor = HttpLoggingInterceptor()
 

@@ -68,7 +68,7 @@ class PersonListViewModel(
                 when (resource) {
                     Resource.Loading -> {}
                     is Resource.Data -> {
-                        person.inFavorites=true
+                        person.inFavorites=resource.data
                     }
                     is Resource.Error -> viewState = viewState.copy(isLoading = false)
                 }
