@@ -31,6 +31,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -188,29 +189,33 @@ class PersonListFragment : ComposeFragment() {
         }
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopEnd) {
 
-            val fabSize = 56.dp
+            val fabSize = 62.dp
 
             FloatingActionButton(
                 modifier = Modifier
                     .size(fabSize)
                     .padding(AppTheme.dimens.sideMargin),
+                backgroundColor = Color.Red,
                 onClick = {
                         viewModel.submitUIEvent(PersonListEvents.AddToFavorite(person))
                         Toast.makeText(requireContext(),person.name +" Добавлен в избранное", Toast.LENGTH_SHORT).show()
+                        viewModel.submitUIEvent(PersonListEvents.Refresh)
                 }) {
-                if (person.inFavorites) {
-                    Icon(
-                        imageVector = Icons.Filled.FavoriteBorder,
-                        contentDescription = null,
-                        tint = AppTheme.colors.background
-                    )
-                }
-                if (!person.inFavorites) {
-                    Icon(
-                        imageVector = Icons.Filled.Favorite,
-                        contentDescription = null,
-                        tint = AppTheme.colors.background
-                    )
+                Box(contentAlignment = Alignment.Center) {
+                    if (person.inFavorites) {
+                        Icon(
+                            imageVector = Icons.Filled.Favorite,
+                            contentDescription = null,
+                            tint = Color.Black
+                        )
+                    }
+                    if (!person.inFavorites) {
+                        Icon(
+                            imageVector = Icons.Filled.FavoriteBorder,
+                            contentDescription = null,
+                            tint = Color.Black
+                        )
+                    }
                 }
             }
         }
