@@ -39,8 +39,6 @@ class CategoryListFragment : ComposeFragment() {
             CategoryListScreen(
                 listOf(
                     stringResource(R.string.characters),
-                    stringResource(R.string.episodes),
-                    stringResource(R.string.locations)
                 )
             )
         }
@@ -107,17 +105,6 @@ class CategoryListFragment : ComposeFragment() {
                 text = category,
                 onClick = {
                     if (category == R.string.characters.toString()) {
-                        requireActivity()
-                            .supportFragmentManager
-                            .beginTransaction()
-                            .replace(
-                                R.id.fragment_container,
-                                PersonListFragment()
-                            )
-                            .addToBackStack("")
-                            .commit()
-                    }
-                    if (category == R.string.locations.toString()) {
                         requireActivity()
                             .supportFragmentManager
                             .beginTransaction()

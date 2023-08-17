@@ -66,12 +66,10 @@ class PersonListViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { resource ->
                 when (resource) {
-                    Resource.Loading -> viewState = viewState.copy(isLoading = true)
+                    Resource.Loading -> {}
                     is Resource.Data -> {
-                        viewState = viewState.copy(isLoading = false)
                         person.inFavorites=true
                     }
-
                     is Resource.Error -> viewState = viewState.copy(isLoading = false)
                 }
             }
