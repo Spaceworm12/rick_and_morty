@@ -84,7 +84,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                 LoaderBlock()
             }
             if (state.exit) {
-                goBack()
+                goToMainScreen()
             }
         }
     }
@@ -99,14 +99,14 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
             LoaderBlock()
         }
         if (state.exit) {
-            goBack()
+            goToMainScreen()
         }
 
         Column(modifier = Modifier.background(AppTheme.colors.background)) {
 
             Toolbar(
                 title = stringResource(id = R.string.about_person),
-                onBackClick = { goBack() },
+                onBackClick = { goToMainScreen() },
                 actions = {
                     IconButton(onClick = {viewModel.submitUIEvent(
                         FavoritesDetailPersonEvent.AddToFavorite(
@@ -378,16 +378,8 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
         }
     }
 
-    private fun goBack() = requireActivity().supportFragmentManager.beginTransaction()
-        .replace(R.id.fragment_container, FavoritesDetailPersonFragment()).commit()
     private fun goToMainScreen() = requireActivity().supportFragmentManager.beginTransaction()
         .replace(R.id.fragment_container, FavoritesListFragment()).commit()
-
-    private fun goNextPerson(id: Int) =
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container,newInstance(id))
-            .addToBackStack("")
-            .commit()
 
     @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
