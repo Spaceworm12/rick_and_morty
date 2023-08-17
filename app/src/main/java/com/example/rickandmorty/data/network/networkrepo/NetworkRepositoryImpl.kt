@@ -2,7 +2,6 @@ package com.example.rickandmorty.data.network.networkrepo
 
 
 import com.example.rickandmorty.presentation.model.modelperson.Person
-import com.example.rickandmorty.presentation.model.modelperson.PersonDetail
 import com.example.rickandmorty.presentation.model.modelperson.PersonDetailMapper
 import com.example.rickandmorty.presentation.model.modelperson.PersonMapper
 import com.example.rickandmorty.util.Resource
@@ -29,9 +28,9 @@ class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepositor
             .subscribeOn(Schedulers.io())
     }
 
-    override fun getPersonDetail(id: Int): Observable<Resource<PersonDetail>> {
+    override fun getPersonDetail(id: Int): Observable<Resource<Person>> {
         return api.getPersonInfo(id)
-            .map<Resource<PersonDetail>> {
+            .map<Resource<Person>> {
                 Resource.Data(personDetailMapper.transformPersonDetailForPresentation(it))
             }
             .onErrorReturn { Resource.Error(it) }

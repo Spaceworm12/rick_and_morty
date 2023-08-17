@@ -8,7 +8,7 @@ import com.example.rickandmorty.data.network.networkrepo.NetworkRepositoryImpl
 import com.example.rickandmorty.data.repository.LocalRepository
 import com.example.rickandmorty.data.repository.LocalRepositoryImplement
 import com.example.rickandmorty.presentation.model.LocalMapper
-import com.example.rickandmorty.presentation.model.modelperson.PersonDetail
+import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -44,7 +44,7 @@ class DetailPersonViewModel(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { resource ->
                     when (resource) {
-                        Resource.Loading -> viewState = viewState.copy(isLoading = true)
+                        Resource.Loading -> {}
                         is Resource.Data -> {
                             viewState.isLoading = false
                             viewState= viewState.copy(person =resource.data, isLoading = false, exit = false)
@@ -56,7 +56,7 @@ class DetailPersonViewModel(
                 }
             .addTo(disposables)
     }
-    private fun savePersonToListFavorites(person: PersonDetail) {
+    private fun savePersonToListFavorites(person: Person) {
         repo.addPersonToFavorite(LocalMapper.transformToDataDetail(viewState.person!!))
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
@@ -68,18 +68,18 @@ class DetailPersonViewModel(
             }
             .addTo(disposables)
     }
-    private fun checkPersonDb(person: PersonDetail) {
-        repo.checkPersonInDb(LocalMapper.transformToDataDetail(viewState.person.id!!))
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { result ->
-                viewState = when (result) {
-                    is Resource.Loading -> viewState.copy(isLoading = true)
-                    is Resource.Data -> viewState.copy(isLoading = false)
-                    is Resource.Error -> viewState.copy(errorText=(result.error.message ?: ""))
-                }
-            }
-            .addTo(disposables)
-    }
+//    private fun checkPersonDb(person: PersonDetail) {
+//        repo.checkPersonInDb(LocalMapper.transformToDataDetail(viewState.person.id!!))
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe { result ->
+//                viewState = when (result) {
+//                    is Resource.Loading -> viewState.copy(isLoading = true)
+//                    is Resource.Data -> viewState.copy(isLoading = false)
+//                    is Resource.Error -> viewState.copy(errorText=(result.error.message ?: ""))
+//                }
+//            }
+//            .addTo(disposables)
+//    }
 
     override fun onCleared() {
         disposables.clear()

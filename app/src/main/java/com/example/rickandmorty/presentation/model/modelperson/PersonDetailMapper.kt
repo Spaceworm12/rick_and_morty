@@ -1,7 +1,7 @@
 package com.example.rickandmorty.presentation.model.modelperson
 
 import com.example.rickandmorty.data.network.person.PersonDetail
-import com.example.rickandmorty.presentation.model.modelperson.PersonDetail as PersonDetailPresentation
+import com.example.rickandmorty.presentation.model.modelperson.Person as PersonDetailPresentation
 
 
 class PersonDetailMapper {

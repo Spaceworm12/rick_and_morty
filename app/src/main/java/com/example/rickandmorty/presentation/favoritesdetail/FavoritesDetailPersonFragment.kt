@@ -1,10 +1,6 @@
 package com.example.rickandmorty.presentation.favoritesdetail
 
 import android.content.res.Configuration
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,7 +8,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -47,19 +42,14 @@ import androidx.lifecycle.ViewModelProvider
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.rickandmorty.R
-import com.example.rickandmorty.presentation.category.CategoryListFragment
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
-import com.example.rickandmorty.presentation.composecomponents.buttons.PrimaryButton
 import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlock
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
-import com.example.rickandmorty.presentation.detailperson.DetailPersonFragment
 import com.example.rickandmorty.presentation.favorites.FavoritesListFragment
-import com.example.rickandmorty.presentation.listperson.PersonListFragment
 import com.example.rickandmorty.presentation.model.modelperson.Person
-import com.example.rickandmorty.presentation.model.modelperson.PersonDetail
 
 class FavoritesDetailPersonFragment : ComposeFragment() {
     private val viewModel: FavoritesDetailPersonViewModel by lazy {
@@ -386,7 +376,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
     private fun DetailPersonScreenPreview() {
         RickAndMortyMainTheme {
             val person =
-                PersonDetail(
+                Person(
                     "name",
                     "url",
                     "avatar",
@@ -398,7 +388,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                 )
             val state = FavoritesDetailPersonViewState(isLoading = false, exit = false, person = Person(id=999))
 
-            val person2 = PersonDetail(
+            val person2 = Person(
                 name = "-",
                 url = "-",
                 avatar = "-",

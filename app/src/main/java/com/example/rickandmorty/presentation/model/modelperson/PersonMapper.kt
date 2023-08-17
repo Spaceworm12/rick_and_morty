@@ -29,7 +29,7 @@ class PersonMapper {
         )
     }
 
-    fun transformPersonToPresentation(characters: List<Person>): List<PersonPresentation> {
+    fun transformPersonToPresentation(characters: List<Person>): List<com.example.rickandmorty.presentation.model.modelperson.Person> {
         return characters.map { transformPersonForPresentation(it) }
     }
 }

@@ -33,7 +33,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -56,7 +55,7 @@ import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlo
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.listperson.PersonListFragment
-import com.example.rickandmorty.presentation.model.modelperson.PersonDetail
+import com.example.rickandmorty.presentation.model.modelperson.Person
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
@@ -111,8 +110,10 @@ class DetailPersonFragment : ComposeFragment() {
                 background = AppTheme.colors.background,
                 isUndo = true,
                 onSwipe = {
-                    currentId = currentId!! - 1
-                    goNextPerson(currentId!!)
+                    if(currentId!=1) {
+                        currentId = currentId!! - 1
+                        goNextPerson(currentId!!)
+                    }else{}
                 }
             )
             val mForward = SwipeAction(
@@ -147,7 +148,9 @@ class DetailPersonFragment : ComposeFragment() {
                     }
                 },
             )
-            SwipeableActionsBox(startActions = listOf(mBack), endActions = listOf(mForward)) {
+            SwipeableActionsBox(
+                startActions = listOf(mBack),
+                endActions = listOf(mForward)) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -458,7 +461,7 @@ class DetailPersonFragment : ComposeFragment() {
     private fun DetailPersonScreenPreview() {
         RickAndMortyMainTheme {
             val person =
-                PersonDetail(
+                Person(
                     "name",
                     "url",
                     "avatar",
@@ -470,7 +473,7 @@ class DetailPersonFragment : ComposeFragment() {
                 )
             val state = DetailPersonViewState(isLoading = false, exit = false, person = null)
 
-            val person2 = PersonDetail(
+            val person2 = Person(
                 name = "-",
                 url = "-",
                 avatar = "-",

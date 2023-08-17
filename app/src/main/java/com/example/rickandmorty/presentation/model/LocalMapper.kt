@@ -3,7 +3,6 @@ package com.example.rickandmorty.presentation.model
 
 import com.example.rickandmorty.data.db.entity.PersonEntity
 import com.example.rickandmorty.presentation.model.modelperson.Person
-import com.example.rickandmorty.presentation.model.modelperson.PersonDetail
 
 object LocalMapper {
 
@@ -18,7 +17,7 @@ object LocalMapper {
         return task.map { transformToPresentation(it) }
     }
 
-    fun transformToDataDetail(model: PersonDetail): PersonEntity {
+    fun transformToDataDetail(model: Person): PersonEntity {
         return PersonEntity(
             id = model.id!!,
             name = model.name,
