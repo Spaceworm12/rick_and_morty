@@ -22,7 +22,6 @@ class App : Application() {
         super.onCreate()
         appInstance = this
     }
-
     companion object {
 
         private var appInstance: App? = null
@@ -34,6 +33,7 @@ class App : Application() {
             checkDb()
             return db!!.exampleDao()
         }
+
         fun getDb(): Db {
             checkDb()
             return db!!
@@ -51,7 +51,6 @@ class App : Application() {
                     .build()
             }
         }
-
         fun getSettings(): SharedPreferences {
             if (sharedPreferences == null) {
                 sharedPreferences =
@@ -59,10 +58,9 @@ class App : Application() {
             }
             return sharedPreferences!!
         }
-
         fun getRickAndMortyApi(): RickAndMortyApi {
             val interceptor = HttpLoggingInterceptor()
-            interceptor.level= HttpLoggingInterceptor.Level.BODY
+            interceptor.level = HttpLoggingInterceptor.Level.BODY
             val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
             return api
                 ?: Retrofit.Builder()

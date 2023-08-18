@@ -111,7 +111,7 @@ class PersonListFragment : ComposeFragment() {
     @OptIn(ExperimentalCoilApi::class)
     @Composable
     private fun Person(person: Person) {
-    viewModel.submitUIEvent(PersonListEvents.CheckStatus(person))
+        viewModel.submitUIEvent(PersonListEvents.CheckStatus(person))
         Column(
             modifier = Modifier
                 .padding(AppTheme.dimens.contentMargin)
@@ -189,7 +189,7 @@ class PersonListFragment : ComposeFragment() {
         }
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopEnd) {
 
-            val fabSize = 62.dp
+            val fabSize = 70.dp
 
             FloatingActionButton(
                 modifier = Modifier
@@ -199,22 +199,22 @@ class PersonListFragment : ComposeFragment() {
                 onClick = {
                         if(!person.inFavorites){viewModel.submitUIEvent(PersonListEvents.AddToFavorite(person))
                             person.inFavorites=true
-                            Toast.makeText(requireContext(),person.name +" Удален из избранного", Toast.LENGTH_SHORT).show()}
+                            Toast.makeText(requireContext(),person.name +" Добавлен в избранное", Toast.LENGTH_SHORT).show()}
                     else{viewModel.submitUIEvent(PersonListEvents.DeleteFromFavorites(person.id))
                             person.inFavorites=false
-                            Toast.makeText(requireContext(),person.name +" Добавлен в избранное", Toast.LENGTH_SHORT).show()}
-                        viewModel.submitUIEvent(PersonListEvents.Refresh)
+                            Toast.makeText(requireContext(),person.name +" Удален из избранного", Toast.LENGTH_SHORT).show()}
+                        viewModel.submitUIEvent(PersonListEvents.CheckStatus(person))
                 }) {
                 Box(contentAlignment = Alignment.Center) {
                     if (person.inFavorites) {
-                        Icon(
+                        Icon(modifier=Modifier.size(30.dp),
                             imageVector = Icons.Filled.Favorite,
                             contentDescription = null,
                             tint = Color.Black
                         )
                     }
                     if (!person.inFavorites) {
-                        Icon(
+                        Icon(modifier=Modifier.size(30.dp),
                             imageVector = Icons.Filled.FavoriteBorder,
                             contentDescription = null,
                             tint = Color.Black

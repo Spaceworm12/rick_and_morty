@@ -7,6 +7,7 @@ import com.example.rickandmorty.application.App
 import com.example.rickandmorty.data.network.networkrepo.NetworkRepositoryImpl
 import com.example.rickandmorty.data.repository.LocalRepository
 import com.example.rickandmorty.data.repository.LocalRepositoryImplement
+import com.example.rickandmorty.presentation.favorites.FavoritesListEvents
 import com.example.rickandmorty.presentation.model.LocalMapper
 import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.util.Resource
@@ -33,9 +34,10 @@ class DetailPersonViewModel(
 
     private fun handleUIEvent(event: DetailPersonEvent) {
         when (event) {
-            is DetailPersonEvent.AddToFavorite -> {savePersonToListFavorites(viewState.person!!)}
-            is DetailPersonEvent.ShowPerson -> {loadPersonInfo(event.id)
-            }
+            is DetailPersonEvent.AddToFavorite -> savePersonToListFavorites(viewState.person!!)
+            is DetailPersonEvent.ShowPerson -> loadPersonInfo(event.id)
+            is DetailPersonEvent.DeleteFromFavorites -> deleteFromFavorites(event.id)
+            is DetailPersonEvent.CheckStatus -> checkStatusPerson(event.person)
         }
     }
 
@@ -68,18 +70,37 @@ class DetailPersonViewModel(
             }
             .addTo(disposables)
     }
-//    private fun checkPersonDb(person: PersonDetail) {
-//        repo.checkPersonInDb(LocalMapper.transformToDataDetail(viewState.person.id!!))
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe { result ->
-//                viewState = when (result) {
-//                    is Resource.Loading -> viewState.copy(isLoading = true)
-//                    is Resource.Data -> viewState.copy(isLoading = false)
-//                    is Resource.Error -> viewState.copy(errorText=(result.error.message ?: ""))
-//                }
-//            }
-//            .addTo(disposables)
-//    }
+    private fun checkStatusPerson(person:Person) {
+        repo.getStatusPerson(person.id)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { resource ->
+                when (resource) {
+                    Resource.Loading -> {}
+                    is Resource.Data -> {
+                        person.inFavorites=resource.data
+                    }
+                    is Resource.Error -> viewState = viewState.copy(isLoading = false)
+                }
+            }
+            .addTo(disposables)
+    }
+    private fun deleteFromFavorites(id: Int) {
+        repo.deletePersonFromFavorite(id)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { resource ->
+                when (resource) {
+                    is Resource.Loading -> viewState = viewState.copy(isLoading = true)
+                    is Resource.Data -> {
+                        viewState = viewState.copy(isLoading = false)
+                        FavoritesListEvents.GetFavoritePersons
+                    }
+
+                    is Resource.Error -> viewState =
+                        viewState.copy(isLoading = false, errorText = "error")
+                }
+            }
+            .addTo(disposables)
+    }
 
     override fun onCleared() {
         disposables.clear()

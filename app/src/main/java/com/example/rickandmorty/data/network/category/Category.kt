@@ -5,7 +5,7 @@ data class Category(
     val name: String,
     val type: CategoryType
 )
-enum class CategoryType{
+enum class CategoryType {
     CATEGORY_CHARACTERS,
     CATEGORY_LOCATIONS,
     CATEGORY_EPISODES,

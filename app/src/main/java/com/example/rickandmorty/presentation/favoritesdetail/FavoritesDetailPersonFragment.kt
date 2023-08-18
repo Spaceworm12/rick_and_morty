@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,6 +29,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -67,7 +69,6 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
 
     @Composable
     override fun GetContent() {
-        var currentId = arguments?.getInt(KEY)
         val state = viewModel.viewStateObs.observeAsState().value ?: return
         RickAndMortyMainTheme {
             DetailPersonListScreen(state)
@@ -82,9 +83,9 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
 
     @Composable
     private fun DetailPersonListScreen(state: FavoritesDetailPersonViewState) {
-        var currentId = arguments?.getInt(KEY)
+        val currentId = arguments?.getInt(KEY)
         if(currentId!=null) {
-            viewModel.submitUIEvent(FavoritesDetailPersonEvent.ShowPerson(currentId!!))
+            viewModel.submitUIEvent(FavoritesDetailPersonEvent.ShowPerson(currentId))
         }else{goToMainScreen()}
         if (state.isLoading) {
             LoaderBlock()
@@ -103,15 +104,27 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                         FavoritesDetailPersonEvent.DeletePersonFromFavorite(
                         state.person?.id!!
                     ))
+                        state.person.inFavorites = false
                         Toast.makeText(requireContext(),state.person.name + " Удален из избранного", Toast.LENGTH_SHORT).show()
+                        goToMainScreen()
                     }) {
-                        if (state.person?.inFavorites == true) {
-                            Icon(
-                                Icons.Filled.Favorite, contentDescription = ""
-                            )
-                        } else {
-                            Icon(
-                                Icons.Filled.FavoriteBorder, contentDescription = "")
+                        Box(contentAlignment = Alignment.Center) {
+                            if (state.person!!.inFavorites) {
+                                Icon(
+                                    modifier = Modifier.size(30.dp),
+                                    imageVector = Icons.Filled.Favorite,
+                                    contentDescription = null,
+                                    tint = Color.Black
+                                )
+                            }
+                            if (!state.person.inFavorites) {
+                                Icon(
+                                    modifier = Modifier.size(30.dp),
+                                    imageVector = Icons.Filled.FavoriteBorder,
+                                    contentDescription = null,
+                                    tint = Color.Black
+                                )
+                            }
                         }
                     }
                 },

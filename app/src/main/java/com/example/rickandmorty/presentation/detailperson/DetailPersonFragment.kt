@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,6 +34,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -84,6 +86,7 @@ class DetailPersonFragment : ComposeFragment() {
     @Composable
     override fun GetContent() {
         val state = viewModel.viewStateObs.observeAsState().value ?: return
+        viewModel.submitUIEvent(DetailPersonEvent.CheckStatus(state.person))
         RickAndMortyMainTheme {
             DetailPersonListScreen(state)
             if (state.isLoading) {
@@ -111,11 +114,12 @@ class DetailPersonFragment : ComposeFragment() {
                 background = AppTheme.colors.background,
                 isUndo = true,
                 onSwipe = {
-                    if(currentId!=1) {
-                        state.isLoading=true
+                    if (currentId != 1) {
+                        state.isLoading = true
                         currentId = currentId!! - 1
                         goNextPerson(currentId!!)
-                    }else{}
+                    } else {
+                    }
                 }
             )
             val mForward = SwipeAction(
@@ -123,7 +127,7 @@ class DetailPersonFragment : ComposeFragment() {
                 background = AppTheme.colors.background,
                 isUndo = true,
                 onSwipe = {
-                    state.isLoading=true
+                    state.isLoading = true
                     currentId = currentId!! + 1
                     goNextPerson(currentId!!)
                 }
@@ -133,24 +137,50 @@ class DetailPersonFragment : ComposeFragment() {
                 onBackClick = { goBack() },
                 actions = {
                     IconButton(onClick = {
-                        viewModel.submitUIEvent(DetailPersonEvent.AddToFavorite(state.person!!))
-                        Toast.makeText(requireContext(),state.person.name + " Добавлен в избранное", Toast.LENGTH_SHORT).show()
-                    }) {
-                        if (state.person?.inFavorites == true) {
-                            Icon(
-                                Icons.Filled.Favorite, contentDescription = ""
-                            )
+                        if (!state.person.inFavorites) {
+                            viewModel.submitUIEvent(DetailPersonEvent.AddToFavorite(state.person!!))
+                            Toast.makeText(
+                                requireContext(),
+                                state.person.name + " Добавлен в избранное",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            state.person.inFavorites = true
                         } else {
-                            Icon(
-                                Icons.Filled.FavoriteBorder, contentDescription = ""
-                            )
+                            viewModel.submitUIEvent(DetailPersonEvent.DeleteFromFavorites(state.person.id))
+                            state.person.inFavorites = false
+                        }
+                        Toast.makeText(
+                            requireContext(),
+                            state.person.name + " Удален из избранного",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    ) {
+                        Box(contentAlignment = Alignment.Center) {
+                            if (state.person.inFavorites) {
+                                Icon(
+                                    modifier = Modifier.size(30.dp),
+                                    imageVector = Icons.Filled.Favorite,
+                                    contentDescription = null,
+                                    tint = Color.Black
+                                )
+                            }
+                            if (!state.person.inFavorites) {
+                                Icon(
+                                    modifier = Modifier.size(30.dp),
+                                    imageVector = Icons.Filled.FavoriteBorder,
+                                    contentDescription = null,
+                                    tint = Color.Black
+                                )
+                            }
                         }
                     }
                 },
             )
             SwipeableActionsBox(
                 startActions = listOf(mBack),
-                endActions = listOf(mForward)) {
+                endActions = listOf(mForward)
+            ) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -416,7 +446,7 @@ class DetailPersonFragment : ComposeFragment() {
                                     text = stringResource(id = R.string.go_back),
                                     isEnabled = true,
                                     onClick = {
-                                        state.isLoading=true
+                                        state.isLoading = true
                                         currentId = currentId!! - 1
                                         goNextPerson(currentId!!)
                                     })
@@ -424,7 +454,7 @@ class DetailPersonFragment : ComposeFragment() {
                                 PrimaryButton(text = stringResource(id = R.string.go_next),
                                     isEnabled = true,
                                     onClick = {
-                                        state.isLoading=true
+                                        state.isLoading = true
                                         currentId = currentId!! + 1
                                         goNextPerson(currentId!!)
                                     })
@@ -456,7 +486,6 @@ class DetailPersonFragment : ComposeFragment() {
             .replace(R.id.fragment_container, DetailPersonFragment.newInstance(id))
             .addToBackStack("")
             .commit()
-    private fun checkingDb(id:Int){}
 
     @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
@@ -473,7 +502,8 @@ class DetailPersonFragment : ComposeFragment() {
                     "genderm",
                     123
                 )
-            val state = DetailPersonViewState(isLoading = false, exit = false, person = null)
+            val state =
+                DetailPersonViewState(isLoading = false, exit = false, person = Person(id = 0))
 
             val person2 = Person(
                 name = "-",

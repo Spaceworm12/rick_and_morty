@@ -8,14 +8,11 @@ import com.example.rickandmorty.presentation.model.modelperson.PersonMapper
 import com.example.rickandmorty.util.Resource
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
-import okhttp3.logging.HttpLoggingInterceptor
 
 
 class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepository {
 
     private val personMapper = PersonMapper(LocalRepositoryImplement(App.dao(), App.getDb()))
-    val interceptor = HttpLoggingInterceptor()
-
 
     override fun getPersons(): Observable<Resource<List<Person>>> {
         return api.getCharactersList(20, 20)
@@ -37,6 +34,5 @@ class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepositor
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())
     }
-
 
 }

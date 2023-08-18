@@ -9,12 +9,12 @@ private const val TABLE_NAME = "example_table"
 data class PersonEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val name: String?="",
-    val url: String?="",
-    val avatar: String?="",
-    val status: String?="",
-    val species: String?="",
-    val type: String?="",
-    val gender:String?="",
-    val inFavorites:Boolean=false,
+    val name: String? = "",
+    val url: String? = "",
+    val avatar: String? = "",
+    val status: String? = "",
+    val species: String? = "",
+    val type: String? = "",
+    val gender: String? = "",
+    val inFavorites: Boolean = false,
 )

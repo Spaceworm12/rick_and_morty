@@ -30,7 +30,6 @@ import com.example.rickandmorty.presentation.composecomponents.buttons.Horizonta
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.listperson.PersonListFragment
 
-
 class CategoryListFragment : ComposeFragment() {
 
     @Composable
@@ -70,7 +69,6 @@ class CategoryListFragment : ComposeFragment() {
                     contentDescription = "Background Image",
                     contentScale = ContentScale.Crop
                 )
-
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(count = 1),
                     modifier = Modifier.fillMaxSize(),
@@ -101,7 +99,6 @@ class CategoryListFragment : ComposeFragment() {
                         bottom = AppTheme.dimens.halfContentMargin,
                         top = AppTheme.dimens.halfContentMargin
                     ),
-
                 text = category,
                 onClick = {
                     if (category == R.string.characters.toString()) {
@@ -124,10 +121,8 @@ class CategoryListFragment : ComposeFragment() {
                             )
                             .addToBackStack("")
                             .commit()
-
                     }
                 })
-
         }
     }
 

@@ -30,6 +30,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -179,27 +180,34 @@ class FavoritesListFragment : ComposeFragment() {
         }
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopEnd) {
 
-            val fabSize = 56.dp
+            val fabSize = 70.dp
 
             FloatingActionButton(
                 modifier = Modifier
                     .size(fabSize)
                     .padding(AppTheme.dimens.sideMargin),
+                backgroundColor = Color.Red,
                 onClick = { !person.inFavorites
                     viewModel.submitUIEvent(FavoritesListEvents.DeleteFromFavorites(person.id))
                     Toast.makeText(requireContext(),person.name +" Удален из избранного",Toast.LENGTH_SHORT).show()
                 }
             ) {
-                if(person.inFavorites)
-                Icon(
-                    imageVector = Icons.Filled.Favorite,
-                    contentDescription = null,
-                    tint = AppTheme.colors.background
-                )else{
-                    Icon(
-                        imageVector = Icons.Filled.FavoriteBorder,
-                        contentDescription = null,
-                        tint = AppTheme.colors.background)
+                Box(contentAlignment = Alignment.Center) {
+                    if (person.inFavorites) {
+                        Icon(modifier=Modifier.size(30.dp),
+                            imageVector = Icons.Filled.Favorite,
+                            contentDescription = null,
+                            tint = Color.Black,
+
+                        )
+                    }
+                    if (!person.inFavorites) {
+                        Icon(modifier=Modifier.size(30.dp),
+                            imageVector = Icons.Filled.FavoriteBorder,
+                            contentDescription = null,
+                            tint = Color.Black
+                        )
+                    }
                 }
             }
         }

@@ -1,18 +1,18 @@
 package com.example.rickandmorty.data.repository
 
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
 import com.example.rickandmorty.data.db.Dao
 import com.example.rickandmorty.data.db.Db
 import com.example.rickandmorty.data.db.entity.PersonEntity
 import com.example.rickandmorty.presentation.model.LocalMapper
 import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.util.Resource
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 
 
 class LocalRepositoryImplement(private val dao: Dao, private val db: Db) : LocalRepository {
     override fun getPersonsIds(): List<Int> {
-        return dao.getAllNotObs().map { it.id  }
+        return dao.getAllNotObs().map { it.id }
     }
 
     override fun getFavoritePersons(): Observable<Resource<List<Person>>> {
@@ -30,9 +30,10 @@ class LocalRepositoryImplement(private val dao: Dao, private val db: Db) : Local
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())
     }
+
     override fun getStatusPerson(id: Int): Observable<Resource<Boolean>> {
         return dao.exists(id)
-            .map<Resource<Boolean>> {Resource.Data(it)}
+            .map<Resource<Boolean>> { Resource.Data(it) }
             .onErrorReturn { Resource.Error(it) }
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())
@@ -54,5 +55,4 @@ class LocalRepositoryImplement(private val dao: Dao, private val db: Db) : Local
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())
     }
-
 }
