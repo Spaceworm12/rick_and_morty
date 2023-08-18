@@ -2,6 +2,7 @@ package com.example.rickandmorty.presentation.listperson
 
 import android.content.res.Configuration
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -53,6 +54,7 @@ import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBa
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.detailperson.DetailPersonFragment
 import com.example.rickandmorty.presentation.favorites.FavoritesListFragment
+import com.example.rickandmorty.presentation.favoritesdetail.FavoritesDetailPersonViewState
 import com.example.rickandmorty.presentation.model.modelperson.Person
 
 
@@ -66,7 +68,7 @@ class PersonListFragment : ComposeFragment() {
     override fun GetContent() {
         val state = viewModel.viewStateObs.observeAsState().value ?: return
         RickAndMortyMainTheme {
-            PersonListScreen(state.persons, state.isLoading, state.exit)
+            PersonListScreen(state)
             if (state.isLoading) {
                 LoaderBlock()
             }
@@ -77,7 +79,7 @@ class PersonListFragment : ComposeFragment() {
     }
 
     @Composable
-    private fun PersonListScreen(persons: List<Person>, loading: Boolean, exit: Boolean) {
+    private fun PersonListScreen(state:PersonListViewState) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -98,7 +100,7 @@ class PersonListFragment : ComposeFragment() {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(count = 1),
             ) {
-                persons.forEach { person ->
+                state.persons.forEach { person ->
                     item {
                         Person(person)
                     }
@@ -134,7 +136,8 @@ class PersonListFragment : ComposeFragment() {
                             width = 100.dp,
                             height = 100.dp
                         ),
-                    shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
+                    shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin),
+                    border = BorderStroke(5.dp,Color.Red)
                 ) {
                     val painterImage = rememberImagePainter(data = person.avatar)
                     when (painterImage.state) {
@@ -256,57 +259,58 @@ class PersonListFragment : ComposeFragment() {
     @Composable
     private fun PersonsListScreenPreview() {
         RickAndMortyMainTheme {
-            val persons = listOf(
-                Person(
-                    "1",
-                    "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
-                    "asd",
-                    "asd",
-                    "asd",
-                    "asd",
-                    1,
-                    false
-                ),
-                Person(
-                    "1",
-                    "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
-                    "asd",
-                    "asd",
-                    "asd",
-                    "asd",
-                    1,
-                    false
-                ),
-                Person(
-                    "1",
-                    "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
-                    "asd",
-                    "asd",
-                    "asd",
-                    "asd",
-                    1,
-                    false
-                ),
-                Person(
-                    "1",
-                    "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
-                    "asd",
-                    "asd",
-                    "asd",
-                    "asd",
-                    1,
-                    false
+            val state = PersonListViewState(
+                isLoading = false,
+                exit = false,
+                person = Person(id = 999),
+                persons = listOf(
+                    Person(
+                        "1",
+                        "https://placebear.com/g/200/200",
+                        "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
+                        "asd",
+                        "asd",
+                        "asd",
+                        "asd",
+                        1,
+                        false
+                    ),
+                    Person(
+                        "1",
+                        "https://placebear.com/g/200/200",
+                        "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
+                        "asd",
+                        "asd",
+                        "asd",
+                        "asd",
+                        1,
+                        false
+                    ),
+                    Person(
+                        "1",
+                        "https://placebear.com/g/200/200",
+                        "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
+                        "asd",
+                        "asd",
+                        "asd",
+                        "asd",
+                        1,
+                        false
+                    ),
+                    Person(
+                        "1",
+                        "https://placebear.com/g/200/200",
+                        "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
+                        "asd",
+                        "asd",
+                        "asd",
+                        "asd",
+                        1,
+                        false
+                    )
                 )
             )
-            PersonListScreen(
-                persons = persons,
-                loading = false,
-                exit = false
-            )
+            PersonListScreen(state)
         }
     }
 }

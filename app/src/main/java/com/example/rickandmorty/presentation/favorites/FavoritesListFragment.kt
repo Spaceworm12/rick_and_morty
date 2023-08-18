@@ -63,7 +63,7 @@ class FavoritesListFragment : ComposeFragment() {
     override fun GetContent() {
         val state = viewModel.viewStateObs.observeAsState().value ?: return
         RickAndMortyMainTheme {
-            PersonListScreen(state.persons, state.isLoading, state.exit)
+            PersonListScreen(state)
             if (state.isLoading) {
                 LoaderBlock()
             }
@@ -74,7 +74,7 @@ class FavoritesListFragment : ComposeFragment() {
     }
 
     @Composable
-    private fun PersonListScreen(persons: List<Person>, loading: Boolean, exit: Boolean) {
+    private fun PersonListScreen(state: FavoritesListViewState) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -88,7 +88,7 @@ class FavoritesListFragment : ComposeFragment() {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(count = 1),
             ) {
-                persons.forEach { person ->
+                state.persons.forEach { person ->
                     item {
                         Person(person)
                     }
@@ -230,57 +230,59 @@ class FavoritesListFragment : ComposeFragment() {
     @Composable
     private fun PersonsListScreenPreview() {
         RickAndMortyMainTheme {
-            val persons = listOf(
-                Person(
-                    "1",
-                    "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
-                    "asd",
-                    "asd",
-                    "asd",
-                    "asd",
-                    1,
-                    false
-                ),
-                Person(
-                    "1",
-                    "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
-                    "asd",
-                    "asd",
-                    "asd",
-                    "asd",
-                    1,
-                    false
-                ),
-                Person(
-                    "1",
-                    "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
-                    "asd",
-                    "asd",
-                    "asd",
-                    "asd",
-                    1,
-                    false
-                ),
-                Person(
-                    "1",
-                    "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
-                    "asd",
-                    "asd",
-                    "asd",
-                    "asd",
-                    1,
-                    false
+            val state = FavoritesListViewState(
+                isLoading = false,
+                exit = false,
+                person = Person(id = 999),
+                persons = listOf(
+                    Person(
+                        "1",
+                        "https://placebear.com/g/200/200",
+                        "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
+                        "asd",
+                        "asd",
+                        "asd",
+                        "asd",
+                        1,
+                        false
+                    ),
+                    Person(
+                        "1",
+                        "https://placebear.com/g/200/200",
+                        "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
+                        "asd",
+                        "asd",
+                        "asd",
+                        "asd",
+                        1,
+                        false
+                    ),
+                    Person(
+                        "1",
+                        "https://placebear.com/g/200/200",
+                        "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
+                        "asd",
+                        "asd",
+                        "asd",
+                        "asd",
+                        1,
+                        false
+                    ),
+                    Person(
+                        "1",
+                        "https://placebear.com/g/200/200",
+                        "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
+                        "asd",
+                        "asd",
+                        "asd",
+                        "asd",
+                        1,
+                        false
+                    )
                 )
             )
-            PersonListScreen(
-                persons = persons,
-                loading = false,
-                exit = false
-            )
+            PersonListScreen(state)
+
         }
     }
 }
