@@ -52,7 +52,6 @@ import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlo
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.detailperson.DetailPersonFragment
-import com.example.rickandmorty.presentation.favorites.FavoritesListEvents
 import com.example.rickandmorty.presentation.favorites.FavoritesListFragment
 import com.example.rickandmorty.presentation.model.modelperson.Person
 
@@ -118,7 +117,6 @@ class PersonListFragment : ComposeFragment() {
                 .width(100.dp),
             horizontalAlignment = Alignment.Start
         ) {
-
             Row(
                 modifier = Modifier
                     .background(
@@ -138,9 +136,7 @@ class PersonListFragment : ComposeFragment() {
                         ),
                     shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
                 ) {
-
                     val painterImage = rememberImagePainter(data = person.avatar)
-
                     when (painterImage.state) {
                         is ImagePainter.State.Loading -> {
                             Box(
@@ -171,7 +167,6 @@ class PersonListFragment : ComposeFragment() {
                         }
                     }
                 }
-
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -188,33 +183,44 @@ class PersonListFragment : ComposeFragment() {
             }
         }
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopEnd) {
-
             val fabSize = 70.dp
-
             FloatingActionButton(
                 modifier = Modifier
                     .size(fabSize)
                     .padding(AppTheme.dimens.sideMargin),
                 backgroundColor = Color.Red,
                 onClick = {
-                        if(!person.inFavorites){viewModel.submitUIEvent(PersonListEvents.AddToFavorite(person))
-                            person.inFavorites=true
-                            Toast.makeText(requireContext(),person.name +" Добавлен в избранное", Toast.LENGTH_SHORT).show()}
-                    else{viewModel.submitUIEvent(PersonListEvents.DeleteFromFavorites(person.id))
-                            person.inFavorites=false
-                            Toast.makeText(requireContext(),person.name +" Удален из избранного", Toast.LENGTH_SHORT).show()}
-                        viewModel.submitUIEvent(PersonListEvents.CheckStatus(person))
+                    if (!person.inFavorites) {
+                        viewModel.submitUIEvent(PersonListEvents.AddToFavorite(person))
+                        person.inFavorites = true
+                        Toast.makeText(
+                            requireContext(),
+                            person.name + " Добавлен в избранное",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        viewModel.submitUIEvent(PersonListEvents.DeleteFromFavorites(person.id))
+                        person.inFavorites = false
+                        Toast.makeText(
+                            requireContext(),
+                            person.name + " Удален из избранного",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    viewModel.submitUIEvent(PersonListEvents.CheckStatus(person))
                 }) {
                 Box(contentAlignment = Alignment.Center) {
                     if (person.inFavorites) {
-                        Icon(modifier=Modifier.size(30.dp),
+                        Icon(
+                            modifier = Modifier.size(30.dp),
                             imageVector = Icons.Filled.Favorite,
                             contentDescription = null,
                             tint = Color.Black
                         )
                     }
                     if (!person.inFavorites) {
-                        Icon(modifier=Modifier.size(30.dp),
+                        Icon(
+                            modifier = Modifier.size(30.dp),
                             imageVector = Icons.Filled.FavoriteBorder,
                             contentDescription = null,
                             tint = Color.Black
@@ -223,7 +229,6 @@ class PersonListFragment : ComposeFragment() {
                 }
             }
         }
-
     }
 
     private fun goBack() = requireActivity().supportFragmentManager.beginTransaction()
@@ -247,12 +252,10 @@ class PersonListFragment : ComposeFragment() {
             .commit()
     }
 
-
     @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
     private fun PersonsListScreenPreview() {
         RickAndMortyMainTheme {
-
             val persons = listOf(
                 Person(
                     "1",
@@ -299,7 +302,6 @@ class PersonListFragment : ComposeFragment() {
                     false
                 )
             )
-
             PersonListScreen(
                 persons = persons,
                 loading = false,

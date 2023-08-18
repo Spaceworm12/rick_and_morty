@@ -61,7 +61,6 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
 
     companion object {
         private const val KEY = "KEY"
-
         fun newInstance(identifyNumber: Int) = FavoritesDetailPersonFragment().apply {
             arguments = bundleOf(KEY to identifyNumber)
         }
@@ -84,28 +83,34 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
     @Composable
     private fun DetailPersonListScreen(state: FavoritesDetailPersonViewState) {
         val currentId = arguments?.getInt(KEY)
-        if(currentId!=null) {
+        if (currentId != null) {
             viewModel.submitUIEvent(FavoritesDetailPersonEvent.ShowPerson(currentId))
-        }else{goToMainScreen()}
+        } else {
+            goToMainScreen()
+        }
         if (state.isLoading) {
             LoaderBlock()
         }
         if (state.exit) {
             goToMainScreen()
         }
-
         Column(modifier = Modifier.background(AppTheme.colors.background)) {
-
             Toolbar(
                 title = stringResource(id = R.string.about_person),
                 onBackClick = { goToMainScreen() },
                 actions = {
-                    IconButton(onClick = {viewModel.submitUIEvent(
-                        FavoritesDetailPersonEvent.DeletePersonFromFavorite(
-                        state.person?.id!!
-                    ))
+                    IconButton(onClick = {
+                        viewModel.submitUIEvent(
+                            FavoritesDetailPersonEvent.DeletePersonFromFavorite(
+                                state.person?.id!!
+                            )
+                        )
                         state.person.inFavorites = false
-                        Toast.makeText(requireContext(),state.person.name + " Удален из избранного", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            state.person.name + " Удален из избранного",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         goToMainScreen()
                     }) {
                         Box(contentAlignment = Alignment.Center) {
@@ -164,12 +169,9 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                             .clickable(indication = null,
                                 interactionSource = remember { MutableInteractionSource() },
                                 onClick = { }),
-
                         shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
                     ) {
-
                         val painterImage = rememberImagePainter(data = state.person?.avatar)
-
                         when (painterImage.state) {
                             is ImagePainter.State.Loading -> {
                                 Box(
@@ -219,7 +221,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                     bottom = AppTheme.dimens.halfContentMargin,
                                     top = AppTheme.dimens.halfContentMargin
                                 ),
-                            text = stringResource(id = R.string.id_person)?: "Not identified",
+                            text = stringResource(id = R.string.id_person) ?: "Not identified",
                             style = AppTheme.typography.body1,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -234,7 +236,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                     bottom = AppTheme.dimens.halfContentMargin,
                                     top = AppTheme.dimens.halfContentMargin
                                 ),
-                            text = state.person?.id.toString()?: "Not identified",
+                            text = state.person?.id.toString() ?: "Not identified",
                             style = AppTheme.typography.body1,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -252,7 +254,8 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = stringResource(id = R.string.gender_person)?: "Not identified",
+                                text = stringResource(id = R.string.gender_person)
+                                    ?: "Not identified",
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -267,41 +270,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = state.person?.gender.toString()?: "Not identified",
-                                style = AppTheme.typography.body1,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight(700),
-                                fontFamily = FontFamily.Monospace
-                            )
-                        }
-                    }
-                    Column {
-                        Row {
-                            Text(
-                                modifier = Modifier
-                                    .wrapContentSize()
-                                    .padding(
-                                        bottom = AppTheme.dimens.halfContentMargin,
-                                        top = AppTheme.dimens.halfContentMargin
-                                    ),
-                                text = stringResource(id = R.string.species_person)?: "Not identified",
-                                style = AppTheme.typography.body1,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight(700),
-                                fontFamily = FontFamily.Monospace
-                            )
-                            Text(
-                                modifier = Modifier
-                                    .wrapContentSize()
-                                    .padding(
-                                        bottom = AppTheme.dimens.halfContentMargin,
-                                        top = AppTheme.dimens.halfContentMargin
-                                    ),
-                                text = state.person?.species.toString()?: "Not identified",
+                                text = state.person?.gender.toString() ?: "Not identified",
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -320,7 +289,8 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = stringResource(id = R.string.type_person)?: "Not identified",
+                                text = stringResource(id = R.string.species_person)
+                                    ?: "Not identified",
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -335,7 +305,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = state.person?.type.toString()?: "Not identified",
+                                text = state.person?.species.toString() ?: "Not identified",
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -354,7 +324,8 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = stringResource(id = R.string.status_person)?: "Not identified",
+                                text = stringResource(id = R.string.type_person)
+                                    ?: "Not identified",
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -369,7 +340,42 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = state.person?.status.toString()?: "Not identified",
+                                text = state.person?.type.toString() ?: "Not identified",
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.Monospace
+                            )
+                        }
+                    }
+                    Column {
+                        Row {
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = stringResource(id = R.string.status_person)
+                                    ?: "Not identified",
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.Monospace
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = state.person?.status.toString() ?: "Not identified",
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -402,8 +408,11 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                     "genderm",
                     123
                 )
-            val state = FavoritesDetailPersonViewState(isLoading = false, exit = false, person = Person(id=999))
-
+            val state = FavoritesDetailPersonViewState(
+                isLoading = false,
+                exit = false,
+                person = Person(id = 999)
+            )
             val person2 = Person(
                 name = "-",
                 url = "-",
@@ -414,7 +423,6 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                 gender = "-",
                 id = 1
             )
-
             DetailPersonListScreen(state)
         }
     }

@@ -20,7 +20,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -49,7 +48,6 @@ import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainT
 import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlock
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
-import com.example.rickandmorty.presentation.detailperson.DetailPersonFragment
 import com.example.rickandmorty.presentation.favoritesdetail.FavoritesDetailPersonFragment
 import com.example.rickandmorty.presentation.listperson.PersonListFragment
 import com.example.rickandmorty.presentation.model.modelperson.Person
@@ -102,7 +100,6 @@ class FavoritesListFragment : ComposeFragment() {
     @OptIn(ExperimentalCoilApi::class)
     @Composable
     private fun Person(person: Person) {
-
         Column(
             modifier = Modifier
                 .padding(AppTheme.dimens.contentMargin)
@@ -129,9 +126,7 @@ class FavoritesListFragment : ComposeFragment() {
                         ),
                     shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
                 ) {
-
                     val painterImage = rememberImagePainter(data = person.avatar)
-
                     when (painterImage.state) {
                         is ImagePainter.State.Loading -> {
                             Box(
@@ -162,7 +157,6 @@ class FavoritesListFragment : ComposeFragment() {
                         }
                     }
                 }
-
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -170,7 +164,7 @@ class FavoritesListFragment : ComposeFragment() {
                             bottom = AppTheme.dimens.halfContentMargin,
                             top = AppTheme.dimens.halfContentMargin
                         ),
-                    text = person.name?:"",
+                    text = person.name ?: "",
                     style = AppTheme.typography.body1,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -187,22 +181,28 @@ class FavoritesListFragment : ComposeFragment() {
                     .size(fabSize)
                     .padding(AppTheme.dimens.sideMargin),
                 backgroundColor = Color.Red,
-                onClick = { !person.inFavorites
+                onClick = {
+                    !person.inFavorites
                     viewModel.submitUIEvent(FavoritesListEvents.DeleteFromFavorites(person.id))
-                    Toast.makeText(requireContext(),person.name +" Удален из избранного",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        person.name + " Удален из избранного",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     if (person.inFavorites) {
-                        Icon(modifier=Modifier.size(30.dp),
+                        Icon(
+                            modifier = Modifier.size(30.dp),
                             imageVector = Icons.Filled.Favorite,
                             contentDescription = null,
                             tint = Color.Black,
-
                         )
                     }
                     if (!person.inFavorites) {
-                        Icon(modifier=Modifier.size(30.dp),
+                        Icon(
+                            modifier = Modifier.size(30.dp),
                             imageVector = Icons.Filled.FavoriteBorder,
                             contentDescription = null,
                             tint = Color.Black
@@ -216,6 +216,7 @@ class FavoritesListFragment : ComposeFragment() {
 
     private fun goBack() = requireActivity().supportFragmentManager.beginTransaction()
         .replace(R.id.fragment_container, PersonListFragment()).commit()
+
     private fun goToPerson(id: Int) {
         requireActivity()
             .supportFragmentManager
@@ -229,37 +230,59 @@ class FavoritesListFragment : ComposeFragment() {
     @Composable
     private fun PersonsListScreenPreview() {
         RickAndMortyMainTheme {
-
             val persons = listOf(
                 Person(
                     "1",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg","asd","asd","asd","asd",1,false
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
+                    "asd",
+                    "asd",
+                    "asd",
+                    "asd",
+                    1,
+                    false
                 ),
                 Person(
                     "1",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg","asd","asd","asd","asd",1,false
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
+                    "asd",
+                    "asd",
+                    "asd",
+                    "asd",
+                    1,
+                    false
                 ),
                 Person(
                     "1",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg","asd","asd","asd","asd",1,false
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
+                    "asd",
+                    "asd",
+                    "asd",
+                    "asd",
+                    1,
+                    false
                 ),
                 Person(
                     "1",
                     "https://placebear.com/g/200/200",
-                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg","asd","asd","asd","asd",1,false
+                    "https://rickandmortyapi.com/api/character/avatar/435.jpeg",
+                    "asd",
+                    "asd",
+                    "asd",
+                    "asd",
+                    1,
+                    false
                 )
             )
-
             PersonListScreen(
                 persons = persons,
                 loading = false,
                 exit = false
             )
         }
-}
+    }
 }
 
 

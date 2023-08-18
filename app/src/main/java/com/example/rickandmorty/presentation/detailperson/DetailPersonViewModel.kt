@@ -42,22 +42,23 @@ class DetailPersonViewModel(
     }
 
     private fun loadPersonInfo(id: Int) {
-            networkRepository.getPersonDetail(id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { resource ->
-                    when (resource) {
-                        Resource.Loading -> {}
-                        is Resource.Data -> {
-                            viewState.isLoading = false
-                            viewState= viewState.copy(person =resource.data, isLoading = false, exit = false)
-                        }
-
-                        is Resource.Error -> viewState = viewState.copy(isLoading = false)
+        networkRepository.getPersonDetail(id)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { resource ->
+                when (resource) {
+                    Resource.Loading -> {}
+                    is Resource.Data -> {
+                        viewState.isLoading = false
+                        viewState =
+                            viewState.copy(person = resource.data, isLoading = false, exit = false)
                     }
 
+                    is Resource.Error -> viewState = viewState.copy(isLoading = false)
                 }
+            }
             .addTo(disposables)
     }
+
     private fun savePersonToListFavorites(person: Person) {
         repo.addPersonToFavorite(LocalMapper.transformToDataDetail(viewState.person!!))
             .observeOn(AndroidSchedulers.mainThread())
@@ -65,25 +66,28 @@ class DetailPersonViewModel(
                 viewState = when (result) {
                     is Resource.Loading -> viewState.copy(isLoading = true)
                     is Resource.Data -> viewState.copy(isLoading = false)
-                    is Resource.Error -> viewState.copy(errorText=(result.error.message ?: ""))
+                    is Resource.Error -> viewState.copy(errorText = (result.error.message ?: ""))
                 }
             }
             .addTo(disposables)
     }
-    private fun checkStatusPerson(person:Person) {
+
+    private fun checkStatusPerson(person: Person) {
         repo.getStatusPerson(person.id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { resource ->
                 when (resource) {
                     Resource.Loading -> {}
                     is Resource.Data -> {
-                        person.inFavorites=resource.data
+                        person.inFavorites = resource.data
                     }
+
                     is Resource.Error -> viewState = viewState.copy(isLoading = false)
                 }
             }
             .addTo(disposables)
     }
+
     private fun deleteFromFavorites(id: Int) {
         repo.deletePersonFromFavorite(id)
             .observeOn(AndroidSchedulers.mainThread())

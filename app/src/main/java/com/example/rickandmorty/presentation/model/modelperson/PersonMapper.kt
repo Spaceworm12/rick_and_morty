@@ -4,13 +4,10 @@ import com.example.rickandmorty.data.network.person.Person
 import com.example.rickandmorty.data.repository.LocalRepository
 import com.example.rickandmorty.presentation.model.modelperson.Person as PersonPresentation
 
-
 class PersonMapper(private val localRepo: LocalRepository) {
 
     private val ids = localRepo.getPersonsIds()
-
-     fun transformPersonForPresentation(model: Person): PersonPresentation {
-
+    fun transformPersonForPresentation(model: Person): PersonPresentation {
         val number = if (model.url.endsWith("/")) {
             model.url.dropLast(1).takeLastWhile { it.isDigit() }
         } else {
@@ -18,9 +15,7 @@ class PersonMapper(private val localRepo: LocalRepository) {
         }
         val url = "https://rickandmortyapi.com/api/character/${number}"
         val avatar = "https://rickandmortyapi.com/api/character/avatar/${number}.jpeg"
-
         val inFavorites = ids.any { it == model.id }
-
         return PersonPresentation(
             id = model.id!!,
             name = model.name,

@@ -13,8 +13,8 @@ import io.reactivex.rxkotlin.addTo
 
 
 class FavoritesListViewModel(
-    private val repo: LocalRepository = LocalRepositoryImplement(App.dao(),App.getDb())
-): ViewModel() {
+    private val repo: LocalRepository = LocalRepositoryImplement(App.dao(), App.getDb())
+) : ViewModel() {
     private val disposables = CompositeDisposable()
     private val _viewState = MutableLiveData(FavoritesListViewState())
     val viewStateObs: LiveData<FavoritesListViewState> get() = _viewState
@@ -23,6 +23,7 @@ class FavoritesListViewModel(
         set(value) {
             _viewState.value = value
         }
+
     fun submitUIEvent(event: FavoritesListEvents) {
         handleUIEvent(event)
     }
@@ -30,13 +31,16 @@ class FavoritesListViewModel(
     private fun handleUIEvent(event: FavoritesListEvents) {
         when (event) {
             is FavoritesListEvents.GetFavoritePersons -> loadLocalPersons()
-            is FavoritesListEvents.DeleteFromFavorites -> {deleteFromFavorites(event.id)}
+            is FavoritesListEvents.DeleteFromFavorites -> {
+                deleteFromFavorites(event.id)
+            }
         }
     }
 
     init {
         loadLocalPersons()
     }
+
     private fun loadLocalPersons() {
         repo.getFavoritePersons()
             .observeOn(AndroidSchedulers.mainThread())
@@ -46,7 +50,7 @@ class FavoritesListViewModel(
 
                     is Resource.Data -> {
                         viewState = viewState.copy(isLoading = false)
-                        viewState=viewState.copy(persons=((resource.data ?: emptyList())))
+                        viewState = viewState.copy(persons = ((resource.data ?: emptyList())))
                     }
 
                     is Resource.Error -> viewState = viewState.copy(isLoading = true)
@@ -54,15 +58,20 @@ class FavoritesListViewModel(
             }
             .addTo(disposables)
     }
+
     private fun deleteFromFavorites(id: Int) {
         repo.deletePersonFromFavorite(id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { resource ->
                 when (resource) {
                     is Resource.Loading -> viewState = viewState.copy(isLoading = true)
-                    is Resource.Data -> {viewState = viewState.copy(isLoading = false)
-                    FavoritesListEvents.GetFavoritePersons}
-                    is Resource.Error -> viewState=viewState.copy(isLoading = false, errorText = "error")
+                    is Resource.Data -> {
+                        viewState = viewState.copy(isLoading = false)
+                        FavoritesListEvents.GetFavoritePersons
+                    }
+
+                    is Resource.Error -> viewState =
+                        viewState.copy(isLoading = false, errorText = "error")
                 }
             }
             .addTo(disposables)

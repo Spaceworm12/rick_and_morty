@@ -38,7 +38,6 @@ class PersonListViewModel(
             is PersonListEvents.AddToFavorite -> savePersonToListFavorites(event.person)
             is PersonListEvents.DeleteFromFavorites -> deleteFromFavorites(event.id)
             is PersonListEvents.CheckStatus -> checkStatusPerson(event.person)
-            is PersonListEvents.Refresh -> loadPersons()
         }
     }
 
@@ -56,7 +55,6 @@ class PersonListViewModel(
                         viewState = viewState.copy(isLoading = false)
                         viewState = viewState.copy(persons = (resource.data ?: emptyList()))
                     }
-
                     is Resource.Error -> viewState = viewState.copy(isLoading = false)
                 }
             }
@@ -100,7 +98,6 @@ class PersonListViewModel(
                         viewState = viewState.copy(isLoading = false)
                         FavoritesListEvents.GetFavoritePersons
                     }
-
                     is Resource.Error -> viewState =
                         viewState.copy(isLoading = false, errorText = "error")
                 }

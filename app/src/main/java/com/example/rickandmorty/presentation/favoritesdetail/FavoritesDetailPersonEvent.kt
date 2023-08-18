@@ -1,8 +1,6 @@
 package com.example.rickandmorty.presentation.favoritesdetail
 
-import com.example.rickandmorty.presentation.detailperson.DetailPersonEvent
 import com.example.rickandmorty.presentation.model.modelperson.Person
-
 
 sealed class FavoritesDetailPersonEvent {
     class AddToFavorite(val person: Person) : FavoritesDetailPersonEvent()

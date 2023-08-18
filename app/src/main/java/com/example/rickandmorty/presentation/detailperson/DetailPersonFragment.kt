@@ -107,7 +107,6 @@ class DetailPersonFragment : ComposeFragment() {
         if (state.exit) {
             goBack()
         }
-
         Column(modifier = Modifier.background(AppTheme.colors.background)) {
             val mBack = SwipeAction(
                 icon = {},
@@ -504,7 +503,6 @@ class DetailPersonFragment : ComposeFragment() {
                 )
             val state =
                 DetailPersonViewState(isLoading = false, exit = false, person = Person(id = 0))
-
             val person2 = Person(
                 name = "-",
                 url = "-",
