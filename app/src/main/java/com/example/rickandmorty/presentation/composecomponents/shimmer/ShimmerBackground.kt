@@ -22,6 +22,7 @@ fun Modifier.shimmerBackground(shape: Shape = RoundedCornerShape(16.dp)): Modifi
             tween(durationMillis = 1500, easing = LinearOutSlowInEasing),
             RepeatMode.Restart
         ),
+        label = "",
     )
     val shimmerColors = listOf(
         Color.LightGray.copy(alpha = 0.9f),

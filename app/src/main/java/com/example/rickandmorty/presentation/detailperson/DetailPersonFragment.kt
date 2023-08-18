@@ -209,6 +209,7 @@ class DetailPersonFragment : ComposeFragment() {
                     ) {
                         Card(
                             modifier = Modifier
+                                .shimmerBackground()
                                 .height(400.dp)
                                 .width(400.dp)
                                 .wrapContentSize()

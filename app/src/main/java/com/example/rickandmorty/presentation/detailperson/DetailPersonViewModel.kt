@@ -46,7 +46,7 @@ class DetailPersonViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { resource ->
                 when (resource) {
-                    Resource.Loading -> {}
+                    Resource.Loading -> {viewState.isLoading = true}
                     is Resource.Data -> {
                         viewState.isLoading = false
                         viewState =
