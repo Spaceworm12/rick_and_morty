@@ -25,7 +25,7 @@ fun Modifier.shimmerBackground(shape: Shape = RoundedCornerShape(16.dp)): Modifi
         label = "",
     )
     val shimmerColors = listOf(
-        Color.LightGray.copy(alpha = 0.9f),
+        Color.LightGray.copy(alpha = 0.4f),
         Color.LightGray.copy(alpha = 0.4f),
     )
     val brush = Brush.linearGradient(

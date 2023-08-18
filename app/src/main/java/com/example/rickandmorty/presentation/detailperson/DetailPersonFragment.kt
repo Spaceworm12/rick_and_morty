@@ -179,7 +179,8 @@ class DetailPersonFragment : ComposeFragment() {
             )
             SwipeableActionsBox(
                 startActions = listOf(mBack),
-                endActions = listOf(mForward)
+                endActions = listOf(mForward),
+                backgroundUntilSwipeThreshold = Color.Transparent
             ) {
                 Column(
                     modifier = Modifier
@@ -265,7 +266,7 @@ class DetailPersonFragment : ComposeFragment() {
                             .padding(AppTheme.dimens.contentMargin),
                         horizontalAlignment = Alignment.Start
                     ) {
-                        Row() {
+                        Row {
                             Text(
                                 modifier = Modifier
                                     .wrapContentSize()
