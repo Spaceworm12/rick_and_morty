@@ -2,8 +2,10 @@ package com.example.rickandmorty.presentation.favorites
 
 import android.content.res.Configuration
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -109,6 +111,7 @@ class FavoritesListFragment : ComposeFragment() {
 
             Row(
                 modifier = Modifier
+                    .border(1.dp,AppTheme.colors.primary)
                     .background(
                         color = AppTheme.colors.rippleColor,
                         shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
@@ -124,7 +127,7 @@ class FavoritesListFragment : ComposeFragment() {
                             width = 100.dp,
                             height = 100.dp
                         ),
-                    shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
+                    shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin),
                 ) {
                     val painterImage = rememberImagePainter(data = person.avatar)
                     when (painterImage.state) {
@@ -180,7 +183,7 @@ class FavoritesListFragment : ComposeFragment() {
                 modifier = Modifier
                     .size(fabSize)
                     .padding(AppTheme.dimens.sideMargin),
-                backgroundColor = Color.Red,
+                backgroundColor = AppTheme.colors.primary,
                 onClick = {
                     !person.inFavorites
                     viewModel.submitUIEvent(FavoritesListEvents.DeleteFromFavorites(person.id))

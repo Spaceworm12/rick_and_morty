@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -216,7 +217,8 @@ class DetailPersonFragment : ComposeFragment() {
                                     interactionSource = remember { MutableInteractionSource() },
                                     onClick = { }),
 
-                            shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
+                            shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin),
+                            border = BorderStroke(2.dp,AppTheme.colors.primary)
                         ) {
 
                             val painterImage = rememberImagePainter(data = state.person?.avatar)

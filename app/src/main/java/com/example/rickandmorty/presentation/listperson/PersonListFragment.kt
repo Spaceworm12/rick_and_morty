@@ -2,9 +2,9 @@ package com.example.rickandmorty.presentation.listperson
 
 import android.content.res.Configuration
 import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -54,7 +54,6 @@ import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBa
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.detailperson.DetailPersonFragment
 import com.example.rickandmorty.presentation.favorites.FavoritesListFragment
-import com.example.rickandmorty.presentation.favoritesdetail.FavoritesDetailPersonViewState
 import com.example.rickandmorty.presentation.model.modelperson.Person
 
 
@@ -79,7 +78,7 @@ class PersonListFragment : ComposeFragment() {
     }
 
     @Composable
-    private fun PersonListScreen(state:PersonListViewState) {
+    private fun PersonListScreen(state: PersonListViewState) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -121,6 +120,7 @@ class PersonListFragment : ComposeFragment() {
         ) {
             Row(
                 modifier = Modifier
+                    .border(1.dp, AppTheme.colors.primary)
                     .background(
                         color = AppTheme.colors.rippleColor,
                         shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
@@ -137,7 +137,6 @@ class PersonListFragment : ComposeFragment() {
                             height = 100.dp
                         ),
                     shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin),
-                    border = BorderStroke(5.dp,Color.Red)
                 ) {
                     val painterImage = rememberImagePainter(data = person.avatar)
                     when (painterImage.state) {
@@ -191,7 +190,7 @@ class PersonListFragment : ComposeFragment() {
                 modifier = Modifier
                     .size(fabSize)
                     .padding(AppTheme.dimens.sideMargin),
-                backgroundColor = Color.Red,
+                backgroundColor = AppTheme.colors.primary,
                 onClick = {
                     if (!person.inFavorites) {
                         viewModel.submitUIEvent(PersonListEvents.AddToFavorite(person))

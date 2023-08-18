@@ -2,6 +2,7 @@ package com.example.rickandmorty.presentation.favoritesdetail
 
 import android.content.res.Configuration
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -169,7 +170,8 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                             .clickable(indication = null,
                                 interactionSource = remember { MutableInteractionSource() },
                                 onClick = { }),
-                        shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
+                        shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin),
+                        border = BorderStroke(2.dp,AppTheme.colors.primary)
                     ) {
                         val painterImage = rememberImagePainter(data = state.person?.avatar)
                         when (painterImage.state) {
