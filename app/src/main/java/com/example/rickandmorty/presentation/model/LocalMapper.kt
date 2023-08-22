@@ -25,7 +25,7 @@ object LocalMapper {
 
     fun transformToDataDetail(model: Person): PersonEntity {
         return PersonEntity(
-            id = model.id!!,
+            id = model.id,
             name = model.name,
             species = model.species,
             type = model.type,
@@ -39,7 +39,7 @@ object LocalMapper {
 
     fun transformToData(model: Person): PersonEntity {
         return PersonEntity(
-            id = model.id!!,
+            id = model.id,
             name = model.name,
             species = model.species,
             type = model.type,

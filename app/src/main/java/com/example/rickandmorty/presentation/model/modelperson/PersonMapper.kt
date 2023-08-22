@@ -17,7 +17,7 @@ class PersonMapper(private val localRepo: LocalRepository) {
         val avatar = "https://rickandmortyapi.com/api/character/avatar/${number}.jpeg"
         val inFavorites = ids.any { it == model.id }
         return PersonPresentation(
-            id = model.id!!,
+            id = model.id,
             name = model.name,
             species = model.species,
             type = model.type,

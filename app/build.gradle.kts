@@ -52,14 +52,18 @@ android {
 }
 
 dependencies {
+    //swipe
     implementation ("me.saket.swipe:swipe:1.0.0")
-    implementation ("androidx.room:room-common:2.5.2")
     implementation("com.google.android.engage:engage-core:1.2.0")
-
+    //dagger
+    implementation ("com.google.dagger:dagger:2.34")
+    kapt ("com.google.dagger:dagger-compiler:2.34")
+     // http logging interceptor
     implementation("com.squareup.okhttp3:logging-interceptor:4.7.2")
     implementation("com.squareup.okhttp3:okhttp:4.7.2")
     //room db
     kapt ("androidx.room:room-compiler:2.5.1")
+    implementation ("androidx.room:room-common:2.5.2")
     implementation ("androidx.room:room-runtime")
     kapt ("androidx.room:room-compiler")
     implementation ("androidx.room:room-ktx:2.5.1")

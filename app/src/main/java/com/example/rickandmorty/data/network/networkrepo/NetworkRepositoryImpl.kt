@@ -6,14 +6,16 @@ import com.example.rickandmorty.data.repository.LocalRepositoryImplement
 import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.presentation.model.modelperson.PersonMapper
 import com.example.rickandmorty.util.Resource
+import dagger.Module
+import dagger.Provides
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
-
+@Module
 class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepository {
 
     private val personMapper = PersonMapper(LocalRepositoryImplement(App.dao(), App.getDb()))
-
+@Provides
     override fun getPersons(): Observable<Resource<List<Person>>> {
         return api.getCharactersList(20, 20)
             .map { it.results }
@@ -24,7 +26,7 @@ class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepositor
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())
     }
-
+@Provides
     override fun getPersonDetail(id: Int): Observable<Resource<Person>> {
         return api.getPersonInfo(id)
             .map<Resource<Person>> {

@@ -6,15 +6,17 @@ import com.example.rickandmorty.data.db.entity.PersonEntity
 import com.example.rickandmorty.presentation.model.LocalMapper
 import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.util.Resource
+import dagger.Module
+import dagger.Provides
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
-
+@Module
 class LocalRepositoryImplement(private val dao: Dao, private val db: Db) : LocalRepository {
     override fun getPersonsIds(): List<Int> {
         return dao.getAllNotObs().map { it.id }
     }
-
+@Provides
     override fun getFavoritePersons(): Observable<Resource<List<Person>>> {
         return dao.getAll()
             .map<Resource<List<Person>>> { Resource.Data(LocalMapper.transformToPresentation(it)) }
