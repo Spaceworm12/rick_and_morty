@@ -325,10 +325,8 @@ class DetailPersonFragment : ComposeFragment() {
                                             bottom = AppTheme.dimens.halfContentMargin,
                                             top = AppTheme.dimens.halfContentMargin
                                         ),
-                                    text = if ((state.person.gender.toString() != "")) {
-                                        state.person.gender.toString()
-                                    }else{
-                                        stringResource(id = R.string.not_identify)},
+                                    text = if ((state.person.gender.toString() == "")||(state.person.gender.toString() == "unknown")) {
+                                        stringResource(id = R.string.not_identify)}else{state.person.gender.toString()},
                                     style = AppTheme.typography.body1,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
@@ -442,10 +440,8 @@ class DetailPersonFragment : ComposeFragment() {
                                             bottom = AppTheme.dimens.halfContentMargin,
                                             top = AppTheme.dimens.halfContentMargin
                                         ),
-                                    text=if((state.person.status.toString()!="")) {
-                                        state.person.status.toString()
-                                    }else{
-                                        stringResource(id = R.string.not_identify)},
+                                    text = if ((state.person.status.toString() == "")||(state.person.status.toString() == "unknown")) {
+                                        stringResource(id = R.string.not_identify)}else{state.person.status.toString()},
                                     style = AppTheme.typography.body1,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
