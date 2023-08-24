@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,15 +25,20 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DisabledByDefault
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Grade
+import androidx.compose.material.icons.filled.Help
+import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -169,19 +175,67 @@ class PersonListFragment : ComposeFragment() {
                         }
                     }
                 }
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            bottom = AppTheme.dimens.halfContentMargin,
-                            top = AppTheme.dimens.halfContentMargin
-                        ),
-                    text = person.name ?: "",
-                    style = AppTheme.typography.body1,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                )
+                Column() {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                bottom = AppTheme.dimens.halfContentMargin,
+                                top = AppTheme.dimens.halfContentMargin
+                            ),
+                        text = person.name ?: "",
+                        style = AppTheme.typography.body1,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                    )
+                    Box(contentAlignment = Alignment.Center) {
+                        Column(modifier=Modifier.wrapContentSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = person.status ?: "",
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                            )
+                            if (person.status == "Alive") {
+                                Icon(
+                                    modifier = Modifier
+                                        .size(40.dp)
+                                        .padding(top = 10.dp),
+                                    imageVector = Icons.Filled.Done,
+                                    contentDescription = "Alive",
+                                    tint = Color.Green
+                                )
+                            }
+                            if (person.status == "Dead") {
+                                Icon(
+                                    modifier = Modifier
+                                        .size(40.dp)
+                                        .padding(top = 10.dp),
+                                    imageVector = Icons.Filled.DisabledByDefault,
+                                    contentDescription = "Dead",
+                                    tint = Color.Red
+                                )
+                            }
+                            if (person.status != "Dead" && person.status != "Alive") {
+                                Icon(
+                                    modifier = Modifier
+                                        .size(40.dp)
+                                        .padding(top = 10.dp),
+                                    imageVector = Icons.Filled.Help,
+                                    contentDescription = "Not identify",
+                                    tint = Color.Gray
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopEnd) {
@@ -262,6 +316,7 @@ class PersonListFragment : ComposeFragment() {
                 isLoading = false,
                 exit = false,
                 person = Person(id = 999),
+                errorText = "",
                 persons = listOf(
                     Person(
                         "1",
