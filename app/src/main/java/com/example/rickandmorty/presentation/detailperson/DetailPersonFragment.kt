@@ -134,6 +134,7 @@ class DetailPersonFragment : ComposeFragment() {
             )
             Toolbar(
                 title = stringResource(id = R.string.about_person),
+                subtitle = stringResource(id = R.string.about_person_subtitle),
                 onBackClick = { goBack() },
                 actions = {
                     IconButton(onClick = {
@@ -192,8 +193,8 @@ class DetailPersonFragment : ComposeFragment() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                bottom = AppTheme.dimens.halfContentMargin,
-                                top = AppTheme.dimens.halfContentMargin
+                                bottom = AppTheme.dimens.halfContentMargin * 2,
+                                top = AppTheme.dimens.halfContentMargin * 2
                             ),
                         text = state.person?.name ?: "Not identified",
                         style = AppTheme.typography.body1,
@@ -202,7 +203,7 @@ class DetailPersonFragment : ComposeFragment() {
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight(700),
                         fontFamily = FontFamily.Monospace,
-                        fontSize = 25.sp,
+                        fontSize = 30.sp,
                     )
                     Column(
                         modifier = Modifier.fillMaxWidth(),
@@ -220,7 +221,7 @@ class DetailPersonFragment : ComposeFragment() {
                                     onClick = { }),
 
                             shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin),
-                            border = BorderStroke(2.dp,AppTheme.colors.primary)
+//                            border = BorderStroke(2.dp,AppTheme.colors.primary)
                         ) {
 
                             val painterImage = rememberImagePainter(data = state.person?.avatar)
@@ -259,7 +260,7 @@ class DetailPersonFragment : ComposeFragment() {
                     Column(
                         modifier = Modifier
                             .background(
-                                color = AppTheme.colors.rippleColor,
+                                color = Color(0x20000000),
                                 shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
                             )
                             .fillMaxWidth()
@@ -280,7 +281,8 @@ class DetailPersonFragment : ComposeFragment() {
                                 overflow = TextOverflow.Ellipsis,
                                 textAlign = TextAlign.Center,
                                 fontWeight = FontWeight(700),
-                                fontFamily = FontFamily.Monospace
+                                fontFamily = FontFamily.SansSerif,
+                                fontSize = 18.sp
                             )
                             Text(
                                 modifier = Modifier
@@ -295,7 +297,8 @@ class DetailPersonFragment : ComposeFragment() {
                                 overflow = TextOverflow.Ellipsis,
                                 textAlign = TextAlign.Center,
                                 fontWeight = FontWeight(700),
-                                fontFamily = FontFamily.Monospace
+                                fontFamily = FontFamily.Monospace,
+                                fontSize = 18.sp
                             )
                         }
                         Column {
@@ -314,7 +317,8 @@ class DetailPersonFragment : ComposeFragment() {
                                     overflow = TextOverflow.Ellipsis,
                                     textAlign = TextAlign.Center,
                                     fontWeight = FontWeight(700),
-                                    fontFamily = FontFamily.Monospace
+                                    fontFamily = FontFamily.SansSerif,
+                                    fontSize = 18.sp
                                 )
                                 Text(
                                     modifier = Modifier
@@ -329,7 +333,8 @@ class DetailPersonFragment : ComposeFragment() {
                                     overflow = TextOverflow.Ellipsis,
                                     textAlign = TextAlign.Center,
                                     fontWeight = FontWeight(700),
-                                    fontFamily = FontFamily.Monospace
+                                    fontFamily = FontFamily.Monospace,
+                                    fontSize = 18.sp
                                 )
                             }
                         }
@@ -349,7 +354,8 @@ class DetailPersonFragment : ComposeFragment() {
                                     overflow = TextOverflow.Ellipsis,
                                     textAlign = TextAlign.Center,
                                     fontWeight = FontWeight(700),
-                                    fontFamily = FontFamily.Monospace
+                                    fontFamily = FontFamily.SansSerif,
+                                    fontSize = 18.sp
                                 )
                                 Text(
                                     modifier = Modifier
@@ -364,7 +370,8 @@ class DetailPersonFragment : ComposeFragment() {
                                     overflow = TextOverflow.Ellipsis,
                                     textAlign = TextAlign.Center,
                                     fontWeight = FontWeight(700),
-                                    fontFamily = FontFamily.Monospace
+                                    fontFamily = FontFamily.Monospace,
+                                    fontSize = 18.sp
                                 )
                             }
                         }
@@ -384,7 +391,8 @@ class DetailPersonFragment : ComposeFragment() {
                                     overflow = TextOverflow.Ellipsis,
                                     textAlign = TextAlign.Center,
                                     fontWeight = FontWeight(700),
-                                    fontFamily = FontFamily.Monospace
+                                    fontFamily = FontFamily.SansSerif,
+                                    fontSize = 18.sp
                                 )
                                 Text(
                                     modifier = Modifier
@@ -399,7 +407,8 @@ class DetailPersonFragment : ComposeFragment() {
                                     overflow = TextOverflow.Ellipsis,
                                     textAlign = TextAlign.Center,
                                     fontWeight = FontWeight(700),
-                                    fontFamily = FontFamily.Monospace
+                                    fontFamily = FontFamily.Monospace,
+                                    fontSize = 18.sp
                                 )
                             }
                         }
@@ -419,7 +428,8 @@ class DetailPersonFragment : ComposeFragment() {
                                     overflow = TextOverflow.Ellipsis,
                                     textAlign = TextAlign.Center,
                                     fontWeight = FontWeight(700),
-                                    fontFamily = FontFamily.Monospace
+                                    fontFamily = FontFamily.SansSerif,
+                                    fontSize = 18.sp
                                 )
                                 Text(
                                     modifier = Modifier
@@ -434,7 +444,8 @@ class DetailPersonFragment : ComposeFragment() {
                                     overflow = TextOverflow.Ellipsis,
                                     textAlign = TextAlign.Center,
                                     fontWeight = FontWeight(700),
-                                    fontFamily = FontFamily.Monospace
+                                    fontFamily = FontFamily.Monospace,
+                                    fontSize = 18.sp
                                 )
                             }
                         }

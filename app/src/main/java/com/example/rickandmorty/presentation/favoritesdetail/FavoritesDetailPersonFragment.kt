@@ -98,6 +98,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
         Column(modifier = Modifier.background(AppTheme.colors.background)) {
             Toolbar(
                 title = stringResource(id = R.string.about_person),
+                subtitle = stringResource(id = R.string.about_person_subtitle),
                 onBackClick = { goToMainScreen() },
                 actions = {
                     IconButton(onClick = {
@@ -171,7 +172,6 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                 interactionSource = remember { MutableInteractionSource() },
                                 onClick = { }),
                         shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin),
-                        border = BorderStroke(2.dp,AppTheme.colors.primary)
                     ) {
                         val painterImage = rememberImagePainter(data = state.person?.avatar)
                         when (painterImage.state) {
@@ -208,7 +208,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                 Column(
                     modifier = Modifier
                         .background(
-                            color = AppTheme.colors.rippleColor,
+                            color = Color(0x20000000),
                             shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
                         )
                         .fillMaxWidth()

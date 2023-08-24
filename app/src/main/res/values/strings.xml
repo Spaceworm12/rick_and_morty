@@ -24,6 +24,8 @@
     <string name="id_person">Идентификатор персонажа:</string>
     <string name="not_identify">Неизвестно</string>
     <string name="about_person">Сведения о персонаже</string>
+    <string name="about_person_subtitle">Подробная информация о персонаже</string>
+    <string name="choose_person_for_info">Нажмите на персонажа для просмотра</string>
 
 
 

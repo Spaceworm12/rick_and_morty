@@ -92,6 +92,7 @@ class PersonListFragment : ComposeFragment() {
         ) {
             Toolbar(
                 title = stringResource(id = R.string.rik_wiki),
+                subtitle = stringResource(id = R.string.choose_person_for_info),
                 elevation = AppTheme.dimens.halfContentMargin,
                 onBackClick = { goBack() },
                 actions = {

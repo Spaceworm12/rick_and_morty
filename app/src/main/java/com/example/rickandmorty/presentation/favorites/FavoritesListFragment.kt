@@ -84,6 +84,7 @@ class FavoritesListFragment : ComposeFragment() {
         ) {
             Toolbar(
                 title = stringResource(id = R.string.rik_wiki),
+                subtitle = stringResource(id = R.string.choose_person_for_info),
                 elevation = AppTheme.dimens.halfContentMargin,
                 onBackClick = { goBack() },
             )
@@ -111,7 +112,7 @@ class FavoritesListFragment : ComposeFragment() {
 
             Row(
                 modifier = Modifier
-                    .border(1.dp,AppTheme.colors.primary)
+                    .border(1.dp, AppTheme.colors.primary)
                     .background(
                         color = AppTheme.colors.rippleColor,
                         shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
