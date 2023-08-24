@@ -12,7 +12,7 @@ interface RickAndMortyApi {
     @GET("character")
     fun getCharactersList(
         @Query("limit") limit: Int,
-        @Query("offset") offset: Int
+        @Query("offset") offset: Int,
     ): Observable<ResultPerson>
 
     @GET("character/{id}")
