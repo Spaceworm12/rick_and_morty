@@ -256,8 +256,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = stringResource(id = R.string.gender_person)
-                                    ?: "Not identified",
+                                text = stringResource(id = R.string.gender_person),
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -272,7 +271,8 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = state.person?.gender.toString() ?: "Not identified",
+                                text = if ((state.person.gender.toString() == "")||(state.person.gender.toString() == "unknown")) {
+                                    stringResource(id = R.string.not_identify)}else{state.person.gender.toString()},
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -291,8 +291,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = stringResource(id = R.string.species_person)
-                                    ?: "Not identified",
+                                text = stringResource(id = R.string.species_person),
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -307,7 +306,10 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = state.person?.species.toString() ?: "Not identified",
+                                text = if ((state.person.species.toString() != "")) {
+                                    state.person.species.toString()
+                                }else{
+                                    stringResource(id = R.string.not_identify)},
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -326,8 +328,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = stringResource(id = R.string.type_person)
-                                    ?: "Not identified",
+                                text = stringResource(id = R.string.type_person),
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -342,7 +343,10 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = state.person?.type.toString() ?: "Not identified",
+                                text = if ((state.person.type.toString() != "")) {
+                                    state.person.type.toString()
+                                }else{
+                                    stringResource(id = R.string.not_identify)},
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -361,8 +365,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = stringResource(id = R.string.status_person)
-                                    ?: "Not identified",
+                                text = stringResource(id = R.string.status_person),
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -377,7 +380,8 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = state.person?.status.toString() ?: "Not identified",
+                                text = if ((state.person.status.toString() == "")||(state.person.status.toString() == "unknown")) {
+                                    stringResource(id = R.string.not_identify)}else{state.person.status.toString()},
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
