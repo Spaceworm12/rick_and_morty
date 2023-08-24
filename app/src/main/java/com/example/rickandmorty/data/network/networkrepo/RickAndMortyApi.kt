@@ -1,6 +1,7 @@
 package com.example.rickandmorty.data.network.networkrepo
 
 import com.example.rickandmorty.data.network.person.Person
+import com.example.rickandmorty.data.network.person.ResultInfo
 import com.example.rickandmorty.data.network.person.ResultPerson
 import io.reactivex.Observable
 import retrofit2.http.GET
@@ -19,4 +20,8 @@ interface RickAndMortyApi {
     fun getPersonInfo(
         @Path("id") id: Int
     ): Observable<Person>
+    @GET("character/page")
+    fun getPageInfo(
+        @Query("page") limit: Int,
+    ): Observable<ResultInfo>
 }

@@ -15,7 +15,7 @@ class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepositor
     private val personMapper = PersonMapper(LocalRepositoryImplement(App.dao(), App.getDb()))
 
     override fun getPersons(): Observable<Resource<List<Person>>> {
-        return api.getCharactersList(20, 20)
+        return api.getCharactersList(20,20)
             .map { it.results }
             .map<Resource<List<Person>>> {
                 Resource.Data(personMapper.transformPersonToPresentation(it))
