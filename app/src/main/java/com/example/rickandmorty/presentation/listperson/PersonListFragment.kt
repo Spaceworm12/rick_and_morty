@@ -2,10 +2,13 @@ package com.example.rickandmorty.presentation.listperson
 
 import android.content.res.Configuration
 import android.widget.Toast
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,12 +36,18 @@ import androidx.compose.material.icons.filled.Grade
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,6 +55,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
@@ -119,6 +129,8 @@ class PersonListFragment : ComposeFragment() {
     @Composable
     private fun Person(person: Person) {
         viewModel.submitUIEvent(PersonListEvents.CheckStatus(person))
+        var selected by remember { mutableStateOf(false) }
+        val scale by animateFloatAsState(if (selected) 0.9f else 1f, label = "")
         Column(
             modifier = Modifier
                 .padding(AppTheme.dimens.contentMargin)
@@ -244,7 +256,18 @@ class PersonListFragment : ComposeFragment() {
             FloatingActionButton(
                 modifier = Modifier
                     .size(fabSize)
-                    .padding(AppTheme.dimens.sideMargin),
+                    .padding(AppTheme.dimens.sideMargin)
+                    .scale(scale)
+                    .pointerInput(Unit) {
+                        while (true) {
+                            awaitPointerEventScope {
+                                awaitFirstDown(false)
+                                selected = true
+                                waitForUpOrCancellation()
+                                selected = false
+                            }
+                        }
+                    },
                 backgroundColor = AppTheme.colors.primary,
                 onClick = {
                     if (!person.inFavorites) {
