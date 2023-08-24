@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -291,7 +290,7 @@ class DetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = state.person?.id.toString() ?: "Not identified",
+                                text = state.person.id.toString(),
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -310,8 +309,7 @@ class DetailPersonFragment : ComposeFragment() {
                                             bottom = AppTheme.dimens.halfContentMargin,
                                             top = AppTheme.dimens.halfContentMargin
                                         ),
-                                    text = stringResource(id = R.string.gender_person)
-                                        ?: "Not identified",
+                                    text = stringResource(id = R.string.gender_person),
                                     style = AppTheme.typography.body1,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
@@ -327,7 +325,10 @@ class DetailPersonFragment : ComposeFragment() {
                                             bottom = AppTheme.dimens.halfContentMargin,
                                             top = AppTheme.dimens.halfContentMargin
                                         ),
-                                    text = state.person?.gender.toString() ?: "Not identified",
+                                    text = if ((state.person.gender.toString() != "")) {
+                                        state.person.gender.toString()
+                                    }else{
+                                        stringResource(id = R.string.not_identify)},
                                     style = AppTheme.typography.body1,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
@@ -347,8 +348,7 @@ class DetailPersonFragment : ComposeFragment() {
                                             bottom = AppTheme.dimens.halfContentMargin,
                                             top = AppTheme.dimens.halfContentMargin
                                         ),
-                                    text = stringResource(id = R.string.species_person)
-                                        ?: "Not identified",
+                                    text = stringResource(id = R.string.species_person),
                                     style = AppTheme.typography.body1,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
@@ -364,7 +364,10 @@ class DetailPersonFragment : ComposeFragment() {
                                             bottom = AppTheme.dimens.halfContentMargin,
                                             top = AppTheme.dimens.halfContentMargin
                                         ),
-                                    text = state.person?.species.toString() ?: "Not identified",
+                                    text = if ((state.person.species.toString() != "")) {
+                                        state.person.species.toString()
+                                    }else{
+                                        stringResource(id = R.string.not_identify)},
                                     style = AppTheme.typography.body1,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
@@ -384,8 +387,7 @@ class DetailPersonFragment : ComposeFragment() {
                                             bottom = AppTheme.dimens.halfContentMargin,
                                             top = AppTheme.dimens.halfContentMargin
                                         ),
-                                    text = stringResource(id = R.string.type_person)
-                                        ?: "Not identified",
+                                    text = stringResource(id = R.string.type_person),
                                     style = AppTheme.typography.body1,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
@@ -401,7 +403,10 @@ class DetailPersonFragment : ComposeFragment() {
                                             bottom = AppTheme.dimens.halfContentMargin,
                                             top = AppTheme.dimens.halfContentMargin
                                         ),
-                                    text = state.person?.type.toString() ?: "Not identified",
+                                    text = if ((state.person.type.toString() != "")) {
+                                        state.person.type.toString()
+                                    }else{
+                                        stringResource(id = R.string.not_identify)},
                                     style = AppTheme.typography.body1,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
@@ -421,8 +426,7 @@ class DetailPersonFragment : ComposeFragment() {
                                             bottom = AppTheme.dimens.halfContentMargin,
                                             top = AppTheme.dimens.halfContentMargin
                                         ),
-                                    text = stringResource(id = R.string.status_person)
-                                        ?: "Not identified",
+                                    text = stringResource(id = R.string.status_person),
                                     style = AppTheme.typography.body1,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
@@ -438,7 +442,10 @@ class DetailPersonFragment : ComposeFragment() {
                                             bottom = AppTheme.dimens.halfContentMargin,
                                             top = AppTheme.dimens.halfContentMargin
                                         ),
-                                    text = state.person?.status.toString() ?: "Not identified",
+                                    text=if((state.person.status.toString()!="")) {
+                                        state.person.status.toString()
+                                    }else{
+                                        stringResource(id = R.string.not_identify)},
                                     style = AppTheme.typography.body1,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
@@ -450,7 +457,7 @@ class DetailPersonFragment : ComposeFragment() {
                             }
                         }
                     }
-                    if (state.person?.id != 1) {
+                    if (state.person.id != 1) {
                         Box(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.BottomCenter

@@ -229,7 +229,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                             overflow = TextOverflow.Ellipsis,
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight(700),
-                            fontFamily = FontFamily.Monospace
+                            fontFamily = FontFamily.SansSerif
                         )
                         Text(
                             modifier = Modifier
@@ -263,7 +263,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                 overflow = TextOverflow.Ellipsis,
                                 textAlign = TextAlign.Center,
                                 fontWeight = FontWeight(700),
-                                fontFamily = FontFamily.Monospace
+                                fontFamily = FontFamily.SansSerif
                             )
                             Text(
                                 modifier = Modifier
@@ -298,7 +298,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                 overflow = TextOverflow.Ellipsis,
                                 textAlign = TextAlign.Center,
                                 fontWeight = FontWeight(700),
-                                fontFamily = FontFamily.Monospace
+                                fontFamily = FontFamily.SansSerif
                             )
                             Text(
                                 modifier = Modifier
@@ -333,7 +333,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                 overflow = TextOverflow.Ellipsis,
                                 textAlign = TextAlign.Center,
                                 fontWeight = FontWeight(700),
-                                fontFamily = FontFamily.Monospace
+                                fontFamily = FontFamily.SansSerif
                             )
                             Text(
                                 modifier = Modifier
@@ -368,7 +368,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                 overflow = TextOverflow.Ellipsis,
                                 textAlign = TextAlign.Center,
                                 fontWeight = FontWeight(700),
-                                fontFamily = FontFamily.Monospace
+                                fontFamily = FontFamily.SansSerif
                             )
                             Text(
                                 modifier = Modifier
