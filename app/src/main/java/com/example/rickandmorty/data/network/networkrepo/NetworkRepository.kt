@@ -11,7 +11,5 @@ interface NetworkRepository {
 
     fun getPersonDetail(id: Int): Observable<Resource<Person>>
 
-    fun getInfo(): Observable<Resource<Info>>
-
 
 }

@@ -46,7 +46,7 @@ class PersonListViewModel(
     }
 
     private fun loadPersons() {
-        networkRepository.getPersons(12)
+        networkRepository.getPersons()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { resource ->
                 when (resource) {

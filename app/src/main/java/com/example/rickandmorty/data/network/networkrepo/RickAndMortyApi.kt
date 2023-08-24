@@ -20,6 +20,7 @@ interface RickAndMortyApi {
     fun getPersonInfo(
         @Path("id") id: Int
     ): Observable<Person>
+
     @GET("character/page")
     fun getPageInfo(
         @Query("page") limit: Int,
