@@ -70,6 +70,7 @@ import com.example.rickandmorty.presentation.detailperson.DetailPersonFragment
 import com.example.rickandmorty.presentation.favorites.FavoritesListFragment
 import com.example.rickandmorty.presentation.model.modelperson.Person
 
+
 class PersonListFragment : ComposeFragment() {
 
     private val viewModel: PersonListViewModel by lazy {
@@ -92,6 +93,9 @@ class PersonListFragment : ComposeFragment() {
 
     @Composable
     private fun PersonListScreen(state: PersonListViewState) {
+        val fabSize = 70.dp
+        var selected by remember { mutableStateOf(false) }
+        val scale by animateFloatAsState(if (selected) 0.9f else 1f, label = "")
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -136,9 +140,19 @@ class PersonListFragment : ComposeFragment() {
                     .wrapContentSize()
                     .background(
                         color = if(state.currentPage<42){AppTheme.colors.primary}else{Color.Transparent},
-                        shape = RoundedCornerShape(70.dp)
+                        shape = RoundedCornerShape(fabSize)
                     )
                     .border(1.dp,if(state.currentPage<42){AppTheme.colors.secondary}else{Color.Transparent}, RoundedCornerShape(70.dp))
+                    .pointerInput(Unit) {
+                        while (true) {
+                            awaitPointerEventScope {
+                                awaitFirstDown(false)
+                                selected = true
+                                waitForUpOrCancellation()
+                                selected = false
+                            }
+                        }
+                    },
             ) {
                 Icon(
                     Icons.Filled.ArrowForwardIos,
@@ -165,6 +179,16 @@ class PersonListFragment : ComposeFragment() {
                         shape = RoundedCornerShape(70.dp)
                     )
                     .border(1.dp,if(state.currentPage!=1){AppTheme.colors.secondary}else{Color.Transparent}, RoundedCornerShape(70.dp))
+                    .pointerInput(Unit) {
+                        while (true) {
+                            awaitPointerEventScope {
+                                awaitFirstDown(false)
+                                selected = true
+                                waitForUpOrCancellation()
+                                selected = false
+                            }
+                        }
+                    },
             ) {
                 Icon(
                     Icons.Filled.ArrowBackIosNew,
@@ -179,9 +203,9 @@ class PersonListFragment : ComposeFragment() {
     @OptIn(ExperimentalCoilApi::class)
     @Composable
     private fun Person(person: Person) {
-        viewModel.submitUIEvent(PersonListEvents.CheckStatus(person))
         var selected by remember { mutableStateOf(false) }
         val scale by animateFloatAsState(if (selected) 0.9f else 1f, label = "")
+        viewModel.submitUIEvent(PersonListEvents.CheckStatus(person))
         Column(
             modifier = Modifier
                 .padding(AppTheme.dimens.contentMargin)
