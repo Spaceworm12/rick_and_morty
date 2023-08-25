@@ -26,6 +26,7 @@ fun PrimaryButton(
     isEnabled: Boolean = true,
     minWidth: Dp = 180.dp,
     minHeight: Dp = 48.dp,
+    isVisible:Boolean = true,
     color: Color = AppTheme.colors.secondary,
     bottomPadding: Dp = AppTheme.dimens.sideMargin,
     onClick: () -> Unit,

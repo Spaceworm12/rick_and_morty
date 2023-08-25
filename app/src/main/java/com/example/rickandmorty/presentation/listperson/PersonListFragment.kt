@@ -28,13 +28,14 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.DisabledByDefault
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Grade
 import androidx.compose.material.icons.filled.Help
-import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -45,8 +46,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -55,7 +54,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
@@ -65,7 +63,6 @@ import com.example.rickandmorty.presentation.category.CategoryListFragment
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
-import com.example.rickandmorty.presentation.composecomponents.buttons.PrimaryButton
 import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlock
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
@@ -103,7 +100,7 @@ class PersonListFragment : ComposeFragment() {
         ) {
             Toolbar(
                 title = stringResource(id = R.string.rik_wiki),
-                subtitle = stringResource(id = R.string.choose_person_for_info),
+                subtitle = (stringResource(id = R.string.page) + " " + state.currentPage.toString() + "/42"),
                 elevation = AppTheme.dimens.halfContentMargin,
                 onBackClick = { goBack() },
                 actions = {
@@ -114,21 +111,68 @@ class PersonListFragment : ComposeFragment() {
                     }
                 }
             )
-            PrimaryButton(
-                text = stringResource(id = R.string.go_back),
-                isEnabled = true,
-                onClick = {
-                    viewModel.submitUIEvent(PersonListEvents.ToNextPage(state.currentPage+1))
-                    state.currentPage+=1
-                })
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(count = 1),
-            ) {
-                state.persons.forEach { person ->
-                    item {
-                        Person(person)
+            Box() {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(count = 1),
+                ) {
+                    state.persons.forEach { person ->
+                        item {
+                            Person(person)
+                        }
                     }
                 }
+            }
+        }
+        Box(
+            contentAlignment = Alignment.BottomEnd,
+            modifier = Modifier.padding(end = 50.dp, bottom = 10.dp)
+        ) {
+            IconButton(
+                onClick = {
+                    viewModel.submitUIEvent(PersonListEvents.ToNextPage(state.currentPage + 1))
+                    state.currentPage += 1
+                },
+                enabled = state.currentPage < 42,
+                modifier = Modifier
+                    .wrapContentSize()
+                    .background(
+                        color = AppTheme.colors.primary,
+                        shape = RoundedCornerShape(70.dp)
+                    )
+                    .border(1.dp, AppTheme.colors.secondary, RoundedCornerShape(70.dp))
+            ) {
+                Icon(
+                    Icons.Filled.ArrowForwardIos,
+                    contentDescription = "",
+                    Modifier.size(55.dp),
+                    tint = AppTheme.colors.secondary
+                )
+            }
+        }
+        Box(
+            contentAlignment = Alignment.BottomStart,
+            modifier = Modifier.padding(start = 50.dp, bottom = 10.dp)
+        ) {
+            IconButton(
+                onClick = {
+                    viewModel.submitUIEvent(PersonListEvents.ToNextPage(state.currentPage + 1))
+                    state.currentPage += 1
+                },
+                enabled = state.currentPage < 42,
+                modifier = Modifier
+                    .wrapContentSize()
+                    .background(
+                        color = AppTheme.colors.primary,
+                        shape = RoundedCornerShape(70.dp)
+                    )
+                    .border(1.dp, AppTheme.colors.secondary, RoundedCornerShape(70.dp))
+            ) {
+                Icon(
+                    Icons.Filled.ArrowBackIosNew,
+                    contentDescription = "",
+                    Modifier.size(55.dp),
+                    tint = AppTheme.colors.secondary
+                )
             }
         }
     }
@@ -211,7 +255,10 @@ class PersonListFragment : ComposeFragment() {
                         textAlign = TextAlign.Center,
                     )
                     Box(contentAlignment = Alignment.Center) {
-                        Column(modifier=Modifier.wrapContentSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+                        Column(
+                            modifier = Modifier.wrapContentSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
                             Text(
                                 modifier = Modifier
                                     .fillMaxWidth()

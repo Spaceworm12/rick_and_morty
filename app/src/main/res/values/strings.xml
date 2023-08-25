@@ -6,6 +6,8 @@
     <string name="go_back">Назад</string>
     <string name="save">Сохранить</string>
     <string name="delete">Удалить</string>
+    <string name="next_page">Следующая страница</string>
+    <string name="back_page">Предыдущая страница</string>
     <string name="settings">Настройки</string>
     <string name="first_theme">Первая тема</string>
     <string name="second_theme">Вторая тема</string>
@@ -24,6 +26,7 @@
     <string name="id_person">Идентификатор персонажа:</string>
     <string name="not_identify">Неизвестно</string>
     <string name="about_person">Сведения о персонаже</string>
+    <string name="page">Страница</string>
     <string name="about_person_subtitle">Подробная информация о персонаже</string>
     <string name="choose_person_for_info">Нажмите на персонажа для просмотра</string>
 
