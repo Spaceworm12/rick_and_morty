@@ -128,10 +128,10 @@ class PersonListFragment : ComposeFragment() {
         ) {
             IconButton(
                 onClick = {
-                    viewModel.submitUIEvent(PersonListEvents.ToNextPage(state.currentPage + 1))
                     state.currentPage += 1
+                    viewModel.submitUIEvent(PersonListEvents.ToNextPage(state.currentPage))
                 },
-                enabled = state.currentPage < 42,
+                enabled = (state.currentPage < 42)&&(!state.isLoading),
                 modifier = Modifier
                     .wrapContentSize()
                     .background(
@@ -154,10 +154,10 @@ class PersonListFragment : ComposeFragment() {
         ) {
             IconButton(
                 onClick = {
-                    viewModel.submitUIEvent(PersonListEvents.ToNextPage(state.currentPage - 1))
                     state.currentPage -= 1
+                    viewModel.submitUIEvent(PersonListEvents.ToNextPage(state.currentPage))
                 },
-                enabled = state.currentPage!=1,
+                enabled = (state.currentPage!=1)&&(!state.isLoading),
                 modifier = Modifier
                     .wrapContentSize()
                     .background(
