@@ -10,20 +10,18 @@ import retrofit2.http.Query
 
 
 interface RickAndMortyApi {
-    @GET("character")
+    @GET("character/")
     fun getCharactersList(
+        @Query("page") page: Int,
     ): Observable<ResultPerson>
+    @GET("character")
+    fun getInfo(
+//        @Query("info") info: Int,
+    ): Observable<ResultInfo>
 
     @GET("character/{id}")
     fun getPersonInfo(
         @Path("id") id: Int
     ): Observable<Person>
 
-    @GET("character/")
-    fun getInfo(
-//        @Query("count") count: Int,
-        @Query("page") pages: Int,
-//        @Query("next") next: Int,
-//        @Query("prev") prev: Int,
-    ): Observable<ResultInfo>
 }

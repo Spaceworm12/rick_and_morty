@@ -7,8 +7,8 @@ import io.reactivex.Observable
 
 interface NetworkRepository {
 
-    fun getPersons(): Observable<Resource<List<Person>>>
-    fun getInfo(page:Int): Observable<Resource<com.example.rickandmorty.presentation.model.modelperson.Info>>
+    fun getPersons(page:Int): Observable<Resource<List<Person>>>
+    fun getInfo(): Observable<Resource<com.example.rickandmorty.presentation.model.modelperson.Info>>
 //    fun toPage(page:Int): Observable<Resource<com.example.rickandmorty.presentation.model.modelperson.Info>>
 
     fun getPersonDetail(id: Int): Observable<Resource<Person>>

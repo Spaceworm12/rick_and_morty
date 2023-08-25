@@ -38,17 +38,17 @@ class PersonListViewModel(
             is PersonListEvents.AddToFavorite -> savePersonToListFavorites(event.person)
             is PersonListEvents.DeleteFromFavorites -> deleteFromFavorites(event.id)
             is PersonListEvents.CheckStatus -> checkStatusPerson(event.person)
-            is PersonListEvents.ToNextPage -> loadInfo(event.page)
+            is PersonListEvents.ToNextPage -> loadPersons(event.page)
         }
     }
 
     init {
-        loadPersons()
-        loadInfo(viewState.currentPage)
+        loadPersons(viewState.currentPage)
+        loadInfo()
     }
 
-    private fun loadPersons() {
-        networkRepository.getPersons()
+    private fun loadPersons(page:Int) {
+        networkRepository.getPersons(page)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { resource ->
                 when (resource) {
@@ -62,8 +62,8 @@ class PersonListViewModel(
             }
             .addTo(disposables)
     }
-    private fun loadInfo(page:Int) {
-        networkRepository.getInfo(page)
+    private fun loadInfo() {
+        networkRepository.getInfo()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { resource ->
                 when (resource) {

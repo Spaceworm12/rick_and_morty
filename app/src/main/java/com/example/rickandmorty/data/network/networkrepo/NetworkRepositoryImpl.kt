@@ -15,8 +15,8 @@ class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepositor
 
     private val personMapper = PersonMapper(LocalRepositoryImplement(App.dao(), App.getDb()))
 
-    override fun getPersons(): Observable<Resource<List<Person>>> {
-        return api.getCharactersList()
+    override fun getPersons(page:Int): Observable<Resource<List<Person>>> {
+        return api.getCharactersList(page)
             .map { it.results }
             .map<Resource<List<Person>>> {
                 Resource.Data(personMapper.transformPersonToPresentation(it))
@@ -25,8 +25,8 @@ class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepositor
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())
     }
-    override fun getInfo(page:Int): Observable<Resource<Info>> {
-        return api.getInfo(page)
+    override fun getInfo(): Observable<Resource<Info>> {
+        return api.getInfo()
             .map { it.result }
             .map<Resource<Info>> {
                 Resource.Data(personMapper.transformInfoForPresentation(it))
