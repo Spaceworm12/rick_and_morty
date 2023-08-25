@@ -38,11 +38,13 @@ class PersonListViewModel(
             is PersonListEvents.AddToFavorite -> savePersonToListFavorites(event.person)
             is PersonListEvents.DeleteFromFavorites -> deleteFromFavorites(event.id)
             is PersonListEvents.CheckStatus -> checkStatusPerson(event.person)
+            is PersonListEvents.ToNextPage -> loadInfo(event.page)
         }
     }
 
     init {
         loadPersons()
+        loadInfo(viewState.currentPage)
     }
 
     private fun loadPersons() {
@@ -60,6 +62,36 @@ class PersonListViewModel(
             }
             .addTo(disposables)
     }
+    private fun loadInfo(page:Int) {
+        networkRepository.getInfo(page)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { resource ->
+                when (resource) {
+                    Resource.Loading -> viewState = viewState.copy(isLoading = true)
+                    is Resource.Data -> {
+                        viewState = viewState.copy(isLoading = false)
+                        viewState = viewState.copy(pageInfo = (resource.data))
+                    }
+                    is Resource.Error -> viewState = viewState.copy(isLoading = false)
+                }
+            }
+            .addTo(disposables)
+    }
+//    private fun goToNextPage(next:String) {
+//        networkRepository.toPage(viewState.pageInfo.next)
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe { resource ->
+//                when (resource) {
+//                    Resource.Loading -> viewState = viewState.copy(isLoading = true)
+//                    is Resource.Data -> {
+//                        viewState = viewState.copy(isLoading = false)
+//                        viewState = viewState.copy(pageInfo = (resource.data))
+//                    }
+//                    is Resource.Error -> viewState = viewState.copy(isLoading = false)
+//                }
+//            }
+//            .addTo(disposables)
+//    }
     private fun checkStatusPerson(person:Person) {
         repo.getStatusPerson(person.id)
             .observeOn(AndroidSchedulers.mainThread())

@@ -1,8 +1,9 @@
 package com.example.rickandmorty.presentation.model.modelperson
 
-import com.example.rickandmorty.data.network.person.Person
+import com.example.rickandmorty.data.network.person.*
 import com.example.rickandmorty.data.repository.LocalRepository
 import com.example.rickandmorty.presentation.model.modelperson.Person as PersonPresentation
+import com.example.rickandmorty.presentation.model.modelperson.Info as InfoPresentation
 
 class PersonMapper(private val localRepo: LocalRepository) {
 
@@ -31,6 +32,14 @@ class PersonMapper(private val localRepo: LocalRepository) {
 
     fun transformPersonToPresentation(characters: List<Person>): List<com.example.rickandmorty.presentation.model.modelperson.Person> {
         return characters.map { transformPersonForPresentation(it) }
+    }
+
+    fun transformInfoForPresentation(model:Info): InfoPresentation {
+        return InfoPresentation(
+            count = model.count,
+            pages = model.pages,
+            next = model.next,
+            prev = model.prev,)
     }
 }
 

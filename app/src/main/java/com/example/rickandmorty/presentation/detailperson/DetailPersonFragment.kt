@@ -504,7 +504,7 @@ class DetailPersonFragment : ComposeFragment() {
             .addToBackStack("")
             .commit()
 
-    @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
+    @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO,showSystemUi = true)
     @Composable
     private fun DetailPersonScreenPreview() {
         RickAndMortyMainTheme {
@@ -521,17 +521,6 @@ class DetailPersonFragment : ComposeFragment() {
                 )
             val state =
                 DetailPersonViewState(isLoading = false, exit = false, person = Person(id = 0))
-            val person2 = Person(
-                name = "-",
-                url = "-",
-                avatar = "-",
-                status = "-",
-                species = "-",
-                type = "-",
-                gender = "-",
-                id = 1
-            )
-
             DetailPersonListScreen(state)
         }
     }

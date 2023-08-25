@@ -2,6 +2,7 @@ package com.example.rickandmorty.data.network.networkrepo
 
 
 import com.example.rickandmorty.application.App
+import com.example.rickandmorty.presentation.model.modelperson.Info
 import com.example.rickandmorty.data.repository.LocalRepositoryImplement
 import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.presentation.model.modelperson.PersonMapper
@@ -15,7 +16,7 @@ class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepositor
     private val personMapper = PersonMapper(LocalRepositoryImplement(App.dao(), App.getDb()))
 
     override fun getPersons(): Observable<Resource<List<Person>>> {
-        return api.getCharactersList(20,20)
+        return api.getCharactersList()
             .map { it.results }
             .map<Resource<List<Person>>> {
                 Resource.Data(personMapper.transformPersonToPresentation(it))
@@ -24,6 +25,26 @@ class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepositor
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())
     }
+    override fun getInfo(page:Int): Observable<Resource<Info>> {
+        return api.getInfo(page)
+            .map { it.result }
+            .map<Resource<Info>> {
+                Resource.Data(personMapper.transformInfoForPresentation(it))
+            }
+            .onErrorReturn { Resource.Error(it) }
+            .startWith(Resource.Loading)
+            .subscribeOn(Schedulers.io())
+    }
+//    override fun toPage(page:Int): Observable<Resource<Info>> {
+//        return api.getInfoNext(page)
+//            .map { it.result }
+//            .map<Resource<Info>> {
+//                Resource.Data(personMapper.transformInfoForPresentation(it))
+//            }
+//            .onErrorReturn { Resource.Error(it) }
+//            .startWith(Resource.Loading)
+//            .subscribeOn(Schedulers.io())
+//    }
 
     override fun getPersonDetail(id: Int): Observable<Resource<Person>> {
         return api.getPersonInfo(id)

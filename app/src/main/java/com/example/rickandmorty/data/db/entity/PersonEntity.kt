@@ -18,3 +18,9 @@ data class PersonEntity(
     val gender: String? = "",
     val inFavorites: Boolean = false,
 )
+data class Info(
+    val count: Int,
+    val pages: Int,
+    val next: String,
+    val prev: String,
+)

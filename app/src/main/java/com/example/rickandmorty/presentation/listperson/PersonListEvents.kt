@@ -6,4 +6,5 @@ sealed class PersonListEvents {
     class AddToFavorite(val person: Person) : PersonListEvents()
     class DeleteFromFavorites(val id: Int) : PersonListEvents()
     class CheckStatus(val person: Person) : PersonListEvents()
+    class ToNextPage(val page: Int) : PersonListEvents()
 }

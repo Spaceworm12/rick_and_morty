@@ -65,6 +65,7 @@ import com.example.rickandmorty.presentation.category.CategoryListFragment
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
+import com.example.rickandmorty.presentation.composecomponents.buttons.PrimaryButton
 import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlock
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
@@ -113,6 +114,13 @@ class PersonListFragment : ComposeFragment() {
                     }
                 }
             )
+            PrimaryButton(
+                text = stringResource(id = R.string.go_back),
+                isEnabled = true,
+                onClick = {
+                    viewModel.submitUIEvent(PersonListEvents.ToNextPage(state.currentPage+1))
+                    state.currentPage+=1
+                })
             LazyVerticalGrid(
                 columns = GridCells.Fixed(count = 1),
             ) {

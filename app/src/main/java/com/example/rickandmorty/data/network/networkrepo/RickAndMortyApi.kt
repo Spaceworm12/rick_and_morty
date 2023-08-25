@@ -12,8 +12,6 @@ import retrofit2.http.Query
 interface RickAndMortyApi {
     @GET("character")
     fun getCharactersList(
-        @Query("limit") limit: Int,
-        @Query("offset") offset: Int,
     ): Observable<ResultPerson>
 
     @GET("character/{id}")
@@ -21,8 +19,11 @@ interface RickAndMortyApi {
         @Path("id") id: Int
     ): Observable<Person>
 
-    @GET("character/page")
-    fun getPageInfo(
-        @Query("page") limit: Int,
+    @GET("character/")
+    fun getInfo(
+//        @Query("count") count: Int,
+        @Query("page") pages: Int,
+//        @Query("next") next: Int,
+//        @Query("prev") prev: Int,
     ): Observable<ResultInfo>
 }
