@@ -70,7 +70,6 @@ import com.example.rickandmorty.presentation.detailperson.DetailPersonFragment
 import com.example.rickandmorty.presentation.favorites.FavoritesListFragment
 import com.example.rickandmorty.presentation.model.modelperson.Person
 
-
 class PersonListFragment : ComposeFragment() {
 
     private val viewModel: PersonListViewModel by lazy {
@@ -136,16 +135,16 @@ class PersonListFragment : ComposeFragment() {
                 modifier = Modifier
                     .wrapContentSize()
                     .background(
-                        color = AppTheme.colors.primary,
+                        color = if(state.currentPage<42){AppTheme.colors.primary}else{Color.Transparent},
                         shape = RoundedCornerShape(70.dp)
                     )
-                    .border(1.dp, AppTheme.colors.secondary, RoundedCornerShape(70.dp))
+                    .border(1.dp,if(state.currentPage<42){AppTheme.colors.secondary}else{Color.Transparent}, RoundedCornerShape(70.dp))
             ) {
                 Icon(
                     Icons.Filled.ArrowForwardIos,
                     contentDescription = "",
                     Modifier.size(55.dp),
-                    tint = AppTheme.colors.secondary
+                    tint = if(state.currentPage<42){AppTheme.colors.secondary}else{Color.Transparent}
                 )
             }
         }
@@ -155,23 +154,23 @@ class PersonListFragment : ComposeFragment() {
         ) {
             IconButton(
                 onClick = {
-                    viewModel.submitUIEvent(PersonListEvents.ToNextPage(state.currentPage + 1))
-                    state.currentPage += 1
+                    viewModel.submitUIEvent(PersonListEvents.ToNextPage(state.currentPage - 1))
+                    state.currentPage -= 1
                 },
-                enabled = state.currentPage < 42,
+                enabled = state.currentPage!=1,
                 modifier = Modifier
                     .wrapContentSize()
                     .background(
-                        color = AppTheme.colors.primary,
+                        color = if(state.currentPage!=1){AppTheme.colors.primary}else{Color.Transparent},
                         shape = RoundedCornerShape(70.dp)
                     )
-                    .border(1.dp, AppTheme.colors.secondary, RoundedCornerShape(70.dp))
+                    .border(1.dp,if(state.currentPage!=1){AppTheme.colors.secondary}else{Color.Transparent}, RoundedCornerShape(70.dp))
             ) {
                 Icon(
                     Icons.Filled.ArrowBackIosNew,
                     contentDescription = "",
                     Modifier.size(55.dp),
-                    tint = AppTheme.colors.secondary
+                    tint = if(state.currentPage!=1){AppTheme.colors.secondary}else{Color.Transparent}
                 )
             }
         }
@@ -218,7 +217,6 @@ class PersonListFragment : ComposeFragment() {
                                     .shimmerBackground(RoundedCornerShape(AppTheme.dimens.halfContentMargin))
                             )
                         }
-
                         is ImagePainter.State.Error -> {
                             Image(
                                 painter = painterResource(id = android.R.drawable.stat_notify_error),
@@ -228,7 +226,6 @@ class PersonListFragment : ComposeFragment() {
                                 contentScale = ContentScale.Crop
                             )
                         }
-
                         else -> {
                             Image(
                                 painter = painterImage,

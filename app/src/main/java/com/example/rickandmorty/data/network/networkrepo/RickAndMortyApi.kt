@@ -14,10 +14,9 @@ interface RickAndMortyApi {
     fun getCharactersList(
         @Query("page") page: Int,
     ): Observable<ResultPerson>
+
     @GET("character")
-    fun getInfo(
-//        @Query("info") info: Int,
-    ): Observable<ResultInfo>
+    fun getInfo(): Observable<ResultInfo>
 
     @GET("character/{id}")
     fun getPersonInfo(

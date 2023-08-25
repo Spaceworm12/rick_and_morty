@@ -10,11 +10,9 @@ import com.example.rickandmorty.util.Resource
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
-
 class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepository {
 
     private val personMapper = PersonMapper(LocalRepositoryImplement(App.dao(), App.getDb()))
-
     override fun getPersons(page:Int): Observable<Resource<List<Person>>> {
         return api.getCharactersList(page)
             .map { it.results }
@@ -35,17 +33,6 @@ class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepositor
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())
     }
-//    override fun toPage(page:Int): Observable<Resource<Info>> {
-//        return api.getInfoNext(page)
-//            .map { it.result }
-//            .map<Resource<Info>> {
-//                Resource.Data(personMapper.transformInfoForPresentation(it))
-//            }
-//            .onErrorReturn { Resource.Error(it) }
-//            .startWith(Resource.Loading)
-//            .subscribeOn(Schedulers.io())
-//    }
-
     override fun getPersonDetail(id: Int): Observable<Resource<Person>> {
         return api.getPersonInfo(id)
             .map<Resource<Person>> {
