@@ -222,9 +222,7 @@ class DetailPersonFragment : ComposeFragment() {
                             shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin),
 //                            border = BorderStroke(2.dp,AppTheme.colors.primary)
                         ) {
-
                             val painterImage = rememberImagePainter(data = state.person?.avatar)
-
                             when (painterImage.state) {
                                 is ImagePainter.State.Loading -> {
                                     Box(
@@ -300,7 +298,6 @@ class DetailPersonFragment : ComposeFragment() {
                                 fontSize = 18.sp
                             )
                         }
-                        Column {
                             Row {
                                 Text(
                                     modifier = Modifier
@@ -325,8 +322,11 @@ class DetailPersonFragment : ComposeFragment() {
                                             bottom = AppTheme.dimens.halfContentMargin,
                                             top = AppTheme.dimens.halfContentMargin
                                         ),
-                                    text = if ((state.person.gender.toString() == "")||(state.person.gender.toString() == "unknown")) {
-                                        stringResource(id = R.string.not_identify)}else{state.person.gender.toString()},
+                                    text = if ((state.person.gender.toString() == "") || (state.person.gender.toString() == "unknown")) {
+                                        stringResource(id = R.string.not_identify)
+                                    } else {
+                                        state.person.gender.toString()
+                                    },
                                     style = AppTheme.typography.body1,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
@@ -336,8 +336,6 @@ class DetailPersonFragment : ComposeFragment() {
                                     fontSize = 18.sp
                                 )
                             }
-                        }
-                        Column {
                             Row {
                                 Text(
                                     modifier = Modifier
@@ -364,8 +362,9 @@ class DetailPersonFragment : ComposeFragment() {
                                         ),
                                     text = if ((state.person.species.toString() != "")) {
                                         state.person.species.toString()
-                                    }else{
-                                        stringResource(id = R.string.not_identify)},
+                                    } else {
+                                        stringResource(id = R.string.not_identify)
+                                    },
                                     style = AppTheme.typography.body1,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
@@ -375,8 +374,6 @@ class DetailPersonFragment : ComposeFragment() {
                                     fontSize = 18.sp
                                 )
                             }
-                        }
-                        Column {
                             Row {
                                 Text(
                                     modifier = Modifier
@@ -403,8 +400,9 @@ class DetailPersonFragment : ComposeFragment() {
                                         ),
                                     text = if ((state.person.type.toString() != "")) {
                                         state.person.type.toString()
-                                    }else{
-                                        stringResource(id = R.string.not_identify)},
+                                    } else {
+                                        stringResource(id = R.string.not_identify)
+                                    },
                                     style = AppTheme.typography.body1,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
@@ -414,8 +412,6 @@ class DetailPersonFragment : ComposeFragment() {
                                     fontSize = 18.sp
                                 )
                             }
-                        }
-                        Column {
                             Row {
                                 Text(
                                     modifier = Modifier
@@ -440,8 +436,11 @@ class DetailPersonFragment : ComposeFragment() {
                                             bottom = AppTheme.dimens.halfContentMargin,
                                             top = AppTheme.dimens.halfContentMargin
                                         ),
-                                    text = if ((state.person.status.toString() == "")||(state.person.status.toString() == "unknown")) {
-                                        stringResource(id = R.string.not_identify)}else{state.person.status.toString()},
+                                    text = if ((state.person.status.toString() == "") || (state.person.status.toString() == "unknown")) {
+                                        stringResource(id = R.string.not_identify)
+                                    } else {
+                                        state.person.status.toString()
+                                    },
                                     style = AppTheme.typography.body1,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
@@ -451,43 +450,42 @@ class DetailPersonFragment : ComposeFragment() {
                                     fontSize = 18.sp
                                 )
                             }
-                        }
-                    }
-                    if (state.person.id != 1) {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.BottomCenter
-                        ) {
-                            Row {
-                                PrimaryButton(
-                                    text = stringResource(id = R.string.go_back),
-                                    isEnabled = true,
-                                    onClick = {
-                                        state.isLoading = true
-                                        currentId = currentId!! - 1
-                                        goNextPerson(currentId!!)
-                                    })
-                                Spacer(Modifier.weight(1f, true))
+                        if (state.person.id != 1) {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.BottomStart
+                            ) {
+                                Row {
+                                    PrimaryButton(
+                                        text = stringResource(id = R.string.go_back),
+                                        isEnabled = true,
+                                        onClick = {
+                                            state.isLoading = true
+                                            currentId = currentId!! - 1
+                                            goNextPerson(currentId!!)
+                                        })
+                                    Spacer(Modifier.weight(1f, true))
+                                    PrimaryButton(text = stringResource(id = R.string.go_next),
+                                        isEnabled = true,
+                                        onClick = {
+                                            state.isLoading = true
+                                            currentId = currentId!! + 1
+                                            goNextPerson(currentId!!)
+                                        })
+                                }
+                            }
+                        } else {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.BottomEnd
+                            ) {
                                 PrimaryButton(text = stringResource(id = R.string.go_next),
                                     isEnabled = true,
                                     onClick = {
-                                        state.isLoading = true
                                         currentId = currentId!! + 1
                                         goNextPerson(currentId!!)
                                     })
                             }
-                        }
-                    } else {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.BottomEnd
-                        ) {
-                            PrimaryButton(text = stringResource(id = R.string.go_next),
-                                isEnabled = true,
-                                onClick = {
-                                    currentId = currentId!! + 1
-                                    goNextPerson(currentId!!)
-                                })
                         }
                     }
                 }

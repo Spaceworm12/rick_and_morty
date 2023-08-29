@@ -84,7 +84,7 @@ class FavoritesListFragment : ComposeFragment() {
         ) {
             Toolbar(
                 title = stringResource(id = R.string.rik_wiki),
-                subtitle = stringResource(id = R.string.choose_person_for_info),
+                subtitle = stringResource(id = R.string.Favorites),
                 elevation = AppTheme.dimens.halfContentMargin,
                 onBackClick = { goBack() },
             )

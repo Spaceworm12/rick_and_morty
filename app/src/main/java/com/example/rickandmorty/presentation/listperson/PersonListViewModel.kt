@@ -77,21 +77,6 @@ class PersonListViewModel(
             }
             .addTo(disposables)
     }
-//    private fun goToNextPage(next:String) {
-//        networkRepository.toPage(viewState.pageInfo.next)
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe { resource ->
-//                when (resource) {
-//                    Resource.Loading -> viewState = viewState.copy(isLoading = true)
-//                    is Resource.Data -> {
-//                        viewState = viewState.copy(isLoading = false)
-//                        viewState = viewState.copy(pageInfo = (resource.data))
-//                    }
-//                    is Resource.Error -> viewState = viewState.copy(isLoading = false)
-//                }
-//            }
-//            .addTo(disposables)
-//    }
     private fun checkStatusPerson(person:Person) {
         repo.getStatusPerson(person.id)
             .observeOn(AndroidSchedulers.mainThread())
