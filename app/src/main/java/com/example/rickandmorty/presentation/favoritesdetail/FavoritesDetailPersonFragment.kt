@@ -2,7 +2,6 @@ package com.example.rickandmorty.presentation.favoritesdetail
 
 import android.content.res.Configuration
 import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -104,7 +103,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                     IconButton(onClick = {
                         viewModel.submitUIEvent(
                             FavoritesDetailPersonEvent.DeletePersonFromFavorite(
-                                state.person?.id!!
+                                state.person.id
                             )
                         )
                         state.person.inFavorites = false
@@ -116,7 +115,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                         goToMainScreen()
                     }) {
                         Box(contentAlignment = Alignment.Center) {
-                            if (state.person!!.inFavorites) {
+                            if (state.person.inFavorites) {
                                 Icon(
                                     modifier = Modifier.size(30.dp),
                                     imageVector = Icons.Filled.Favorite,
@@ -149,7 +148,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                             bottom = AppTheme.dimens.halfContentMargin,
                             top = AppTheme.dimens.halfContentMargin
                         ),
-                    text = state.person?.name ?: "Not identified",
+                    text = state.person.name ?: "Not identified",
                     style = AppTheme.typography.body1,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -173,7 +172,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                 onClick = { }),
                         shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin),
                     ) {
-                        val painterImage = rememberImagePainter(data = state.person?.avatar)
+                        val painterImage = rememberImagePainter(data = state.person.avatar)
                         when (painterImage.state) {
                             is ImagePainter.State.Loading -> {
                                 Box(
@@ -238,7 +237,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                     bottom = AppTheme.dimens.halfContentMargin,
                                     top = AppTheme.dimens.halfContentMargin
                                 ),
-                            text = state.person?.id.toString() ?: "Not identified",
+                            text = state.person.id.toString(),
                             style = AppTheme.typography.body1,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,

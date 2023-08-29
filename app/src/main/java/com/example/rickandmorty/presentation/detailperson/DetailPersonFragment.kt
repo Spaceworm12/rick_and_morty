@@ -148,12 +148,12 @@ class DetailPersonFragment : ComposeFragment() {
                         } else {
                             viewModel.submitUIEvent(DetailPersonEvent.DeleteFromFavorites(state.person.id))
                             state.person.inFavorites = false
+                            Toast.makeText(
+                                requireContext(),
+                                state.person.name + " Удален из избранного",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-                        Toast.makeText(
-                            requireContext(),
-                            state.person.name + " Удален из избранного",
-                            Toast.LENGTH_SHORT
-                        ).show()
                     }
                     ) {
                         Box(contentAlignment = Alignment.Center) {
