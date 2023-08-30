@@ -36,18 +36,4 @@ object LocalMapper {
             url = model.url
         )
     }
-
-    fun transformToData(model: Person): PersonEntity {
-        return PersonEntity(
-            id = model.id!!,
-            name = model.name,
-            species = model.species,
-            type = model.type,
-            avatar = model.avatar,
-            gender = model.gender,
-            inFavorites = true,
-            status = model.status,
-            url = model.url
-        )
-    }
 }

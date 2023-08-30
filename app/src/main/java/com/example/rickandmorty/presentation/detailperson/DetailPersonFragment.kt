@@ -117,8 +117,7 @@ class DetailPersonFragment : ComposeFragment() {
                         state.isLoading = true
                         currentId = currentId!! - 1
                         goNextPerson(currentId!!)
-                    } else {
-                    }
+                    } else {}
                 }
             )
             val mForward = SwipeAction(
@@ -138,7 +137,7 @@ class DetailPersonFragment : ComposeFragment() {
                 actions = {
                     IconButton(onClick = {
                         if (!state.person.inFavorites) {
-                            viewModel.submitUIEvent(DetailPersonEvent.AddToFavorite(state.person!!))
+                            viewModel.submitUIEvent(DetailPersonEvent.AddToFavorite(state.person))
                             Toast.makeText(
                                 requireContext(),
                                 state.person.name + " Добавлен в избранное",
@@ -195,7 +194,7 @@ class DetailPersonFragment : ComposeFragment() {
                                 bottom = AppTheme.dimens.halfContentMargin * 2,
                                 top = AppTheme.dimens.halfContentMargin * 2
                             ),
-                        text = state.person?.name ?: "Not identified",
+                        text = state.person.name ?: "Not identified",
                         style = AppTheme.typography.body1,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -220,9 +219,8 @@ class DetailPersonFragment : ComposeFragment() {
                                     onClick = { }),
 
                             shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin),
-//                            border = BorderStroke(2.dp,AppTheme.colors.primary)
                         ) {
-                            val painterImage = rememberImagePainter(data = state.person?.avatar)
+                            val painterImage = rememberImagePainter(data = state.person.avatar)
                             when (painterImage.state) {
                                 is ImagePainter.State.Loading -> {
                                     Box(
@@ -272,7 +270,7 @@ class DetailPersonFragment : ComposeFragment() {
                                         bottom = AppTheme.dimens.halfContentMargin,
                                         top = AppTheme.dimens.halfContentMargin
                                     ),
-                                text = stringResource(id = R.string.id_person) ?: "Not identified",
+                                text = stringResource(id = R.string.id_person),
                                 style = AppTheme.typography.body1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -506,17 +504,6 @@ class DetailPersonFragment : ComposeFragment() {
     @Composable
     private fun DetailPersonScreenPreview() {
         RickAndMortyMainTheme {
-            val person =
-                Person(
-                    "name",
-                    "url",
-                    "avatar",
-                    "status",
-                    "species",
-                    "type",
-                    "genderm",
-                    123
-                )
             val state =
                 DetailPersonViewState(isLoading = false, exit = false, person = Person(id = 0))
             DetailPersonListScreen(state)
