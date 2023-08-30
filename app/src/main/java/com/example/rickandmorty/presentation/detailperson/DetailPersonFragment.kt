@@ -491,8 +491,8 @@ class DetailPersonFragment : ComposeFragment() {
         }
     }
 
-    private fun goBack(page:Int) = requireActivity().supportFragmentManager.beginTransaction()
-        .replace(R.id.fragment_container, PersonListFragment.newInstance(page)).commit()
+    private fun goBack() = requireActivity().supportFragmentManager.beginTransaction()
+        .replace(R.id.fragment_container, PersonListFragment()).commit()
 
     private fun goNextPerson(id: Int) =
         requireActivity().supportFragmentManager.beginTransaction()
