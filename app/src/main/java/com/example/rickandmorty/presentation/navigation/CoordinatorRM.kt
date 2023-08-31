@@ -3,13 +3,10 @@ package com.example.rickandmorty.presentation.navigation
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.Screen
 import com.github.terrakok.cicerone.androidx.FragmentScreen
-import ru.x5.core.navigation.Coordinator
-import ru.x5.core.navigation.SharedScreen
-import ru.x5.utils.matomo.Matomo
 import java.util.*
 
 @Suppress("NAME_SHADOWING")
-class Wrs2Coordinator(
+class CoordinatorRM(
     private val router: Router,
     private val mapper: SharedScreenMapper
 ) : Coordinator {
@@ -78,7 +75,6 @@ class Wrs2Coordinator(
             prefix = "/",
             transform = { getScreenName(it) }
         )
-        Matomo.trackScreen(screen, title)
     }
 
     private fun getScreenName(screen: Screen): String {

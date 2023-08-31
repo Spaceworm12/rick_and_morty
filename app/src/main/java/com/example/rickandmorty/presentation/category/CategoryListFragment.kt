@@ -29,6 +29,7 @@ import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainT
 import com.example.rickandmorty.presentation.composecomponents.buttons.HorizontalBtn
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.listperson.PersonListFragment
+import com.example.rickandmorty.presentation.navigation.Coordinator
 
 class CategoryListFragment : ComposeFragment() {
 
@@ -46,6 +47,7 @@ class CategoryListFragment : ComposeFragment() {
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
     private fun CategoryListScreen(items: List<String>) {
+        val coordinator: Coordinator
         Column(
             modifier = Modifier
                 .fillMaxSize()

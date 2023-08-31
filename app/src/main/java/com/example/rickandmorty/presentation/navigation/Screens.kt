@@ -28,13 +28,13 @@ class Screens {
         }
     }
 
-    class PersonScreen : FragmentScreen {
+    class PersonScreen(personId:Int) : FragmentScreen {
         override fun createFragment(factory: FragmentFactory): Fragment {
             return DetailPersonFragment()
         }
     }
 
-    class FavoritePersonScreen : FragmentScreen {
+    class FavoritePersonScreen(personId:Int) : FragmentScreen {
         override fun createFragment(factory: FragmentFactory): Fragment {
             return FavoritesDetailPersonFragment()
         }
