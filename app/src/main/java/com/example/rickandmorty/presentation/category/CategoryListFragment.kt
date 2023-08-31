@@ -28,11 +28,13 @@ import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
 import com.example.rickandmorty.presentation.composecomponents.buttons.HorizontalBtn
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
-import com.example.rickandmorty.presentation.listperson.PersonListFragment
 import com.example.rickandmorty.presentation.navigation.Coordinator
+import com.example.rickandmorty.presentation.navigation.CoordinatorRM
+import com.example.rickandmorty.presentation.navigation.Screens
+import com.example.rickandmorty.presentation.navigation.SharedScreenMapper
+import com.github.terrakok.cicerone.Router
 
 class CategoryListFragment : ComposeFragment() {
-
     @Composable
     override fun GetContent() {
         RickAndMortyMainTheme {
@@ -47,7 +49,6 @@ class CategoryListFragment : ComposeFragment() {
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
     private fun CategoryListScreen(items: List<String>) {
-        val coordinator: Coordinator
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -89,6 +90,7 @@ class CategoryListFragment : ComposeFragment() {
 
     @Composable
     private fun Category(category: String) {
+        val coordinator = CoordinatorRM(router = Router(), mapper = SharedScreenMapper())
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -102,29 +104,7 @@ class CategoryListFragment : ComposeFragment() {
                         top = AppTheme.dimens.halfContentMargin
                     ),
                 text = category,
-                onClick = {
-                    if (category == R.string.characters.toString()) {
-                        requireActivity()
-                            .supportFragmentManager
-                            .beginTransaction()
-                            .replace(
-                                R.id.fragment_container,
-                                PersonListFragment()
-                            )
-                            .addToBackStack("")
-                            .commit()
-                    } else {
-                        requireActivity()
-                            .supportFragmentManager
-                            .beginTransaction()
-                            .replace(
-                                R.id.fragment_container,
-                                PersonListFragment()
-                            )
-                            .addToBackStack("")
-                            .commit()
-                    }
-                })
+                onClick = { coordinator.goTo(Screens.ListPersonsScreen()) })
         }
     }
 
