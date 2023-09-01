@@ -90,7 +90,7 @@ class CategoryListFragment : ComposeFragment() {
 
     @Composable
     private fun Category(category: String) {
-        val coordinator = CoordinatorRM(router = Router(), mapper = SharedScreenMapper())
+        val coordinator = CoordinatorRM(Router(),SharedScreenMapper())
         Box(
             modifier = Modifier
                 .fillMaxSize()
