@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.rickandmorty.application.App
-import com.example.rickandmorty.data.network.networkrepo.NetworkRepositoryImpl
 import com.example.rickandmorty.data.repository.LocalRepository
 import com.example.rickandmorty.data.repository.LocalRepositoryImplement
 import com.example.rickandmorty.presentation.favorites.FavoritesListEvents
@@ -33,7 +32,7 @@ class FavoritesDetailPersonViewModel(
 
     private fun handleUIEvent(event: FavoritesDetailPersonEvent) {
         when (event) {
-            is FavoritesDetailPersonEvent.AddToFavorite -> savePersonToListFavorites(viewState.person!!)
+            is FavoritesDetailPersonEvent.AddToFavorite -> savePersonToListFavorites(viewState.person)
             is FavoritesDetailPersonEvent.ShowPerson -> loadPersonInfo(event.id)
             is FavoritesDetailPersonEvent.DeletePersonFromFavorite -> deleteFromFavorites(event.id)
         }

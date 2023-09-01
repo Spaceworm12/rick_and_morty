@@ -14,9 +14,9 @@ class SharedScreenMapper : (SharedScreen) -> FragmentScreen {
             personId = screen.personId
         )
 
-        is SharedScreen.ListFavoritePersonScreen -> Screens.ListPersonsScreen()
+        is SharedScreen.ListFavoritePersonScreen -> Screens.ListFavoritePersonsScreen()
 
-        is SharedScreen.ListPersonScreen -> Screens.ListFavoritePersonsScreen()
+        is SharedScreen.ListPersonScreen -> Screens.ListPersonsScreen()
 
         is SharedScreen.CategoryScreen -> Screens.CategoryScreen()
     }

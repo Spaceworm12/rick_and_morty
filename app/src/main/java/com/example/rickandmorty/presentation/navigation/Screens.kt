@@ -17,10 +17,8 @@ class Screens {
     }
 
     class ListPersonsScreen : FragmentScreen {
-        override fun createFragment(factory: FragmentFactory): Fragment {
-            return PersonListFragment()
+        override fun createFragment(factory: FragmentFactory) = PersonListFragment()
         }
-    }
 
     class ListFavoritePersonsScreen : FragmentScreen {
         override fun createFragment(factory: FragmentFactory): Fragment {
