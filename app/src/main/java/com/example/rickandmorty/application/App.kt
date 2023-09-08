@@ -7,6 +7,11 @@ import androidx.room.RoomMasterTable
 import com.example.rickandmorty.data.db.Dao
 import com.example.rickandmorty.data.db.Db
 import com.example.rickandmorty.data.network.networkrepo.RickAndMortyApi
+import com.example.rickandmorty.presentation.navigation.Coordinator
+import com.example.rickandmorty.presentation.navigation.CoordinatorRM
+import com.github.terrakok.cicerone.Cicerone
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.Router
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -23,11 +28,14 @@ class App : Application() {
         appInstance = this
     }
     companion object {
-
+        private val cicerone: Cicerone<Router> = Cicerone.create()
         private var appInstance: App? = null
         private var db: Db? = null
         private var sharedPreferences: SharedPreferences? = null
         private var api: RickAndMortyApi? = null
+        private val appCoordinator:Coordinator = provideCoordinator()
+        private val appNavHolder:NavigatorHolder = cicerone.getNavigatorHolder()
+        private val appRouter:Router = cicerone.router
 
         fun dao(): Dao {
             checkDb()
@@ -70,5 +78,8 @@ class App : Application() {
                     .build()
                     .create(RickAndMortyApi::class.java)
         }
+        internal fun provideNavigatorHolder(): NavigatorHolder = cicerone.getNavigatorHolder()
+        internal fun provideCoordinator(): Coordinator = CoordinatorRM(appRouter)
+
     }
 }

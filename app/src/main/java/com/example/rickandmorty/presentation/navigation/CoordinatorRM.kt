@@ -8,7 +8,6 @@ import java.util.*
 @Suppress("NAME_SHADOWING")
 class CoordinatorRM(
     private val router: Router,
-    private val mapper: SharedScreenMapper
 ) : Coordinator {
 
     private val stack = ArrayDeque<Screen>()
@@ -21,12 +20,12 @@ class CoordinatorRM(
     }
 
     override fun goToDistinct(screen: Screen) {
-        val screen = map(screen)
+        val screened = map(screen)
         if (stack.isNotEmpty() && stack.peek()!!.screenKey == screen.screenKey) {
             router.exit()
             stack.pop()
         }
-        goTo(screen)
+        goTo(screened)
     }
 
     override fun goBack() {
@@ -63,8 +62,7 @@ class CoordinatorRM(
     }
 
     private fun map(screen: Screen): Screen {
-        return if (screen is SharedScreen) mapper(screen)
-        else screen
+        return screen
     }
 
     private fun trackScreen() {
