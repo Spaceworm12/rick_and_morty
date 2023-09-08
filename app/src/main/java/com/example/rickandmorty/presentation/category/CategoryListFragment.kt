@@ -29,10 +29,11 @@ import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
 import com.example.rickandmorty.presentation.composecomponents.buttons.HorizontalBtn
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
+import com.example.rickandmorty.presentation.navigation.Coordinator
 import com.example.rickandmorty.presentation.navigation.Screens
 
 class CategoryListFragment : ComposeFragment() {
-
+    private val coordinator: Coordinator = App.getCoordinator()
     @Composable
     override fun GetContent() {
         RickAndMortyMainTheme {
@@ -101,7 +102,7 @@ class CategoryListFragment : ComposeFragment() {
                         top = AppTheme.dimens.halfContentMargin
                     ),
                 text = category,
-                onClick = { App.getCoordinator().goTo(Screens.ListPersonsScreen()) })
+                onClick = {coordinator.goTo(Screens.ListPersonsScreen()) })
         }
     }
 

@@ -15,7 +15,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 
-
 class PersonListViewModel(
     private val networkRepository: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getRickAndMortyApi()),
     private val repo: LocalRepository = LocalRepositoryImplement(App.dao(), App.getDb())

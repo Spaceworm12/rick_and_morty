@@ -32,11 +32,6 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null)
             coordinator.goTo(Screens.CategoryScreen())
-//            supportFragmentManager
-//                .beginTransaction()
-//                .add(R.id.fragment_container, CategoryListFragment())
-//                .commit()
-
     }
 
     override fun onResumeFragments() {

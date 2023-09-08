@@ -9,9 +9,7 @@ import java.util.*
 class CoordinatorRM(
     private val router: Router,
 ) : Coordinator {
-
     private val stack = ArrayDeque<Screen>()
-
     override fun goTo(screen: Screen) {
         val screen = map(screen)
         router.navigateTo(screen)
