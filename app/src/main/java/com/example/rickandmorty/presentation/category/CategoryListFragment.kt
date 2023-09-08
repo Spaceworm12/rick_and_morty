@@ -22,7 +22,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
 import com.example.rickandmorty.R
 import com.example.rickandmorty.application.App
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
@@ -30,15 +29,7 @@ import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
 import com.example.rickandmorty.presentation.composecomponents.buttons.HorizontalBtn
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
-import com.example.rickandmorty.presentation.detailperson.DetailPersonFragment
-import com.example.rickandmorty.presentation.listperson.PersonListFragment
-import com.example.rickandmorty.presentation.navigation.Coordinator
-import com.example.rickandmorty.presentation.navigation.CoordinatorRM
 import com.example.rickandmorty.presentation.navigation.Screens
-import com.example.rickandmorty.presentation.navigation.SharedScreenMapper
-import com.github.terrakok.cicerone.Navigator
-import com.github.terrakok.cicerone.NavigatorHolder
-import com.github.terrakok.cicerone.Router
 
 class CategoryListFragment : ComposeFragment() {
 
@@ -110,7 +101,7 @@ class CategoryListFragment : ComposeFragment() {
                         top = AppTheme.dimens.halfContentMargin
                     ),
                 text = category,
-                onClick = {App.getCoordinator().goTo(Screens.ListPersonsScreen())})
+                onClick = { App.getCoordinator().goTo(Screens.ListPersonsScreen()) })
         }
     }
 

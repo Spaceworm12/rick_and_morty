@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (savedInstanceState == null)
-            coordinator.goTo(Screens.ListPersonsScreen())
+            coordinator.goTo(Screens.CategoryScreen())
 //            supportFragmentManager
 //                .beginTransaction()
 //                .add(R.id.fragment_container, CategoryListFragment())
