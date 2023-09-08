@@ -27,15 +27,37 @@ class App : Application() {
         super.onCreate()
         appInstance = this
     }
+
     companion object {
-        private val cicerone: Cicerone<Router> = Cicerone.create()
         private var appInstance: App? = null
         private var db: Db? = null
         private var sharedPreferences: SharedPreferences? = null
         private var api: RickAndMortyApi? = null
-        private val appCoordinator:Coordinator = provideCoordinator()
-        private val appNavHolder:NavigatorHolder = cicerone.getNavigatorHolder()
-        private val appRouter:Router = cicerone.router
+        private val cicerone: Cicerone<Router> = Cicerone.create()
+        private val appCoordinator: Coordinator? = null
+        private val appNavHolder: NavigatorHolder? = null
+        private val appRouter: Router? = null
+
+        fun getNavigatorHolder(): NavigatorHolder {
+            if (appNavHolder == null) {
+                cicerone.getNavigatorHolder()
+            }
+            return cicerone.getNavigatorHolder()
+        }
+
+        fun getCoordinator(): Coordinator {
+            if (appCoordinator == null) {
+                CoordinatorRM(getRouter())
+            }
+            return CoordinatorRM(getRouter())
+        }
+
+        private fun getRouter(): Router {
+            if (appRouter == null) {
+                cicerone.router
+            }
+            return cicerone.router
+        }
 
         fun dao(): Dao {
             checkDb()
@@ -59,6 +81,7 @@ class App : Application() {
                     .build()
             }
         }
+
         fun getSettings(): SharedPreferences {
             if (sharedPreferences == null) {
                 sharedPreferences =
@@ -66,6 +89,7 @@ class App : Application() {
             }
             return sharedPreferences!!
         }
+
         fun getRickAndMortyApi(): RickAndMortyApi {
             val interceptor = HttpLoggingInterceptor()
             interceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -78,8 +102,6 @@ class App : Application() {
                     .build()
                     .create(RickAndMortyApi::class.java)
         }
-        internal fun provideNavigatorHolder(): NavigatorHolder = cicerone.getNavigatorHolder()
-        internal fun provideCoordinator(): Coordinator = CoordinatorRM(appRouter)
 
     }
 }
