@@ -494,7 +494,7 @@ class DetailPersonFragment : ComposeFragment() {
         }
     }
 
-    private fun goToMainScreen() = coordinator.goTo(Screens.ListPersonsScreen())
+    private fun goToMainScreen() = coordinator.goBack()
 
     private fun goNextPerson(id: Int) = coordinator.goTo(Screens.PersonScreen(id))
 

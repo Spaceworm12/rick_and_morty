@@ -399,7 +399,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
             }
         }
     }
-    private fun goToMainScreen() = coordinator.goTo(Screens.ListFavoritePersonsScreen())
+    private fun goToMainScreen() = coordinator.goBack()
 
     @Preview(name = "FavoriteDetailPersonScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
