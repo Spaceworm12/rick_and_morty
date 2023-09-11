@@ -59,6 +59,7 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.rickandmorty.R
+import com.example.rickandmorty.application.App
 import com.example.rickandmorty.presentation.category.CategoryListFragment
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
@@ -68,11 +69,14 @@ import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBa
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.detailperson.DetailPersonFragment
 import com.example.rickandmorty.presentation.favorites.FavoritesListFragment
+import com.example.rickandmorty.presentation.model.modelperson.Info
 import com.example.rickandmorty.presentation.model.modelperson.Person
+import com.example.rickandmorty.presentation.navigation.Coordinator
+import com.example.rickandmorty.presentation.navigation.Screens
 
 
 class PersonListFragment : ComposeFragment() {
-
+    private val coordinator: Coordinator = App.getCoordinator()
     private val viewModel: PersonListViewModel by lazy {
         ViewModelProvider(this)[PersonListViewModel::class.java]
     }
@@ -86,7 +90,7 @@ class PersonListFragment : ComposeFragment() {
                 LoaderBlock()
             }
             if (state.exit) {
-                goBack()
+                coordinator.goBack()
             }
         }
     }
@@ -105,16 +109,16 @@ class PersonListFragment : ComposeFragment() {
                 title = stringResource(id = R.string.rik_wiki),
                 subtitle = (stringResource(id = R.string.page) + " " + state.currentPage.toString() + "/42"),
                 elevation = AppTheme.dimens.halfContentMargin,
-                onBackClick = { goBack() },
+                onBackClick = { coordinator.goBack() },
                 actions = {
-                    IconButton(onClick = { goToFavorites() }) {
+                    IconButton(onClick = { coordinator.goTo(Screens.ListFavoritePersonsScreen()) }) {
                         Icon(
                             Icons.Filled.Grade, contentDescription = "", Modifier.size(35.dp)
                         )
                     }
                 }
             )
-            Box() {
+            Box{
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(count = 1),
                 ) {
@@ -386,27 +390,7 @@ class PersonListFragment : ComposeFragment() {
             }
         }
     }
-
-    private fun goBack() = requireActivity().supportFragmentManager.beginTransaction()
-        .replace(R.id.fragment_container, CategoryListFragment()).commit()
-
-    private fun goToPerson(id: Int) {
-        requireActivity()
-            .supportFragmentManager
-            .beginTransaction()
-            .add(R.id.fragment_container, DetailPersonFragment.newInstance(id))
-            .addToBackStack("")
-            .commit()
-    }
-
-    private fun goToFavorites() {
-        requireActivity()
-            .supportFragmentManager
-            .beginTransaction()
-            .add(R.id.fragment_container, FavoritesListFragment())
-            .addToBackStack("")
-            .commit()
-    }
+    private fun goToPerson(id: Int) = coordinator.goTo(Screens.PersonScreen(id))
 
     @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
@@ -414,8 +398,10 @@ class PersonListFragment : ComposeFragment() {
         RickAndMortyMainTheme {
             val state = PersonListViewState(
                 isLoading = false,
+                pageInfo = Info(1,1,"",""),
+                currentPage = 1,
                 exit = false,
-                person = Person(id = 999),
+                person = Person(id = 1),
                 errorText = "",
                 persons = listOf(
                     Person(

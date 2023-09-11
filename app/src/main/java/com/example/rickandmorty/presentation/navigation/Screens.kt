@@ -26,15 +26,15 @@ class Screens {
         }
     }
 
-    class PersonScreen(personId:Int) : FragmentScreen {
+    class PersonScreen(val personId:Int) : FragmentScreen {
         override fun createFragment(factory: FragmentFactory): Fragment {
-            return DetailPersonFragment()
+            return DetailPersonFragment.newInstance(personId)
         }
     }
 
-    class FavoritePersonScreen(personId:Int) : FragmentScreen {
+    class FavoritePersonScreen(val personId:Int) : FragmentScreen {
         override fun createFragment(factory: FragmentFactory): Fragment {
-            return FavoritesDetailPersonFragment()
+            return FavoritesDetailPersonFragment.newInstance(personId)
         }
     }
 }

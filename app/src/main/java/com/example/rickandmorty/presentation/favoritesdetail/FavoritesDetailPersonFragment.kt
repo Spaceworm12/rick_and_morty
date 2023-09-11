@@ -45,6 +45,7 @@ import androidx.lifecycle.ViewModelProvider
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.rickandmorty.R
+import com.example.rickandmorty.application.App
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
@@ -53,11 +54,15 @@ import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBa
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.favorites.FavoritesListFragment
 import com.example.rickandmorty.presentation.model.modelperson.Person
+import com.example.rickandmorty.presentation.navigation.Coordinator
+import com.example.rickandmorty.presentation.navigation.Screens
+import com.example.rickandmorty.presentation.navigation.SharedScreen
 
 class FavoritesDetailPersonFragment : ComposeFragment() {
     private val viewModel: FavoritesDetailPersonViewModel by lazy {
         ViewModelProvider(this)[FavoritesDetailPersonViewModel::class.java]
     }
+    private val coordinator: Coordinator = App.getCoordinator()
 
     companion object {
         private const val KEY = "KEY"
@@ -98,7 +103,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
             Toolbar(
                 title = stringResource(id = R.string.about_person),
                 subtitle = stringResource(id = R.string.about_person_subtitle),
-                onBackClick = { goToMainScreen() },
+                onBackClick = { goToMainScreen()},
                 actions = {
                     IconButton(onClick = {
                         viewModel.submitUIEvent(
@@ -394,11 +399,9 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
             }
         }
     }
+    private fun goToMainScreen() = coordinator.goTo(Screens.ListFavoritePersonsScreen())
 
-    private fun goToMainScreen() = requireActivity().supportFragmentManager.beginTransaction()
-        .replace(R.id.fragment_container, FavoritesListFragment()).commit()
-
-    @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
+    @Preview(name = "FavoriteDetailPersonScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
     private fun DetailPersonScreenPreview() {
         RickAndMortyMainTheme {

@@ -43,6 +43,7 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.rickandmorty.R
+import com.example.rickandmorty.application.App
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
@@ -52,10 +53,12 @@ import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.favoritesdetail.FavoritesDetailPersonFragment
 import com.example.rickandmorty.presentation.listperson.PersonListFragment
 import com.example.rickandmorty.presentation.model.modelperson.Person
+import com.example.rickandmorty.presentation.navigation.Coordinator
+import com.example.rickandmorty.presentation.navigation.Screens
 
 
 class FavoritesListFragment : ComposeFragment() {
-
+    private val coordinator: Coordinator = App.getCoordinator()
     private val viewModel: FavoritesListViewModel by lazy {
         ViewModelProvider(this)[FavoritesListViewModel::class.java]
     }
@@ -69,7 +72,7 @@ class FavoritesListFragment : ComposeFragment() {
                 LoaderBlock()
             }
             if (state.exit) {
-                goBack()
+                coordinator.goBack()
             }
         }
     }
@@ -85,7 +88,7 @@ class FavoritesListFragment : ComposeFragment() {
                 title = stringResource(id = R.string.rik_wiki),
                 subtitle = stringResource(id = R.string.Favorites),
                 elevation = AppTheme.dimens.halfContentMargin,
-                onBackClick = { goBack() },
+                onBackClick = { coordinator.goBack() },
             )
             LazyVerticalGrid(
                 columns = GridCells.Fixed(count = 1),
@@ -216,18 +219,7 @@ class FavoritesListFragment : ComposeFragment() {
         }
 
     }
-
-    private fun goBack() = requireActivity().supportFragmentManager.beginTransaction()
-        .replace(R.id.fragment_container, PersonListFragment()).commit()
-
-    private fun goToPerson(id: Int) {
-        requireActivity()
-            .supportFragmentManager
-            .beginTransaction()
-            .add(R.id.fragment_container, FavoritesDetailPersonFragment.newInstance(id))
-            .addToBackStack("")
-            .commit()
-    }
+    private fun goToPerson(id: Int) = coordinator.goTo(Screens.FavoritePersonScreen(id))
 
     @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
@@ -235,6 +227,7 @@ class FavoritesListFragment : ComposeFragment() {
         RickAndMortyMainTheme {
             val state = FavoritesListViewState(
                 isLoading = false,
+                errorText = "",
                 exit = false,
                 person = Person(id = 999),
                 persons = listOf(

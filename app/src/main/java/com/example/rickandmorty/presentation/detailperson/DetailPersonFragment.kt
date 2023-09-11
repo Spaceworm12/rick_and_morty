@@ -50,6 +50,7 @@ import androidx.lifecycle.ViewModelProvider
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.rickandmorty.R
+import com.example.rickandmorty.application.App
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
@@ -57,8 +58,9 @@ import com.example.rickandmorty.presentation.composecomponents.buttons.PrimaryBu
 import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlock
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
-import com.example.rickandmorty.presentation.listperson.PersonListFragment
 import com.example.rickandmorty.presentation.model.modelperson.Person
+import com.example.rickandmorty.presentation.navigation.Coordinator
+import com.example.rickandmorty.presentation.navigation.Screens
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
@@ -66,6 +68,7 @@ class DetailPersonFragment : ComposeFragment() {
     private val viewModel: DetailPersonViewModel by lazy {
         ViewModelProvider(this)[DetailPersonViewModel::class.java]
     }
+    private val coordinator: Coordinator = App.getCoordinator()
 
     companion object {
         private const val KEY = "KEY"
@@ -93,7 +96,7 @@ class DetailPersonFragment : ComposeFragment() {
                 LoaderBlock()
             }
             if (state.exit) {
-                goBack()
+                goToMainScreen()
             }
         }
     }
@@ -105,7 +108,7 @@ class DetailPersonFragment : ComposeFragment() {
             LoaderBlock()
         }
         if (state.exit) {
-            goBack()
+            goToMainScreen()
         }
         Column(modifier = Modifier.background(AppTheme.colors.background)) {
             val mBack = SwipeAction(
@@ -133,7 +136,7 @@ class DetailPersonFragment : ComposeFragment() {
             Toolbar(
                 title = stringResource(id = R.string.about_person),
                 subtitle = stringResource(id = R.string.about_person_subtitle),
-                onBackClick = { goBack() },
+                onBackClick = { goToMainScreen() },
                 actions = {
                     IconButton(onClick = {
                         if (!state.person.inFavorites) {
@@ -491,21 +494,17 @@ class DetailPersonFragment : ComposeFragment() {
         }
     }
 
-    private fun goBack() = requireActivity().supportFragmentManager.beginTransaction()
-        .replace(R.id.fragment_container, PersonListFragment()).commit()
+    private fun goToMainScreen() = coordinator.goTo(Screens.ListPersonsScreen())
 
-    private fun goNextPerson(id: Int) =
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, DetailPersonFragment.newInstance(id))
-            .addToBackStack("")
-            .commit()
+    private fun goNextPerson(id: Int) = coordinator.goTo(Screens.PersonScreen(id))
 
     @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO,showSystemUi = true)
     @Composable
     private fun DetailPersonScreenPreview() {
         RickAndMortyMainTheme {
             val state =
-                DetailPersonViewState(isLoading = false, exit = false, person = Person(id = 0))
+                DetailPersonViewState(isLoading = false, exit = false, person = Person(id = 0), errorText = ""
+                )
             DetailPersonListScreen(state)
         }
     }
