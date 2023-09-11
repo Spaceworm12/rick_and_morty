@@ -139,10 +139,20 @@ class PersonListFragment : ComposeFragment() {
                 modifier = Modifier
                     .wrapContentSize()
                     .background(
-                        color = if(state.currentPage<42){AppTheme.colors.primary}else{Color.Transparent},
+                        color = if (state.currentPage < 42) {
+                            AppTheme.colors.primary
+                        } else {
+                            Color.Transparent
+                        },
                         shape = RoundedCornerShape(fabSize)
                     )
-                    .border(1.dp,if(state.currentPage<42){AppTheme.colors.secondary}else{Color.Transparent}, RoundedCornerShape(70.dp))
+                    .border(
+                        1.dp, if (state.currentPage < 42) {
+                            AppTheme.colors.secondary
+                        } else {
+                            Color.Transparent
+                        }, RoundedCornerShape(70.dp)
+                    )
                     .pointerInput(Unit) {
                         while (true) {
                             awaitPointerEventScope {
@@ -175,10 +185,20 @@ class PersonListFragment : ComposeFragment() {
                 modifier = Modifier
                     .wrapContentSize()
                     .background(
-                        color = if(state.currentPage!=1){AppTheme.colors.primary}else{Color.Transparent},
+                        color = if (state.currentPage != 1) {
+                            AppTheme.colors.primary
+                        } else {
+                            Color.Transparent
+                        },
                         shape = RoundedCornerShape(70.dp)
                     )
-                    .border(1.dp,if(state.currentPage!=1){AppTheme.colors.secondary}else{Color.Transparent}, RoundedCornerShape(70.dp))
+                    .border(
+                        1.dp, if (state.currentPage != 1) {
+                            AppTheme.colors.secondary
+                        } else {
+                            Color.Transparent
+                        }, RoundedCornerShape(70.dp)
+                    )
                     .pointerInput(Unit) {
                         while (true) {
                             awaitPointerEventScope {
@@ -261,7 +281,7 @@ class PersonListFragment : ComposeFragment() {
                         }
                     }
                 }
-                Column() {
+                Column {
                     Text(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -318,7 +338,7 @@ class PersonListFragment : ComposeFragment() {
                                         .size(40.dp)
                                         .padding(top = 10.dp),
                                     imageVector = Icons.Filled.Help,
-                                    contentDescription = "Not identify",
+                                    contentDescription = stringResource(R.string.not_identify),
                                     tint = Color.Gray
                                 )
                             }
@@ -347,19 +367,21 @@ class PersonListFragment : ComposeFragment() {
                 backgroundColor = AppTheme.colors.primary,
                 onClick = {
                     if (!person.inFavorites) {
+                        val textAdd = R.string.added_to_favorites
                         viewModel.submitUIEvent(PersonListEvents.AddToFavorite(person))
                         person.inFavorites = true
                         Toast.makeText(
                             requireContext(),
-                            person.name + " Добавлен в избранное",
+                            String.format("%s%s", person.name, textAdd),
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {
+                        val textDel = R.string.deleted_from_favorites
                         viewModel.submitUIEvent(PersonListEvents.DeleteFromFavorites(person.id))
                         person.inFavorites = false
                         Toast.makeText(
                             requireContext(),
-                            person.name + " Удален из избранного",
+                            String.format("%s%s", person.name, textDel),
                             Toast.LENGTH_SHORT
                         ).show()
                     }

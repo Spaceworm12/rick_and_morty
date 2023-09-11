@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
+import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.rickandmorty.R
@@ -52,11 +53,8 @@ import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainT
 import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlock
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
-import com.example.rickandmorty.presentation.favorites.FavoritesListFragment
 import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.presentation.navigation.Coordinator
-import com.example.rickandmorty.presentation.navigation.Screens
-import com.example.rickandmorty.presentation.navigation.SharedScreen
 
 class FavoritesDetailPersonFragment : ComposeFragment() {
     private val viewModel: FavoritesDetailPersonViewModel by lazy {
@@ -85,9 +83,11 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
         }
     }
 
+    @OptIn(ExperimentalCoilApi::class)
     @Composable
     private fun DetailPersonListScreen(state: FavoritesDetailPersonViewState) {
         val currentId = arguments?.getInt(KEY)
+        val textDel = stringResource(R.string.deleted_from_favorites)
         if (currentId != null) {
             viewModel.submitUIEvent(FavoritesDetailPersonEvent.ShowPerson(currentId))
         } else {
@@ -114,7 +114,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                         state.person.inFavorites = false
                         Toast.makeText(
                             requireContext(),
-                            state.person.name + " Удален из избранного",
+                            String.format("%s%s", state.person.name, textDel),
                             Toast.LENGTH_SHORT
                         ).show()
                         goToMainScreen()
@@ -219,7 +219,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                         .padding(AppTheme.dimens.contentMargin),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    Row() {
+                    Row {
                         Text(
                             modifier = Modifier
                                 .wrapContentSize()
@@ -227,7 +227,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                                     bottom = AppTheme.dimens.halfContentMargin,
                                     top = AppTheme.dimens.halfContentMargin
                                 ),
-                            text = stringResource(id = R.string.id_person) ?: "Not identified",
+                            text = stringResource(id = R.string.id_person),
                             style = AppTheme.typography.body1,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -405,31 +405,10 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
     @Composable
     private fun DetailPersonScreenPreview() {
         RickAndMortyMainTheme {
-            val person =
-                Person(
-                    "name",
-                    "url",
-                    "avatar",
-                    "status",
-                    "species",
-                    "type",
-                    "genderm",
-                    123
-                )
             val state = FavoritesDetailPersonViewState(
                 isLoading = false,
                 exit = false,
                 person = Person(id = 999)
-            )
-            val person2 = Person(
-                name = "-",
-                url = "-",
-                avatar = "-",
-                status = "-",
-                species = "-",
-                type = "-",
-                gender = "-",
-                id = 1
             )
             DetailPersonListScreen(state)
         }

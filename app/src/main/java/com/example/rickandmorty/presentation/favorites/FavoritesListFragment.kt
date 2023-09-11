@@ -50,8 +50,6 @@ import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainT
 import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlock
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
-import com.example.rickandmorty.presentation.favoritesdetail.FavoritesDetailPersonFragment
-import com.example.rickandmorty.presentation.listperson.PersonListFragment
 import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.presentation.navigation.Coordinator
 import com.example.rickandmorty.presentation.navigation.Screens
@@ -105,6 +103,7 @@ class FavoritesListFragment : ComposeFragment() {
     @OptIn(ExperimentalCoilApi::class)
     @Composable
     private fun Person(person: Person) {
+        val textDel = stringResource(R.string.deleted_from_favorites)
         Column(
             modifier = Modifier
                 .padding(AppTheme.dimens.contentMargin)
@@ -192,7 +191,7 @@ class FavoritesListFragment : ComposeFragment() {
                     viewModel.submitUIEvent(FavoritesListEvents.DeleteFromFavorites(person.id))
                     Toast.makeText(
                         requireContext(),
-                        person.name + " Удален из избранного",
+                        String.format("%s%s",person.name,textDel),
                         Toast.LENGTH_SHORT
                     ).show()
                 }

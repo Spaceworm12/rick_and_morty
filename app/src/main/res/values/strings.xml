@@ -29,6 +29,8 @@
     <string name="page">Страница</string>
     <string name="about_person_subtitle">Подробная информация о персонаже</string>
     <string name="choose_person_for_info">Нажмите на персонажа для просмотра</string>
+    <string name="added_to_favorites"> Добавлен в избранное</string>
+    <string name="deleted_from_favorites"> Удален из избранного</string>
 
 
 

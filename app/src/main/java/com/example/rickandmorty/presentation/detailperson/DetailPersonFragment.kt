@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
+import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.rickandmorty.R
@@ -101,8 +102,11 @@ class DetailPersonFragment : ComposeFragment() {
         }
     }
 
+    @OptIn(ExperimentalCoilApi::class)
     @Composable
     private fun DetailPersonListScreen(state: DetailPersonViewState) {
+        val textDel = stringResource(R.string.deleted_from_favorites)
+        val textAdd = stringResource(R.string.added_to_favorites)
         var currentId = arguments?.getInt(KEY)
         if (state.isLoading) {
             LoaderBlock()
@@ -120,7 +124,7 @@ class DetailPersonFragment : ComposeFragment() {
                         state.isLoading = true
                         currentId = currentId!! - 1
                         goNextPerson(currentId!!)
-                    } else {}
+                    }
                 }
             )
             val mForward = SwipeAction(
@@ -143,7 +147,7 @@ class DetailPersonFragment : ComposeFragment() {
                             viewModel.submitUIEvent(DetailPersonEvent.AddToFavorite(state.person))
                             Toast.makeText(
                                 requireContext(),
-                                state.person.name + " Добавлен в избранное",
+                                String.format("%s%s", state.person.name,textAdd),
                                 Toast.LENGTH_SHORT
                             ).show()
                             state.person.inFavorites = true
@@ -152,7 +156,7 @@ class DetailPersonFragment : ComposeFragment() {
                             state.person.inFavorites = false
                             Toast.makeText(
                                 requireContext(),
-                                state.person.name + " Удален из избранного",
+                                String.format("%s%s", state.person.name,textDel),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -197,7 +201,7 @@ class DetailPersonFragment : ComposeFragment() {
                                 bottom = AppTheme.dimens.halfContentMargin * 2,
                                 top = AppTheme.dimens.halfContentMargin * 2
                             ),
-                        text = state.person.name ?: "Not identified",
+                        text = state.person.name ?: stringResource(R.string.not_identify),
                         style = AppTheme.typography.body1,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
