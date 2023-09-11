@@ -60,15 +60,12 @@ import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.rickandmorty.R
 import com.example.rickandmorty.application.App
-import com.example.rickandmorty.presentation.category.CategoryListFragment
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
 import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlock
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
-import com.example.rickandmorty.presentation.detailperson.DetailPersonFragment
-import com.example.rickandmorty.presentation.favorites.FavoritesListFragment
 import com.example.rickandmorty.presentation.model.modelperson.Info
 import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.presentation.navigation.Coordinator
@@ -99,7 +96,6 @@ class PersonListFragment : ComposeFragment() {
     private fun PersonListScreen(state: PersonListViewState) {
         val fabSize = 70.dp
         var selected by remember { mutableStateOf(false) }
-        val scale by animateFloatAsState(if (selected) 0.9f else 1f, label = "")
         Column(
             modifier = Modifier
                 .fillMaxSize()
