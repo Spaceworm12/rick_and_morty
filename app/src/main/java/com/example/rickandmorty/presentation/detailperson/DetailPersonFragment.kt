@@ -140,7 +140,7 @@ class DetailPersonFragment : ComposeFragment() {
             Toolbar(
                 title = stringResource(id = R.string.about_person),
                 subtitle = stringResource(id = R.string.about_person_subtitle),
-                onBackClick = { goToMainScreen() },
+                onBackClick = { coordinator.goTo(Screens.ListPersonsScreen()) },
                 actions = {
                     IconButton(onClick = {
                         if (!state.person.inFavorites) {
