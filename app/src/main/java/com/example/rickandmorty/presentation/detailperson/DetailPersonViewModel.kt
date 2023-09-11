@@ -34,7 +34,7 @@ class DetailPersonViewModel(
 
     private fun handleUIEvent(event: DetailPersonEvent) {
         when (event) {
-            is DetailPersonEvent.AddToFavorite -> savePersonToListFavorites(viewState.person!!)
+            is DetailPersonEvent.AddToFavorite -> savePersonToListFavorites(viewState.person)
             is DetailPersonEvent.ShowPerson -> loadPersonInfo(event.id)
             is DetailPersonEvent.DeleteFromFavorites -> deleteFromFavorites(event.id)
             is DetailPersonEvent.CheckStatus -> checkStatusPerson(event.person)
@@ -60,7 +60,7 @@ class DetailPersonViewModel(
     }
 
     private fun savePersonToListFavorites(person: Person) {
-        repo.addPersonToFavorite(LocalMapper.transformToDataDetail(viewState.person!!))
+        repo.addPersonToFavorite(LocalMapper.transformToDataDetail(viewState.person))
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 viewState = when (result) {

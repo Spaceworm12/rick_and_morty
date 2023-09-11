@@ -54,7 +54,7 @@ class PersonListViewModel(
                     Resource.Loading -> viewState = viewState.copy(isLoading = true)
                     is Resource.Data -> {
                         viewState = viewState.copy(isLoading = false)
-                        viewState = viewState.copy(persons = (resource.data ?: emptyList()))
+                        viewState = viewState.copy(persons = (resource.data))
                     }
                     is Resource.Error -> viewState = viewState.copy(isLoading = false)
                 }
