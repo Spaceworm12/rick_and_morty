@@ -82,6 +82,7 @@ class App : Application() {
             }
         }
 
+        //Удалить
         fun getSettings(): SharedPreferences {
             if (sharedPreferences == null) {
                 sharedPreferences =

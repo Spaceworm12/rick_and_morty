@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 
 private const val TABLE_NAME = "example_table"
 
+//Лучше не инициализировать поля, делать это при мапе в domain/presentation модель
 @Entity(tableName = TABLE_NAME)
 data class PersonEntity(
     @PrimaryKey(autoGenerate = true)

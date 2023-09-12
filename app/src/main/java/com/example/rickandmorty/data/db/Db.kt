@@ -7,5 +7,6 @@ import com.example.rickandmorty.data.db.entity.PersonEntity
 
 @Database(entities = [PersonEntity::class], version = 1, exportSchema = false)
 abstract class Db : RoomDatabase() {
+    //Example?
     abstract fun exampleDao(): Dao
 }

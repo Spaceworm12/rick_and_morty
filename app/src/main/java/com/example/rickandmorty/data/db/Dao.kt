@@ -27,6 +27,7 @@ interface Dao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun create(example: PersonEntity): Single<Long>
 
+    //Example?
     @Query("DELETE FROM example_table WHERE id = :id")
     fun deleteExample(id: Int): Completable
 

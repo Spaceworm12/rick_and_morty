@@ -1,6 +1,7 @@
 package com.example.rickandmorty.data.network.category
 
 
+//Это для чего?
 data class Category(
     val name: String,
     val type: CategoryType
