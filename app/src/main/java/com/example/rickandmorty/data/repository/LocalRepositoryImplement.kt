@@ -9,8 +9,7 @@ import com.example.rickandmorty.util.Resource
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
-// private val db: Db - неиспользуется
-class LocalRepositoryImplement(private val dao: Dao, private val db: Db) : LocalRepository {
+class LocalRepositoryImplement(private val dao: Dao) : LocalRepository {
     override fun getPersonsIds(): List<Int> {
         return dao.getAllNotObs().map { it.id }
     }

@@ -15,7 +15,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 
 class FavoritesDetailPersonViewModel(
-    private val repo: LocalRepository = LocalRepositoryImplement(App.dao(), App.getDb())
+    private val repo: LocalRepository = LocalRepositoryImplement(App.dao())
 ) : ViewModel() {
     private val disposables = CompositeDisposable()
     private val _viewState = MutableLiveData(FavoritesDetailPersonViewState())

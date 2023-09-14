@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 
 class NetworkRepositoryImpl(private val api: RickAndMortyApi) : NetworkRepository {
 
-    private val personMapper = PersonMapper(LocalRepositoryImplement(App.dao(), App.getDb()))
+    private val personMapper = PersonMapper(LocalRepositoryImplement(App.dao()))
     override fun getPersons(page:Int): Observable<Resource<List<Person>>> {
         return api.getCharactersList(page)
             .map { it.results }
