@@ -11,6 +11,7 @@ import com.example.rickandmorty.presentation.favorites.FavoritesListEvents
 import com.example.rickandmorty.presentation.model.LocalMapper
 import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.util.Resource
+import com.github.terrakok.cicerone.Screen
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -19,6 +20,7 @@ class DetailPersonViewModel(
     private val networkRepository: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getRickAndMortyApi()),
     private val repo: LocalRepository = LocalRepositoryImplement(App.dao())
 ) : ViewModel() {
+    private val coordinator = App.getCoordinator()
     private val disposables = CompositeDisposable()
     private val _viewState = MutableLiveData(DetailPersonViewState())
     val viewStateObs: LiveData<DetailPersonViewState> get() = _viewState
@@ -38,8 +40,14 @@ class DetailPersonViewModel(
             is DetailPersonEvent.ShowPerson -> loadPersonInfo(event.id)
             is DetailPersonEvent.DeleteFromFavorites -> deleteFromFavorites(event.id)
             is DetailPersonEvent.CheckStatus -> checkStatusPerson(event.person)
+            DetailPersonEvent.GoBack -> goBack()
+            is DetailPersonEvent.GoTo -> goTo(event.screen)
         }
     }
+    private fun goTo(screen:Screen){
+        coordinator.goTo(screen)
+    }
+    private fun goBack() = coordinator.goBack()
 
     private fun loadPersonInfo(id: Int) {
         networkRepository.getPersonDetail(id)

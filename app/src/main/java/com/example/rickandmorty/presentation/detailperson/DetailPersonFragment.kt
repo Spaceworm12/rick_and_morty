@@ -36,7 +36,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -51,7 +50,6 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.rickandmorty.R
-import com.example.rickandmorty.application.App
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
@@ -61,7 +59,6 @@ import com.example.rickandmorty.presentation.composecomponents.shimmer.LoadingAn
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.model.modelperson.Person
-import com.example.rickandmorty.presentation.navigation.Coordinator
 import com.example.rickandmorty.presentation.navigation.Screens
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
@@ -70,20 +67,18 @@ class DetailPersonFragment : ComposeFragment() {
     private val viewModel: DetailPersonViewModel by lazy {
         ViewModelProvider(this)[DetailPersonViewModel::class.java]
     }
-    private val coordinator: Coordinator = App.getCoordinator()
-
     companion object {
-        private const val KEY = "KEY"
+        private const val ID = "KEY"
 
         fun newInstance(identifyNumber: Int) = DetailPersonFragment().apply {
-            arguments = bundleOf(KEY to identifyNumber)
+            arguments = bundleOf(ID to identifyNumber)
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val identifyNumber = arguments?.getInt(KEY)
+        val identifyNumber = arguments?.getInt(ID)
         viewModel.submitUIEvent(DetailPersonEvent.ShowPerson(identifyNumber!!))
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -98,7 +93,7 @@ class DetailPersonFragment : ComposeFragment() {
                 LoaderBlock()
             }
             if (state.exit) {
-                goToMainScreen()
+                viewModel.submitUIEvent(DetailPersonEvent.GoTo(Screens.ListPersonsScreen()))
             }
         }
     }
@@ -108,47 +103,37 @@ class DetailPersonFragment : ComposeFragment() {
     private fun DetailPersonListScreen(state: DetailPersonViewState) {
         val textDel = stringResource(R.string.deleted_from_favorites)
         val textAdd = stringResource(R.string.added_to_favorites)
-        var currentId = arguments?.getInt(KEY)
-        if (state.isLoading) {
-            LoaderBlock()
-        }
-        if (state.exit) {
-            goToMainScreen()
-        }
+        var currentId = arguments?.getInt(ID)
         Column(modifier = Modifier.background(AppTheme.colors.background)) {
-            val mBack = SwipeAction(
-                icon = {},
+            val swipeForward = SwipeAction(icon = {},
                 background = AppTheme.colors.background,
                 isUndo = true,
                 onSwipe = {
                     if (currentId != 1) {
                         state.isLoading = true
                         currentId = currentId!! - 1
-                        goNextPerson(currentId!!)
+                        viewModel.submitUIEvent(DetailPersonEvent.GoTo(Screens.PersonScreen(currentId!!)))
                     }
-                }
-            )
-            val mForward = SwipeAction(
-                icon = {},
+                })
+            val swipeBack = SwipeAction(icon = {},
                 background = AppTheme.colors.background,
                 isUndo = true,
                 onSwipe = {
                     state.isLoading = true
                     currentId = currentId!! + 1
-                    goNextPerson(currentId!!)
-                }
-            )
+                    viewModel.submitUIEvent(DetailPersonEvent.GoTo(Screens.PersonScreen(currentId!!)))
+                })
             Toolbar(
                 title = stringResource(id = R.string.about_person),
                 subtitle = stringResource(id = R.string.about_person_subtitle),
-                onBackClick = { coordinator.goTo(Screens.ListPersonsScreen()) },
+                onBackClick = { viewModel.submitUIEvent(DetailPersonEvent.GoTo(Screens.ListPersonsScreen())) },
                 actions = {
                     IconButton(onClick = {
                         if (!state.person.inFavorites) {
                             viewModel.submitUIEvent(DetailPersonEvent.AddToFavorite(state.person))
                             Toast.makeText(
                                 requireContext(),
-                                String.format("%s%s", state.person.name,textAdd),
+                                String.format("%s%s", state.person.name, textAdd),
                                 Toast.LENGTH_SHORT
                             ).show()
                             state.person.inFavorites = true
@@ -157,12 +142,11 @@ class DetailPersonFragment : ComposeFragment() {
                             state.person.inFavorites = false
                             Toast.makeText(
                                 requireContext(),
-                                String.format("%s%s", state.person.name,textDel),
+                                String.format("%s%s", state.person.name, textDel),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                    }
-                    ) {
+                    }) {
                         Box(contentAlignment = Alignment.Center) {
                             if (state.person.inFavorites) {
                                 Icon(
@@ -185,8 +169,8 @@ class DetailPersonFragment : ComposeFragment() {
                 },
             )
             SwipeableActionsBox(
-                startActions = listOf(mBack),
-                endActions = listOf(mForward),
+                startActions = listOf(swipeForward),
+                endActions = listOf(swipeBack),
                 backgroundUntilSwipeThreshold = Color.Transparent
             ) {
                 Column(
@@ -302,171 +286,170 @@ class DetailPersonFragment : ComposeFragment() {
                                 fontSize = 18.sp
                             )
                         }
-                            Row {
-                                Text(
-                                    modifier = Modifier
-                                        .wrapContentSize()
-                                        .padding(
-                                            bottom = AppTheme.dimens.halfContentMargin,
-                                            top = AppTheme.dimens.halfContentMargin
-                                        ),
-                                    text = stringResource(id = R.string.gender_person),
-                                    style = AppTheme.typography.body1,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                    textAlign = TextAlign.Center,
-                                    fontWeight = FontWeight(700),
-                                    fontFamily = FontFamily.SansSerif,
-                                    fontSize = 18.sp
-                                )
-                                Text(
-                                    modifier = Modifier
-                                        .wrapContentSize()
-                                        .padding(
-                                            bottom = AppTheme.dimens.halfContentMargin,
-                                            top = AppTheme.dimens.halfContentMargin
-                                        ),
-                                    text = if ((state.person.gender.toString() == "") || (state.person.gender.toString() == "unknown")) {
-                                        stringResource(id = R.string.not_identify)
-                                    } else {
-                                        state.person.gender.toString()
-                                    },
-                                    style = AppTheme.typography.body1,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                    textAlign = TextAlign.Center,
-                                    fontWeight = FontWeight(700),
-                                    fontFamily = FontFamily.Monospace,
-                                    fontSize = 18.sp
-                                )
-                            }
-                            Row {
-                                Text(
-                                    modifier = Modifier
-                                        .wrapContentSize()
-                                        .padding(
-                                            bottom = AppTheme.dimens.halfContentMargin,
-                                            top = AppTheme.dimens.halfContentMargin
-                                        ),
-                                    text = stringResource(id = R.string.species_person),
-                                    style = AppTheme.typography.body1,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                    textAlign = TextAlign.Center,
-                                    fontWeight = FontWeight(700),
-                                    fontFamily = FontFamily.SansSerif,
-                                    fontSize = 18.sp
-                                )
-                                Text(
-                                    modifier = Modifier
-                                        .wrapContentSize()
-                                        .padding(
-                                            bottom = AppTheme.dimens.halfContentMargin,
-                                            top = AppTheme.dimens.halfContentMargin
-                                        ),
-                                    text = if ((state.person.species.toString() != "")) {
-                                        state.person.species.toString()
-                                    } else {
-                                        stringResource(id = R.string.not_identify)
-                                    },
-                                    style = AppTheme.typography.body1,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                    textAlign = TextAlign.Center,
-                                    fontWeight = FontWeight(700),
-                                    fontFamily = FontFamily.Monospace,
-                                    fontSize = 18.sp
-                                )
-                            }
-                            Row {
-                                Text(
-                                    modifier = Modifier
-                                        .wrapContentSize()
-                                        .padding(
-                                            bottom = AppTheme.dimens.halfContentMargin,
-                                            top = AppTheme.dimens.halfContentMargin
-                                        ),
-                                    text = stringResource(id = R.string.type_person),
-                                    style = AppTheme.typography.body1,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                    textAlign = TextAlign.Center,
-                                    fontWeight = FontWeight(700),
-                                    fontFamily = FontFamily.SansSerif,
-                                    fontSize = 18.sp
-                                )
-                                Text(
-                                    modifier = Modifier
-                                        .wrapContentSize()
-                                        .padding(
-                                            bottom = AppTheme.dimens.halfContentMargin,
-                                            top = AppTheme.dimens.halfContentMargin
-                                        ),
-                                    text = if ((state.person.type.toString() != "")) {
-                                        state.person.type.toString()
-                                    } else {
-                                        stringResource(id = R.string.not_identify)
-                                    },
-                                    style = AppTheme.typography.body1,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                    textAlign = TextAlign.Center,
-                                    fontWeight = FontWeight(700),
-                                    fontFamily = FontFamily.Monospace,
-                                    fontSize = 18.sp
-                                )
-                            }
-                            Row {
-                                Text(
-                                    modifier = Modifier
-                                        .wrapContentSize()
-                                        .padding(
-                                            bottom = AppTheme.dimens.halfContentMargin,
-                                            top = AppTheme.dimens.halfContentMargin
-                                        ),
-                                    text = stringResource(id = R.string.status_person),
-                                    style = AppTheme.typography.body1,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                    textAlign = TextAlign.Center,
-                                    fontWeight = FontWeight(700),
-                                    fontFamily = FontFamily.SansSerif,
-                                    fontSize = 18.sp
-                                )
-                                Text(
-                                    modifier = Modifier
-                                        .wrapContentSize()
-                                        .padding(
-                                            bottom = AppTheme.dimens.halfContentMargin,
-                                            top = AppTheme.dimens.halfContentMargin
-                                        ),
-                                    text = if ((state.person.status.toString() == "") || (state.person.status.toString() == "unknown")) {
-                                        stringResource(id = R.string.not_identify)
-                                    } else {
-                                        state.person.status.toString()
-                                    },
-                                    style = AppTheme.typography.body1,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                    textAlign = TextAlign.Center,
-                                    fontWeight = FontWeight(700),
-                                    fontFamily = FontFamily.Monospace,
-                                    fontSize = 18.sp
-                                )
-                            }
+                        Row {
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = stringResource(id = R.string.gender_person),
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.SansSerif,
+                                fontSize = 18.sp
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = if ((state.person.gender.toString() == "") || (state.person.gender.toString() == "unknown")) {
+                                    stringResource(id = R.string.not_identify)
+                                } else {
+                                    state.person.gender.toString()
+                                },
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.Monospace,
+                                fontSize = 18.sp
+                            )
+                        }
+                        Row {
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = stringResource(id = R.string.species_person),
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.SansSerif,
+                                fontSize = 18.sp
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = if ((state.person.species.toString() != "")) {
+                                    state.person.species.toString()
+                                } else {
+                                    stringResource(id = R.string.not_identify)
+                                },
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.Monospace,
+                                fontSize = 18.sp
+                            )
+                        }
+                        Row {
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = stringResource(id = R.string.type_person),
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.SansSerif,
+                                fontSize = 18.sp
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = if ((state.person.type.toString() != "")) {
+                                    state.person.type.toString()
+                                } else {
+                                    stringResource(id = R.string.not_identify)
+                                },
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.Monospace,
+                                fontSize = 18.sp
+                            )
+                        }
+                        Row {
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = stringResource(id = R.string.status_person),
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.SansSerif,
+                                fontSize = 18.sp
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(
+                                        bottom = AppTheme.dimens.halfContentMargin,
+                                        top = AppTheme.dimens.halfContentMargin
+                                    ),
+                                text = if ((state.person.status.toString() == "") || (state.person.status.toString() == "unknown")) {
+                                    stringResource(id = R.string.not_identify)
+                                } else {
+                                    state.person.status.toString()
+                                },
+                                style = AppTheme.typography.body1,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight(700),
+                                fontFamily = FontFamily.Monospace,
+                                fontSize = 18.sp
+                            )
+                        }
                         if (state.person.id != 1) {
                             Box(
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.BottomStart
                             ) {
                                 Row {
-                                    PrimaryButton(
-                                        text = stringResource(id = R.string.go_back),
+                                    PrimaryButton(text = stringResource(id = R.string.go_back),
                                         isEnabled = true,
                                         onClick = {
                                             state.isLoading = true
                                             currentId = currentId!! - 1
-                                            goNextPerson(currentId!!)
+                                            viewModel.submitUIEvent(DetailPersonEvent.GoTo(Screens.PersonScreen(currentId!!)))
                                         })
                                     Spacer(Modifier.weight(1f, true))
                                     PrimaryButton(text = stringResource(id = R.string.go_next),
@@ -474,7 +457,7 @@ class DetailPersonFragment : ComposeFragment() {
                                         onClick = {
                                             state.isLoading = true
                                             currentId = currentId!! + 1
-                                            goNextPerson(currentId!!)
+                                            viewModel.submitUIEvent(DetailPersonEvent.GoTo(Screens.PersonScreen(currentId!!)))
                                         })
                                 }
                             }
@@ -487,7 +470,7 @@ class DetailPersonFragment : ComposeFragment() {
                                     isEnabled = true,
                                     onClick = {
                                         currentId = currentId!! + 1
-                                        goNextPerson(currentId!!)
+                                        viewModel.submitUIEvent(DetailPersonEvent.GoTo(Screens.PersonScreen(currentId!!)))
                                     })
                             }
                         }
@@ -497,17 +480,15 @@ class DetailPersonFragment : ComposeFragment() {
         }
     }
 
-    private fun goToMainScreen() = coordinator.goBack()
-
-    private fun goNextPerson(id: Int) = coordinator.goTo(Screens.PersonScreen(id))
-
-    @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO,showSystemUi = true)
+    @Preview(
+        name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO, showSystemUi = true
+    )
     @Composable
     private fun DetailPersonScreenPreview() {
         RickAndMortyMainTheme {
-            val state =
-                DetailPersonViewState(isLoading = false, exit = false, person = Person(id = 0), errorText = ""
-                )
+            val state = DetailPersonViewState(
+                isLoading = false, exit = false, person = Person(id = 0), errorText = ""
+            )
             DetailPersonListScreen(state)
         }
     }

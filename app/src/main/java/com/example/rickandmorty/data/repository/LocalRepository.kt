@@ -5,7 +5,6 @@ import com.example.rickandmorty.data.db.entity.PersonEntity
 import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.util.Resource
 
-
 interface LocalRepository {
     fun getPersonsIds(): List<Int>
     fun getFavoritePersons(): Observable<Resource<List<Person>>>

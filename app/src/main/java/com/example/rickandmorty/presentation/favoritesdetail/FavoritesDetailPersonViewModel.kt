@@ -35,6 +35,7 @@ class FavoritesDetailPersonViewModel(
             is FavoritesDetailPersonEvent.AddToFavorite -> savePersonToListFavorites(viewState.person)
             is FavoritesDetailPersonEvent.ShowPerson -> loadPersonInfo(event.id)
             is FavoritesDetailPersonEvent.DeletePersonFromFavorite -> deleteFromFavorites(event.id)
+            else -> {}
         }
     }
 

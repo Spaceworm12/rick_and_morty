@@ -38,6 +38,7 @@ class PersonListViewModel(
             is PersonListEvents.DeleteFromFavorites -> deleteFromFavorites(event.id)
             is PersonListEvents.CheckStatus -> checkStatusPerson(event.person)
             is PersonListEvents.ToNextPage -> loadPersons(event.page)
+            else -> {}
         }
     }
 
