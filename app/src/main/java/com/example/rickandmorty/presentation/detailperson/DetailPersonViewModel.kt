@@ -40,7 +40,7 @@ class DetailPersonViewModel(
             is DetailPersonEvent.ShowPerson -> loadPersonInfo(event.id)
             is DetailPersonEvent.DeleteFromFavorites -> deleteFromFavorites(event.id)
             is DetailPersonEvent.CheckStatus -> checkStatusPerson(event.person)
-            DetailPersonEvent.GoBack -> goBack()
+            is DetailPersonEvent.GoBack -> goBack()
             is DetailPersonEvent.GoTo -> goTo(event.screen)
         }
     }

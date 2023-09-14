@@ -9,7 +9,9 @@ import com.example.rickandmorty.data.repository.LocalRepositoryImplement
 import com.example.rickandmorty.presentation.favorites.FavoritesListEvents
 import com.example.rickandmorty.presentation.model.LocalMapper
 import com.example.rickandmorty.presentation.model.modelperson.Person
+import com.example.rickandmorty.presentation.navigation.Coordinator
 import com.example.rickandmorty.util.Resource
+import com.github.terrakok.cicerone.Screen
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -17,6 +19,7 @@ import io.reactivex.rxkotlin.addTo
 class FavoritesDetailPersonViewModel(
     private val repo: LocalRepository = LocalRepositoryImplement(App.dao())
 ) : ViewModel() {
+    private val coordinator: Coordinator = App.getCoordinator()
     private val disposables = CompositeDisposable()
     private val _viewState = MutableLiveData(FavoritesDetailPersonViewState())
     val viewStateObs: LiveData<FavoritesDetailPersonViewState> get() = _viewState
@@ -35,9 +38,14 @@ class FavoritesDetailPersonViewModel(
             is FavoritesDetailPersonEvent.AddToFavorite -> savePersonToListFavorites(viewState.person)
             is FavoritesDetailPersonEvent.ShowPerson -> loadPersonInfo(event.id)
             is FavoritesDetailPersonEvent.DeletePersonFromFavorite -> deleteFromFavorites(event.id)
-            else -> {}
+            is FavoritesDetailPersonEvent.GoBack -> goBack()
+            is FavoritesDetailPersonEvent.GoTo -> goTo(event.screen)
         }
     }
+    private fun goTo(screen: Screen){
+        coordinator.goTo(screen)
+    }
+    private fun goBack() = coordinator.goBack()
 
     private fun loadPersonInfo(id: Int) {
             repo.getFavoritePersonInfo(id)
@@ -50,7 +58,7 @@ class FavoritesDetailPersonViewModel(
                             viewState= viewState.copy(person =resource.data, isLoading = false, exit = false)
                         }
 
-                        is Resource.Error -> viewState = viewState.copy(isLoading = false)
+                        is Resource.Error -> viewState = viewState.copy(isLoading = false,errorText = resource.error.message?:"error")
                     }
 
                 }
@@ -63,7 +71,7 @@ class FavoritesDetailPersonViewModel(
                 viewState = when (result) {
                     is Resource.Loading -> viewState.copy(isLoading = true)
                     is Resource.Data -> viewState.copy(isLoading = false)
-                    is Resource.Error -> viewState.copy(errorText=(result.error.message ?: ""))
+                    is Resource.Error -> viewState.copy(errorText = result.error.message?:"error")
                 }
             }
             .addTo(disposables)
@@ -74,9 +82,9 @@ class FavoritesDetailPersonViewModel(
             .subscribe { resource ->
                 when (resource) {
                     is Resource.Loading -> viewState = viewState.copy(isLoading = true)
-                    is Resource.Data -> {viewState = viewState.copy(isLoading = false)
+                    is Resource.Data -> {viewState = viewState.copy(isLoading = false, errorText = "error")
                         FavoritesListEvents.GetFavoritePersons}
-                    is Resource.Error -> viewState=viewState.copy(isLoading = false, errorText = "error")
+                    is Resource.Error -> viewState=viewState.copy(isLoading = false, errorText = resource.error.message?:"error")
                 }
             }
             .addTo(disposables)

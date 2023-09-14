@@ -1,6 +1,5 @@
 package com.example.rickandmorty.presentation.listperson
 
-import com.example.rickandmorty.presentation.detailperson.DetailPersonEvent
 import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.github.terrakok.cicerone.Screen
 

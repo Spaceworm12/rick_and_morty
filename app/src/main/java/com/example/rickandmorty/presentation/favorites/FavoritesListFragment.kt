@@ -43,7 +43,6 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.rickandmorty.R
-import com.example.rickandmorty.application.App
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
@@ -51,12 +50,10 @@ import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlo
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.model.modelperson.Person
-import com.example.rickandmorty.presentation.navigation.Coordinator
 import com.example.rickandmorty.presentation.navigation.Screens
 
 
 class FavoritesListFragment : ComposeFragment() {
-    private val coordinator: Coordinator = App.getCoordinator()
     private val viewModel: FavoritesListViewModel by lazy {
         ViewModelProvider(this)[FavoritesListViewModel::class.java]
     }
@@ -70,7 +67,7 @@ class FavoritesListFragment : ComposeFragment() {
                 LoaderBlock()
             }
             if (state.exit) {
-                coordinator.goBack()
+                viewModel.submitUIEvent(FavoritesListEvents.GoTo(Screens.ListPersonsScreen()))
             }
         }
     }
@@ -86,14 +83,14 @@ class FavoritesListFragment : ComposeFragment() {
                 title = stringResource(id = R.string.rik_wiki),
                 subtitle = stringResource(id = R.string.Favorites),
                 elevation = AppTheme.dimens.halfContentMargin,
-                onBackClick = { coordinator.goBack() },
+                onBackClick = { viewModel.submitUIEvent(FavoritesListEvents.GoTo(Screens.ListPersonsScreen())) },
             )
             LazyVerticalGrid(
                 columns = GridCells.Fixed(count = 1),
             ) {
                 state.persons.forEach { person ->
                     item {
-                        Person(person)
+                        ShowPerson(person)
                     }
                 }
             }
@@ -102,7 +99,7 @@ class FavoritesListFragment : ComposeFragment() {
 
     @OptIn(ExperimentalCoilApi::class)
     @Composable
-    private fun Person(person: Person) {
+    private fun ShowPerson(person: Person) {
         val textDel = stringResource(R.string.deleted_from_favorites)
         Column(
             modifier = Modifier
@@ -121,7 +118,7 @@ class FavoritesListFragment : ComposeFragment() {
                     .clickable(
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() },
-                        onClick = { goToPerson(person.id) })
+                        onClick = { viewModel.submitUIEvent(FavoritesListEvents.GoTo(Screens.FavoritePersonScreen(person.id)))})
             ) {
                 Card(
                     modifier = Modifier
@@ -218,7 +215,6 @@ class FavoritesListFragment : ComposeFragment() {
         }
 
     }
-    private fun goToPerson(id: Int) = coordinator.goTo(Screens.FavoritePersonScreen(id))
 
     @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable

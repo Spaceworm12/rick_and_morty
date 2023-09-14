@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import com.example.rickandmorty.application.App
 import com.example.rickandmorty.data.repository.LocalRepository
 import com.example.rickandmorty.data.repository.LocalRepositoryImplement
+import com.example.rickandmorty.presentation.navigation.Coordinator
 import com.example.rickandmorty.util.Resource
+import com.github.terrakok.cicerone.Screen
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -14,6 +16,7 @@ import io.reactivex.rxkotlin.addTo
 class FavoritesListViewModel(
     private val repo: LocalRepository = LocalRepositoryImplement(App.dao())
 ) : ViewModel() {
+    private val coordinator: Coordinator = App.getCoordinator()
     private val disposables = CompositeDisposable()
     private val _viewState = MutableLiveData(FavoritesListViewState())
     val viewStateObs: LiveData<FavoritesListViewState> get() = _viewState
@@ -30,17 +33,19 @@ class FavoritesListViewModel(
     private fun handleUIEvent(event: FavoritesListEvents) {
         when (event) {
             is FavoritesListEvents.GetFavoritePersons -> loadLocalPersons()
-            is FavoritesListEvents.DeleteFromFavorites -> {
-                deleteFromFavorites(event.id)
-            }
-
-            else -> {}
+            is FavoritesListEvents.DeleteFromFavorites -> deleteFromFavorites(event.id)
+            is FavoritesListEvents.GoBack -> goBack()
+            is FavoritesListEvents.GoTo -> goTo(event.screen)
         }
     }
 
     init {
         loadLocalPersons()
     }
+    private fun goTo(screen: Screen){
+        coordinator.goTo(screen)
+    }
+    private fun goBack() = coordinator.goBack()
 
     private fun loadLocalPersons() {
         repo.getFavoritePersons()
@@ -54,7 +59,7 @@ class FavoritesListViewModel(
                         viewState = viewState.copy(persons = ((resource.data)))
                     }
 
-                    is Resource.Error -> viewState = viewState.copy(isLoading = true)
+                    is Resource.Error -> viewState = viewState.copy(isLoading = true, errorText = resource.error.message?:"error")
                 }
             }
             .addTo(disposables)
@@ -72,7 +77,7 @@ class FavoritesListViewModel(
                     }
 
                     is Resource.Error -> viewState =
-                        viewState.copy(isLoading = false, errorText = "error")
+                        viewState.copy(isLoading = false, errorText = resource.error.message?:"error")
                 }
             }
             .addTo(disposables)

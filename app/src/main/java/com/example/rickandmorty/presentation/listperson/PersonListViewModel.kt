@@ -10,7 +10,9 @@ import com.example.rickandmorty.data.repository.LocalRepositoryImplement
 import com.example.rickandmorty.presentation.favorites.FavoritesListEvents
 import com.example.rickandmorty.presentation.model.LocalMapper
 import com.example.rickandmorty.presentation.model.modelperson.Person
+import com.example.rickandmorty.presentation.navigation.Coordinator
 import com.example.rickandmorty.util.Resource
+import com.github.terrakok.cicerone.Screen
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -19,6 +21,7 @@ class PersonListViewModel(
     private val networkRepository: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getRickAndMortyApi()),
     private val repo: LocalRepository = LocalRepositoryImplement(App.dao())
 ) : ViewModel() {
+    private val coordinator: Coordinator = App.getCoordinator()
     private val disposables = CompositeDisposable()
     private val _viewState = MutableLiveData(PersonListViewState())
     val viewStateObs: LiveData<PersonListViewState> get() = _viewState
@@ -38,7 +41,8 @@ class PersonListViewModel(
             is PersonListEvents.DeleteFromFavorites -> deleteFromFavorites(event.id)
             is PersonListEvents.CheckStatus -> checkStatusPerson(event.person)
             is PersonListEvents.ToNextPage -> loadPersons(event.page)
-            else -> {}
+            is PersonListEvents.GoBack -> goBack()
+            is PersonListEvents.GoTo -> goTo(event.screen)
         }
     }
 
@@ -46,7 +50,10 @@ class PersonListViewModel(
         loadPersons(viewState.currentPage)
         loadInfo()
     }
-
+    private fun goTo(screen: Screen){
+        coordinator.goTo(screen)
+    }
+    private fun goBack() = coordinator.goBack()
     private fun loadPersons(page:Int) {
         networkRepository.getPersons(page)
             .observeOn(AndroidSchedulers.mainThread())
@@ -57,7 +64,7 @@ class PersonListViewModel(
                         viewState = viewState.copy(isLoading = false)
                         viewState = viewState.copy(persons = (resource.data))
                     }
-                    is Resource.Error -> viewState = viewState.copy(isLoading = false)
+                    is Resource.Error -> viewState = viewState.copy(isLoading = false,errorText = (resource.error.message ?: ""))
                 }
             }
             .addTo(disposables)
@@ -72,7 +79,7 @@ class PersonListViewModel(
                         viewState = viewState.copy(isLoading = false)
                         viewState = viewState.copy(pageInfo = (resource.data))
                     }
-                    is Resource.Error -> viewState = viewState.copy(isLoading = false)
+                    is Resource.Error -> viewState = viewState.copy(isLoading = false,errorText = (resource.error.message ?: ""))
                 }
             }
             .addTo(disposables)
@@ -86,7 +93,7 @@ class PersonListViewModel(
                     is Resource.Data -> {
                         person.inFavorites=resource.data
                     }
-                    is Resource.Error -> viewState = viewState.copy(isLoading = false)
+                    is Resource.Error -> viewState = viewState.copy(isLoading = false,errorText = (resource.error.message ?: ""))
                 }
             }
             .addTo(disposables)

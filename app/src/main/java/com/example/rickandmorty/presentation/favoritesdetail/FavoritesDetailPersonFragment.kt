@@ -55,17 +55,16 @@ import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBa
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.presentation.navigation.Coordinator
+import com.example.rickandmorty.presentation.navigation.Screens
 
 class FavoritesDetailPersonFragment : ComposeFragment() {
     private val viewModel: FavoritesDetailPersonViewModel by lazy {
         ViewModelProvider(this)[FavoritesDetailPersonViewModel::class.java]
     }
-    private val coordinator: Coordinator = App.getCoordinator()
-
     companion object {
-        private const val KEY = "KEY"
+        private const val ID = "KEY"
         fun newInstance(identifyNumber: Int) = FavoritesDetailPersonFragment().apply {
-            arguments = bundleOf(KEY to identifyNumber)
+            arguments = bundleOf(ID to identifyNumber)
         }
     }
 
@@ -78,7 +77,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                 LoaderBlock()
             }
             if (state.exit) {
-                goToMainScreen()
+                viewModel.submitUIEvent(FavoritesDetailPersonEvent.GoTo(Screens.ListFavoritePersonsScreen()))
             }
         }
     }
@@ -86,24 +85,18 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
     @OptIn(ExperimentalCoilApi::class)
     @Composable
     private fun DetailPersonListScreen(state: FavoritesDetailPersonViewState) {
-        val currentId = arguments?.getInt(KEY)
+        val currentId = arguments?.getInt(ID)
         val textDel = stringResource(R.string.deleted_from_favorites)
         if (currentId != null) {
             viewModel.submitUIEvent(FavoritesDetailPersonEvent.ShowPerson(currentId))
         } else {
-            goToMainScreen()
-        }
-        if (state.isLoading) {
-            LoaderBlock()
-        }
-        if (state.exit) {
-            goToMainScreen()
+            viewModel.submitUIEvent(FavoritesDetailPersonEvent.GoTo(Screens.ListFavoritePersonsScreen()))
         }
         Column(modifier = Modifier.background(AppTheme.colors.background)) {
             Toolbar(
                 title = stringResource(id = R.string.about_person),
                 subtitle = stringResource(id = R.string.about_person_subtitle),
-                onBackClick = { goToMainScreen()},
+                onBackClick = { viewModel.submitUIEvent(FavoritesDetailPersonEvent.GoTo(Screens.ListFavoritePersonsScreen()))},
                 actions = {
                     IconButton(onClick = {
                         viewModel.submitUIEvent(
@@ -117,7 +110,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                             String.format("%s%s", state.person.name, textDel),
                             Toast.LENGTH_SHORT
                         ).show()
-                        goToMainScreen()
+                        viewModel.submitUIEvent(FavoritesDetailPersonEvent.GoTo(Screens.ListFavoritePersonsScreen()))
                     }) {
                         Box(contentAlignment = Alignment.Center) {
                             if (state.person.inFavorites) {
@@ -399,7 +392,6 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
             }
         }
     }
-    private fun goToMainScreen() = coordinator.goBack()
 
     @Preview(name = "FavoriteDetailPersonScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable

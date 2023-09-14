@@ -59,7 +59,6 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.rickandmorty.R
-import com.example.rickandmorty.application.App
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
@@ -68,12 +67,10 @@ import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBa
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.model.modelperson.Info
 import com.example.rickandmorty.presentation.model.modelperson.Person
-import com.example.rickandmorty.presentation.navigation.Coordinator
 import com.example.rickandmorty.presentation.navigation.Screens
 
 
 class PersonListFragment : ComposeFragment() {
-    private val coordinator: Coordinator = App.getCoordinator()
     private val viewModel: PersonListViewModel by lazy {
         ViewModelProvider(this)[PersonListViewModel::class.java]
     }
@@ -87,7 +84,7 @@ class PersonListFragment : ComposeFragment() {
                 LoaderBlock()
             }
             if (state.exit) {
-                coordinator.goBack()
+                viewModel.submitUIEvent(PersonListEvents.GoTo(Screens.ListPersonsScreen()))
             }
         }
     }
@@ -105,9 +102,9 @@ class PersonListFragment : ComposeFragment() {
                 title = stringResource(id = R.string.rik_wiki),
                 subtitle = (stringResource(id = R.string.page) + " " + state.currentPage.toString() + "/42"),
                 elevation = AppTheme.dimens.halfContentMargin,
-                onBackClick = { coordinator.goBack() },
+                onBackClick = {  viewModel.submitUIEvent(PersonListEvents.GoTo(Screens.ListPersonsScreen())) },
                 actions = {
-                    IconButton(onClick = { coordinator.goTo(Screens.ListFavoritePersonsScreen()) }) {
+                    IconButton(onClick = { viewModel.submitUIEvent(PersonListEvents.GoTo(Screens.ListFavoritePersonsScreen())) }) {
                         Icon(
                             Icons.Filled.Grade, contentDescription = "", Modifier.size(35.dp)
                         )
@@ -120,7 +117,7 @@ class PersonListFragment : ComposeFragment() {
                 ) {
                     state.persons.forEach { person ->
                         item {
-                            Person(person)
+                            ShowPerson(person)
                         }
                     }
                 }
@@ -222,7 +219,7 @@ class PersonListFragment : ComposeFragment() {
 
     @OptIn(ExperimentalCoilApi::class)
     @Composable
-    private fun Person(person: Person) {
+    private fun ShowPerson(person: Person) {
         var selected by remember { mutableStateOf(false) }
         val scale by animateFloatAsState(if (selected) 0.9f else 1f, label = "")
         viewModel.submitUIEvent(PersonListEvents.CheckStatus(person))
@@ -242,7 +239,7 @@ class PersonListFragment : ComposeFragment() {
                     .clickable(
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() },
-                        onClick = { goToPerson(person.id) })
+                        onClick = { viewModel.submitUIEvent(PersonListEvents.GoTo(Screens.PersonScreen(person.id)))})
             ) {
                 Card(
                     modifier = Modifier
@@ -408,7 +405,6 @@ class PersonListFragment : ComposeFragment() {
             }
         }
     }
-    private fun goToPerson(id: Int) = coordinator.goTo(Screens.PersonScreen(id))
 
     @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
