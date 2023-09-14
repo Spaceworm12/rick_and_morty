@@ -61,7 +61,7 @@ class App : Application() {
 
         fun dao(): Dao {
             checkDb()
-            return db!!.exampleDao()
+            return db!!.personDao()
         }
 
         fun getDb(): Db {
@@ -80,15 +80,6 @@ class App : Application() {
                     .allowMainThreadQueries()
                     .build()
             }
-        }
-
-        //Удалить
-        fun getSettings(): SharedPreferences {
-            if (sharedPreferences == null) {
-                sharedPreferences =
-                    appInstance!!.applicationContext.getSharedPreferences("THEME", MODE_PRIVATE)
-            }
-            return sharedPreferences!!
         }
 
         fun getRickAndMortyApi(): RickAndMortyApi {

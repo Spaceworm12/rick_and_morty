@@ -49,7 +49,7 @@ class LocalRepositoryImplement(private val dao: Dao, private val db: Db) : Local
     }
 
     override fun deletePersonFromFavorite(id: Int): Observable<Resource<Unit>> {
-        return dao.deleteExample(id)
+        return dao.deletePerson(id)
             .andThen(Observable.just(Resource.Success))
             .onErrorReturn { Resource.Error(it) }
             .startWith(Resource.Loading)
