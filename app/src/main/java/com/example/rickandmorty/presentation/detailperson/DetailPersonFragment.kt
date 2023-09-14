@@ -57,6 +57,7 @@ import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
 import com.example.rickandmorty.presentation.composecomponents.buttons.PrimaryButton
 import com.example.rickandmorty.presentation.composecomponents.dialogs.LoaderBlock
+import com.example.rickandmorty.presentation.composecomponents.shimmer.LoadingAnimation
 import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBackground
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.model.modelperson.Person
@@ -227,34 +228,32 @@ class DetailPersonFragment : ComposeFragment() {
 
                             shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin),
                         ) {
-                            val painterImage = rememberImagePainter(data = state.person.avatar)
-                            when (painterImage.state) {
-                                is ImagePainter.State.Loading -> {
-                                    Box(
-                                        modifier = Modifier.shimmerBackground(
-                                            RoundedCornerShape(
-                                                AppTheme.dimens.halfContentMargin
-                                            )
+                            Box(
+                                modifier = Modifier.shimmerBackground(
+                                    RoundedCornerShape(
+                                        AppTheme.dimens.halfContentMargin
+                                    )
+                                )
+                            ) {
+                                val painterImage = rememberImagePainter(data = state.person.avatar)
+                                when (painterImage.state) {
+
+                                    is ImagePainter.State.Loading -> {
+                                        LoadingAnimation()
+                                    }
+
+                                    is ImagePainter.State.Error -> {
+                                        LoadingAnimation()
+                                    }
+
+                                    else -> {
+                                        Image(
+                                            painter = painterImage,
+                                            contentDescription = null,
+                                            modifier = Modifier.fillMaxSize(),
+                                            contentScale = ContentScale.Fit
                                         )
-                                    )
-                                }
-
-                                is ImagePainter.State.Error -> {
-                                    Image(
-                                        painter = painterResource(id = android.R.drawable.stat_notify_error),
-                                        contentDescription = null,
-                                        modifier = Modifier.fillMaxSize(),
-                                        contentScale = ContentScale.Crop
-                                    )
-                                }
-
-                                else -> {
-                                    Image(
-                                        painter = painterImage,
-                                        contentDescription = null,
-                                        modifier = Modifier.fillMaxSize(),
-                                        contentScale = ContentScale.Fit
-                                    )
+                                    }
                                 }
                             }
                         }
