@@ -54,9 +54,7 @@ fun LoadingAnimation(
                 color = circleColor.copy(alpha = 1 - circleScaleAnimate.value),
                 shape = CircleShape
             )
-    ) {
-
-    }
+    )
 }
 
 @Preview(name = "LoadingAnimationPreview", uiMode = Configuration.UI_MODE_NIGHT_NO)
