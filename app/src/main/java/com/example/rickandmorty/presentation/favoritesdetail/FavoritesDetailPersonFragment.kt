@@ -107,7 +107,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                         state.person.inFavorites = false
                         Toast.makeText(
                             requireContext(),
-                            String.format("%s%s", state.person.name, textDel),
+                            String.format("%s %s", state.person.name, textDel),
                             Toast.LENGTH_SHORT
                         ).show()
                         viewModel.submitUIEvent(FavoritesDetailPersonEvent.GoTo(Screens.ListFavoritePersonsScreen()))

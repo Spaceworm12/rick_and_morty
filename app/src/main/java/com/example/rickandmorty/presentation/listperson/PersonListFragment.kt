@@ -369,7 +369,7 @@ class PersonListFragment : ComposeFragment() {
                         person.inFavorites = true
                         Toast.makeText(
                             requireContext(),
-                            String.format("%s%s", person.name, textAdd),
+                            String.format("%s %s", person.name, textAdd),
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {

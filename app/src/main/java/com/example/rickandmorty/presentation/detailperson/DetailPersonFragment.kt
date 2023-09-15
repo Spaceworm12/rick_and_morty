@@ -133,7 +133,7 @@ class DetailPersonFragment : ComposeFragment() {
                             viewModel.submitUIEvent(DetailPersonEvent.AddToFavorite(state.person))
                             Toast.makeText(
                                 requireContext(),
-                                String.format("%s%s", state.person.name, textAdd),
+                                String.format("%s %s", state.person.name, textAdd),
                                 Toast.LENGTH_SHORT
                             ).show()
                             state.person.inFavorites = true
