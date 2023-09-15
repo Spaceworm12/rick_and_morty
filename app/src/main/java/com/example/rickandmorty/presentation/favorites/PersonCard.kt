@@ -140,7 +140,7 @@ fun PersonCard(person: Person, onUiEvent: (FavoritesListEvents) -> Unit) {
                         onUiEvent(FavoritesListEvents.DeleteFromFavorites(person.id))
                         Toast.makeText(
                             context,
-                            String.format("%s%s", person.name, textDel),
+                            String.format("%s %s", person.name, textDel),
                             Toast.LENGTH_SHORT
                         ).show()
                     }

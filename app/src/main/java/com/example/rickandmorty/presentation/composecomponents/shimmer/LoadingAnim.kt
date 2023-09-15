@@ -28,8 +28,8 @@ import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainT
 @SuppressLint("AutoboxingStateCreation")
 @Composable
 fun LoadingAnimation(
-    circleColor: Color = AppTheme.colors.primary,
-    animationDelay: Int = 2000,
+    circleColor: Color = Color.Gray,
+    animationDelay: Int = 700,
 ) {
 
     var circleScale by remember {
