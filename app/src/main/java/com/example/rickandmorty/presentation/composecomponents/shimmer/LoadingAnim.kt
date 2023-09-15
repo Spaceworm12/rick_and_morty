@@ -29,7 +29,7 @@ import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainT
 @Composable
 fun LoadingAnimation(
     circleColor: Color = AppTheme.colors.primary,
-    animationDelay: Int = 1000,
+    animationDelay: Int = 2000,
 ) {
 
     var circleScale by remember {

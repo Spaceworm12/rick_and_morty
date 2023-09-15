@@ -1,6 +1,7 @@
 package com.example.rickandmorty.presentation.favorites
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -29,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -46,7 +48,7 @@ import com.example.rickandmorty.presentation.navigation.Screens
 
 @Composable
 fun PersonCard(person: Person, onUiEvent: (FavoritesListEvents) -> Unit) {
-
+    val context = LocalContext.current
     val textDel = stringResource(R.string.deleted_from_favorites)
     Column(modifier = Modifier.padding(10.dp)) {
         Row(
@@ -60,7 +62,15 @@ fun PersonCard(person: Person, onUiEvent: (FavoritesListEvents) -> Unit) {
                 .clickable(
                     indication = null,
                     interactionSource = remember { MutableInteractionSource() },
-                    onClick = { onUiEvent(FavoritesListEvents.GoTo(Screens.FavoritePersonScreen(person.id))) })
+                    onClick = {
+                        onUiEvent(
+                            FavoritesListEvents.GoTo(
+                                Screens.FavoritePersonScreen(
+                                    person.id
+                                )
+                            )
+                        )
+                    })
         ) {
             Card(
                 modifier = Modifier
@@ -125,7 +135,15 @@ fun PersonCard(person: Person, onUiEvent: (FavoritesListEvents) -> Unit) {
                         .size(fabSize)
                         .padding(AppTheme.dimens.sideMargin),
                     backgroundColor = AppTheme.colors.primary,
-                    onClick = {}
+                    onClick = {
+                        !person.inFavorites
+                        onUiEvent(FavoritesListEvents.DeleteFromFavorites(person.id))
+                        Toast.makeText(
+                            context,
+                            String.format("%s%s", person.name, textDel),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         if (person.inFavorites) {
