@@ -32,46 +32,48 @@ fun PrimaryButton(
     onClick: () -> Unit,
 ) {
     with(AppTheme.dimens) {
-        Row(
-            modifier = modifier
-                .padding(bottom = bottomPadding),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
+        if (isVisible) {
+            Row(
+                modifier = modifier
+                    .padding(bottom = bottomPadding),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
 
-            val shape = RoundedCornerShape(contentMargin)
+                val shape = RoundedCornerShape(contentMargin)
 
-            Button(
-                modifier = Modifier
-                    .widthIn(min = minWidth)
-                    .heightIn(min = minHeight)
-                    .border(
-                        width = 2.dp,
-                        color = if (isEnabled) {
-                            color
-                        } else {
-                            AppTheme.colors.notEnabled
-                        },
-                        shape = shape
+                Button(
+                    modifier = Modifier
+                        .widthIn(min = minWidth)
+                        .heightIn(min = minHeight)
+                        .border(
+                            width = 2.dp,
+                            color = if (isEnabled) {
+                                color
+                            } else {
+                                AppTheme.colors.notEnabled
+                            },
+                            shape = shape
+                        ),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = AppTheme.colors.primary,
+                        contentColor = color,
+                        disabledBackgroundColor = AppTheme.colors.primary,
+                        disabledContentColor = AppTheme.colors.notEnabled,
                     ),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = AppTheme.colors.primary,
-                    contentColor = color,
-                    disabledBackgroundColor = AppTheme.colors.primary,
-                    disabledContentColor = AppTheme.colors.notEnabled,
-                ),
-                shape = shape,
-                enabled = isEnabled,
-                onClick = { onClick.invoke() },
-            )
-            {
-                Text(
-                    fontSize = 18.sp,
-                    style = AppTheme.typography.subtitle1,
-                    text = text,
+                    shape = shape,
+                    enabled = isEnabled,
+                    onClick = { onClick.invoke() },
                 )
-            }
+                {
+                    Text(
+                        fontSize = 18.sp,
+                        style = AppTheme.typography.subtitle1,
+                        text = text,
+                    )
+                }
 
+            }
         }
     }
 }

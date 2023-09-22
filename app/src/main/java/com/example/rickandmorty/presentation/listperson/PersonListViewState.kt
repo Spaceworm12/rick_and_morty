@@ -10,7 +10,7 @@ data class PersonListViewState(
     val person: Person? = null,
     val errorText: String = "",
     val pageInfo: Info = Info(1, 1, "", ""),
-    var currentPage: Int = null?:1
+    var currentPage: Int = null ?: 1
 )
 
 

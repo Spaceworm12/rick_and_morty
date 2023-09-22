@@ -455,42 +455,62 @@ class DetailPersonFragment : ComposeFragment() {
                                     fontSize = 18.sp
                                 )
                             }
-                        if (state.person.id != 1) {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.BottomStart
-                            ) {
-                                Row {
-                                    PrimaryButton(
-                                        text = stringResource(id = R.string.go_back),
-                                        isEnabled = true,
-                                        onClick = {
-                                            state.isLoading = true
-                                            currentId = currentId!! - 1
-                                            goNextPerson(currentId!!)
-                                        })
-                                    Spacer(Modifier.weight(1f, true))
-                                    PrimaryButton(text = stringResource(id = R.string.go_next),
-                                        isEnabled = true,
-                                        onClick = {
-                                            state.isLoading = true
-                                            currentId = currentId!! + 1
-                                            goNextPerson(currentId!!)
-                                        })
-                                }
-                            }
-                        } else {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.BottomEnd
-                            ) {
-                                PrimaryButton(text = stringResource(id = R.string.go_next),
-                                    isEnabled = true,
-                                    onClick = {
-                                        currentId = currentId!! + 1
-                                        goNextPerson(currentId!!)
-                                    })
-                            }
+//                        if (state.person.id != 1) {
+//                            Box(
+//                                modifier = Modifier.fillMaxSize(),
+//                                contentAlignment = Alignment.BottomStart
+//                            ) {
+//                                Row {
+//                                    PrimaryButton(
+//                                        text = stringResource(id = R.string.go_back),
+//                                        isEnabled = true,
+//                                        onClick = {
+//                                            state.isLoading = true
+//                                            currentId = currentId!! - 1
+//                                            goNextPerson(currentId!!)
+//                                        })
+//                                    Spacer(Modifier.weight(1f, true))
+//                                    PrimaryButton(text = stringResource(id = R.string.go_next),
+//                                        isEnabled = true,
+//                                        onClick = {
+//                                            state.isLoading = true
+//                                            currentId = currentId!! + 1
+//                                            goNextPerson(currentId!!)
+//                                        })
+//                                }
+//                            }
+//                        } else {
+//                            Box(
+//                                modifier = Modifier.fillMaxSize(),
+//                                contentAlignment = Alignment.BottomEnd
+//                            ) {
+//                                PrimaryButton(text = stringResource(id = R.string.go_next),
+//                                    isEnabled = true,
+//                                    onClick = {
+//                                        currentId = currentId!! + 1
+//                                        goNextPerson(currentId!!)
+//                                    })
+//                            }
+//                        }
+
+                        Row {
+                            PrimaryButton(
+                                text = stringResource(id = R.string.go_back),
+                                isEnabled = true,
+                                isVisible = state.person.id != 1,
+                                onClick = {
+                                    state.isLoading = true
+                                    currentId = currentId!! - 1
+                                    goNextPerson(currentId!!)
+                                })
+                            Spacer(Modifier.weight(1f, true))
+                            PrimaryButton(text = stringResource(id = R.string.go_next),
+                                isEnabled = true,
+                                onClick = {
+                                    state.isLoading = true
+                                    currentId = currentId!! + 1
+                                    goNextPerson(currentId!!)
+                                })
                         }
                     }
                 }

@@ -1,5 +1,8 @@
 package com.example.rickandmorty.util
 
+import android.content.Context
+import android.widget.Toast
+
 
 sealed class Resource<out T> {
     object Loading : Resource<Nothing>()
@@ -9,4 +12,13 @@ sealed class Resource<out T> {
     companion object {
         val Success: Resource<Unit> = Data(Unit)
     }
+}
+
+
+fun String.showToast(context: Context) {
+    Toast.makeText(
+        context,
+        this,
+        Toast.LENGTH_SHORT
+    ).show()
 }

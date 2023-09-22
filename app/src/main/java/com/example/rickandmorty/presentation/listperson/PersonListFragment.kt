@@ -41,6 +41,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -70,6 +71,8 @@ import com.example.rickandmorty.presentation.model.modelperson.Info
 import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.presentation.navigation.Coordinator
 import com.example.rickandmorty.presentation.navigation.Screens
+import com.example.rickandmorty.util.showToast
+import kotlinx.coroutines.launch
 
 
 class PersonListFragment : ComposeFragment() {
@@ -114,7 +117,7 @@ class PersonListFragment : ComposeFragment() {
                     }
                 }
             )
-            Box{
+            Box {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(count = 1),
                 ) {
@@ -135,7 +138,7 @@ class PersonListFragment : ComposeFragment() {
                     state.currentPage += 1
                     viewModel.submitUIEvent(PersonListEvents.ToNextPage(state.currentPage))
                 },
-                enabled = (state.currentPage < 42)&&(!state.isLoading),
+                enabled = (state.currentPage < 42) && (!state.isLoading),
                 modifier = Modifier
                     .wrapContentSize()
                     .background(
@@ -147,11 +150,11 @@ class PersonListFragment : ComposeFragment() {
                         shape = RoundedCornerShape(fabSize)
                     )
                     .border(
-                        1.dp, if (state.currentPage < 42) {
-                            AppTheme.colors.secondary
-                        } else {
-                            Color.Transparent
-                        }, RoundedCornerShape(70.dp)
+                        width = 1.dp,
+                        color =
+                        if (state.currentPage < 42) AppTheme.colors.secondary
+                        else Color.Transparent,
+                        shape = RoundedCornerShape(70.dp)
                     )
                     .pointerInput(Unit) {
                         while (true) {
@@ -168,7 +171,7 @@ class PersonListFragment : ComposeFragment() {
                     Icons.Filled.ArrowForwardIos,
                     contentDescription = "",
                     Modifier.size(55.dp),
-                    tint = if(state.currentPage<42){AppTheme.colors.secondary}else{Color.Transparent}
+                    tint = if (state.currentPage < 42) AppTheme.colors.secondary else Color.Transparent
                 )
             }
         }
@@ -181,7 +184,7 @@ class PersonListFragment : ComposeFragment() {
                     state.currentPage -= 1
                     viewModel.submitUIEvent(PersonListEvents.ToNextPage(state.currentPage))
                 },
-                enabled = (state.currentPage!=1)&&(!state.isLoading),
+                enabled = (state.currentPage != 1) && (!state.isLoading),
                 modifier = Modifier
                     .wrapContentSize()
                     .background(
@@ -214,7 +217,11 @@ class PersonListFragment : ComposeFragment() {
                     Icons.Filled.ArrowBackIosNew,
                     contentDescription = "",
                     Modifier.size(55.dp),
-                    tint = if(state.currentPage!=1){AppTheme.colors.secondary}else{Color.Transparent}
+                    tint = if (state.currentPage != 1) {
+                        AppTheme.colors.secondary
+                    } else {
+                        Color.Transparent
+                    }
                 )
             }
         }
@@ -225,11 +232,11 @@ class PersonListFragment : ComposeFragment() {
     private fun Person(person: Person) {
         var selected by remember { mutableStateOf(false) }
         val scale by animateFloatAsState(if (selected) 0.9f else 1f, label = "")
-        viewModel.submitUIEvent(PersonListEvents.CheckStatus(person))
+
         Column(
             modifier = Modifier
-                .padding(AppTheme.dimens.contentMargin)
-                .width(100.dp),
+                .fillMaxWidth()
+                .padding(AppTheme.dimens.contentMargin),
             horizontalAlignment = Alignment.Start
         ) {
             Row(
@@ -242,14 +249,12 @@ class PersonListFragment : ComposeFragment() {
                     .clickable(
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() },
-                        onClick = { goToPerson(person.id) })
+                        onClick = { goToPerson(person.id) }),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Card(
                     modifier = Modifier
-                        .size(
-                            width = 100.dp,
-                            height = 100.dp
-                        ),
+                        .size(100.dp),
                     shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin),
                 ) {
                     val painterImage = rememberImagePainter(data = person.avatar)
@@ -261,21 +266,21 @@ class PersonListFragment : ComposeFragment() {
                                     .shimmerBackground(RoundedCornerShape(AppTheme.dimens.halfContentMargin))
                             )
                         }
+
                         is ImagePainter.State.Error -> {
                             Image(
                                 painter = painterResource(id = android.R.drawable.stat_notify_error),
                                 contentDescription = null,
-                                modifier = Modifier
-                                    .fillMaxSize(),
+                                modifier = Modifier.fillMaxSize(),
                                 contentScale = ContentScale.Crop
                             )
                         }
+
                         else -> {
                             Image(
                                 painter = painterImage,
                                 contentDescription = null,
-                                modifier = Modifier
-                                    .fillMaxSize(),
+                                modifier = Modifier.fillMaxSize(),
                                 contentScale = ContentScale.Crop
                             )
                         }
@@ -289,64 +294,59 @@ class PersonListFragment : ComposeFragment() {
                                 bottom = AppTheme.dimens.halfContentMargin,
                                 top = AppTheme.dimens.halfContentMargin
                             ),
-                        text = person.name ?: "",
+                        text = person.name,
                         style = AppTheme.typography.body1,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         textAlign = TextAlign.Center,
                     )
-                    Box(contentAlignment = Alignment.Center) {
-                        Column(
-                            modifier = Modifier.wrapContentSize(),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        top = AppTheme.dimens.halfContentMargin
-                                    ),
-                                text = person.status ?: "",
-                                style = AppTheme.typography.body1,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                            )
-                            if (person.status == "Alive") {
-                                Icon(
-                                    modifier = Modifier
-                                        .size(40.dp)
-                                        .padding(top = 10.dp),
-                                    imageVector = Icons.Filled.Done,
-                                    contentDescription = "Alive",
-                                    tint = Color.Green
-                                )
-                            }
-                            if (person.status == "Dead") {
-                                Icon(
-                                    modifier = Modifier
-                                        .size(40.dp)
-                                        .padding(top = 10.dp),
-                                    imageVector = Icons.Filled.DisabledByDefault,
-                                    contentDescription = "Dead",
-                                    tint = Color.Red
-                                )
-                            }
-                            if (person.status != "Dead" && person.status != "Alive") {
-                                Icon(
-                                    modifier = Modifier
-                                        .size(40.dp)
-                                        .padding(top = 10.dp),
-                                    imageVector = Icons.Filled.Help,
-                                    contentDescription = stringResource(R.string.not_identify),
-                                    tint = Color.Gray
-                                )
-                            }
-                        }
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                top = AppTheme.dimens.halfContentMargin
+                            ),
+                        text = person.status ?: "",
+                        style = AppTheme.typography.body1,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                    )
+                    if (person.status == "Alive") {
+                        Icon(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .padding(top = 10.dp),
+                            imageVector = Icons.Filled.Done,
+                            contentDescription = "Alive",
+                            tint = Color.Green
+                        )
+                    }
+                    if (person.status == "Dead") {
+                        Icon(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .padding(top = 10.dp),
+                            imageVector = Icons.Filled.DisabledByDefault,
+                            contentDescription = "Dead",
+                            tint = Color.Red
+                        )
+                    }
+                    if (person.status != "Dead" && person.status != "Alive") {
+                        Icon(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .size(40.dp)
+                                .padding(top = 10.dp),
+                            imageVector = Icons.Filled.Help,
+                            contentDescription = stringResource(R.string.not_identify),
+                            tint = Color.Gray
+                        )
                     }
                 }
             }
         }
+
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopEnd) {
             val fabSize = 70.dp
             FloatingActionButton(
@@ -367,14 +367,9 @@ class PersonListFragment : ComposeFragment() {
                 backgroundColor = AppTheme.colors.primary,
                 onClick = {
                     if (!person.inFavorites) {
-                        val textAdd = R.string.added_to_favorites
                         viewModel.submitUIEvent(PersonListEvents.AddToFavorite(person))
                         person.inFavorites = true
-                        Toast.makeText(
-                            requireContext(),
-                            String.format("%s%s", person.name, textAdd),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        String.format("%s%s", person.name, R.string.added_to_favorites).showToast(requireContext())
                     } else {
                         val textDel = R.string.deleted_from_favorites
                         viewModel.submitUIEvent(PersonListEvents.DeleteFromFavorites(person.id))
@@ -388,26 +383,26 @@ class PersonListFragment : ComposeFragment() {
                     viewModel.submitUIEvent(PersonListEvents.CheckStatus(person))
                 }) {
                 Box(contentAlignment = Alignment.Center) {
-                    if (person.inFavorites) {
+                    if (person.inFavorites)
                         Icon(
                             modifier = Modifier.size(30.dp),
                             imageVector = Icons.Filled.Favorite,
                             contentDescription = null,
                             tint = Color.Black
                         )
-                    }
-                    if (!person.inFavorites) {
+                    else
                         Icon(
                             modifier = Modifier.size(30.dp),
                             imageVector = Icons.Filled.FavoriteBorder,
                             contentDescription = null,
                             tint = Color.Black
                         )
-                    }
+
                 }
             }
         }
     }
+
     private fun goToPerson(id: Int) = coordinator.goTo(Screens.PersonScreen(id))
 
     @Preview(name = "PersonsListScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
@@ -416,7 +411,7 @@ class PersonListFragment : ComposeFragment() {
         RickAndMortyMainTheme {
             val state = PersonListViewState(
                 isLoading = false,
-                pageInfo = Info(1,1,"",""),
+                pageInfo = Info(1, 1, "", ""),
                 currentPage = 1,
                 exit = false,
                 person = Person(id = 1),

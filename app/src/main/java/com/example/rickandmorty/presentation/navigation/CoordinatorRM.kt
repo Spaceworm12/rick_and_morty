@@ -14,7 +14,6 @@ class CoordinatorRM(
         val screen = map(screen)
         router.navigateTo(screen)
         stack.push(screen)
-        trackScreen()
     }
 
     override fun goToDistinct(screen: Screen) {
@@ -29,14 +28,12 @@ class CoordinatorRM(
     override fun goBack() {
         router.exit()
         if (stack.isNotEmpty()) stack.pop()
-        trackScreen()
     }
 
     override fun goBackTo(screen: Screen) {
         val screen = map(screen)
         router.backTo(screen)
         while (stack.isNotEmpty() && stack.peek()!!.screenKey != screen.screenKey) stack.pop()
-        trackScreen()
     }
 
     override fun replace(screen: Screen) {
@@ -44,7 +41,6 @@ class CoordinatorRM(
         router.replaceScreen(screen)
         if (stack.isNotEmpty()) stack.pop()
         stack.push(screen)
-        trackScreen()
     }
 
     override fun newRootScreen(screen: Screen) {
@@ -52,7 +48,6 @@ class CoordinatorRM(
         router.newRootScreen(screen)
         stack.clear()
         stack.push(screen)
-        trackScreen()
     }
 
     override fun clearStack() {
@@ -63,19 +58,9 @@ class CoordinatorRM(
         return screen
     }
 
-    private fun trackScreen() {
-        if (stack.isEmpty()) return
-        val screen = getScreenName(stack.peekFirst()!!)
-        val title = stack.reversed().joinToString(
-            separator = "/",
-            prefix = "/",
-            transform = { getScreenName(it) }
-        )
-    }
-
     private fun getScreenName(screen: Screen): String {
         return if (screen is FragmentScreen) {
-            screen.javaClass?.simpleName ?: "null"
+            screen.javaClass.simpleName ?: "null"
         } else {
             screen.javaClass.simpleName
         }

@@ -65,13 +65,12 @@ class PersonListViewModel(
         networkRepository.getInfo()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { resource ->
-                when (resource) {
-                    Resource.Loading -> viewState = viewState.copy(isLoading = true)
-                    is Resource.Data -> {
-                        viewState = viewState.copy(isLoading = false)
-                        viewState = viewState.copy(pageInfo = (resource.data))
-                    }
-                    is Resource.Error -> viewState = viewState.copy(isLoading = false)
+                viewState = when (resource) {
+                    Resource.Loading -> viewState.copy(isLoading = true)
+
+                    is Resource.Data -> viewState.copy(isLoading = false, pageInfo = (resource.data))
+
+                    is Resource.Error -> viewState.copy(isLoading = false)
                 }
             }
             .addTo(disposables)
@@ -83,7 +82,7 @@ class PersonListViewModel(
                 when (resource) {
                     Resource.Loading -> {}
                     is Resource.Data -> {
-                        person.inFavorites=resource.data
+                        person.inFavorites = resource.data
                     }
                     is Resource.Error -> viewState = viewState.copy(isLoading = false)
                 }

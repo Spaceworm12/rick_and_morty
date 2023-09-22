@@ -10,6 +10,7 @@ import com.example.rickandmorty.data.repository.LocalRepositoryImplement
 import com.example.rickandmorty.presentation.favorites.FavoritesListEvents
 import com.example.rickandmorty.presentation.model.LocalMapper
 import com.example.rickandmorty.presentation.model.modelperson.Person
+import com.example.rickandmorty.presentation.navigation.Coordinator
 import com.example.rickandmorty.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -19,6 +20,7 @@ class DetailPersonViewModel(
     private val networkRepository: NetworkRepositoryImpl = NetworkRepositoryImpl(App.getRickAndMortyApi()),
     private val repo: LocalRepository = LocalRepositoryImplement(App.dao(), App.getDb())
 ) : ViewModel() {
+    private val coordinator: Coordinator = App.getCoordinator()
     private val disposables = CompositeDisposable()
     private val _viewState = MutableLiveData(DetailPersonViewState())
     val viewStateObs: LiveData<DetailPersonViewState> get() = _viewState

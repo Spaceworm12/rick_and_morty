@@ -30,9 +30,7 @@ class FavoritesListViewModel(
     private fun handleUIEvent(event: FavoritesListEvents) {
         when (event) {
             is FavoritesListEvents.GetFavoritePersons -> loadLocalPersons()
-            is FavoritesListEvents.DeleteFromFavorites -> {
-                deleteFromFavorites(event.id)
-            }
+            is FavoritesListEvents.DeleteFromFavorites -> deleteFromFavorites(event.id)
         }
     }
 

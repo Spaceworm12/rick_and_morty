@@ -89,7 +89,7 @@ class FavoritesListFragment : ComposeFragment() {
                 onBackClick = { coordinator.goBack() },
             )
             LazyVerticalGrid(
-                columns = GridCells.Fixed(count = 1),
+                columns = GridCells.Fixed(count = 2),
             ) {
                 state.persons.forEach { person ->
                     item {

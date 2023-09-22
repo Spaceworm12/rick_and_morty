@@ -32,6 +32,7 @@ import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.navigation.Coordinator
 import com.example.rickandmorty.presentation.navigation.Screens
 
+//Зачем нужен этот экран?
 class CategoryListFragment : ComposeFragment() {
     private val coordinator: Coordinator = App.getCoordinator()
     @Composable
@@ -51,6 +52,7 @@ class CategoryListFragment : ComposeFragment() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                //Ресурсы...
                 .shadow(10.dp, RoundedCornerShape(bottomEnd = 15.dp, bottomStart = 15.dp))
                 .background(color = AppTheme.colors.background, shape = RoundedCornerShape(5.dp))
         ) {

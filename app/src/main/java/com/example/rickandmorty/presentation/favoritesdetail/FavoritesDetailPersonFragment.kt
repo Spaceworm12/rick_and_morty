@@ -55,6 +55,7 @@ import com.example.rickandmorty.presentation.composecomponents.shimmer.shimmerBa
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
 import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.presentation.navigation.Coordinator
+import com.example.rickandmorty.util.showToast
 
 class FavoritesDetailPersonFragment : ComposeFragment() {
     private val viewModel: FavoritesDetailPersonViewModel by lazy {
@@ -88,6 +89,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
     private fun DetailPersonListScreen(state: FavoritesDetailPersonViewState) {
         val currentId = arguments?.getInt(KEY)
         val textDel = stringResource(R.string.deleted_from_favorites)
+        val shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
         if (currentId != null) {
             viewModel.submitUIEvent(FavoritesDetailPersonEvent.ShowPerson(currentId))
         } else {
@@ -103,7 +105,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
             Toolbar(
                 title = stringResource(id = R.string.about_person),
                 subtitle = stringResource(id = R.string.about_person_subtitle),
-                onBackClick = { goToMainScreen()},
+                onBackClick = { goToMainScreen() },
                 actions = {
                     IconButton(onClick = {
                         viewModel.submitUIEvent(
@@ -112,11 +114,9 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                             )
                         )
                         state.person.inFavorites = false
-                        Toast.makeText(
-                            requireContext(),
-                            String.format("%s%s", state.person.name, textDel),
-                            Toast.LENGTH_SHORT
-                        ).show()
+
+                        String.format("%s%s", state.person.name, textDel).showToast(requireContext())
+
                         goToMainScreen()
                     }) {
                         Box(contentAlignment = Alignment.Center) {
@@ -153,7 +153,7 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                             bottom = AppTheme.dimens.halfContentMargin,
                             top = AppTheme.dimens.halfContentMargin
                         ),
-                    text = state.person.name ?: "Not identified",
+                    text = state.person.name,
                     style = AppTheme.typography.body1,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -172,22 +172,15 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                             .width(400.dp)
                             .wrapContentSize()
                             .padding(AppTheme.dimens.contentMargin)
-                            .clickable(indication = null,
+                            .clickable(
+                                indication = null,
                                 interactionSource = remember { MutableInteractionSource() },
                                 onClick = { }),
-                        shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin),
+                        shape = shape,
                     ) {
                         val painterImage = rememberImagePainter(data = state.person.avatar)
                         when (painterImage.state) {
-                            is ImagePainter.State.Loading -> {
-                                Box(
-                                    modifier = Modifier.shimmerBackground(
-                                        RoundedCornerShape(
-                                            AppTheme.dimens.halfContentMargin
-                                        )
-                                    )
-                                )
-                            }
+                            is ImagePainter.State.Loading -> Box(modifier = Modifier.shimmerBackground(shape))
 
                             is ImagePainter.State.Error -> {
                                 Image(
@@ -213,16 +206,15 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                     modifier = Modifier
                         .background(
                             color = Color(0x20000000),
-                            shape = RoundedCornerShape(AppTheme.dimens.halfContentMargin)
+                            shape = shape
                         )
-                        .fillMaxWidth()
+                        .fillMaxSize()
                         .padding(AppTheme.dimens.contentMargin),
                     horizontalAlignment = Alignment.Start
                 ) {
                     Row {
                         Text(
                             modifier = Modifier
-                                .wrapContentSize()
                                 .padding(
                                     bottom = AppTheme.dimens.halfContentMargin,
                                     top = AppTheme.dimens.halfContentMargin
@@ -237,7 +229,6 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                         )
                         Text(
                             modifier = Modifier
-                                .wrapContentSize()
                                 .padding(
                                     bottom = AppTheme.dimens.halfContentMargin,
                                     top = AppTheme.dimens.halfContentMargin
@@ -251,154 +242,153 @@ class FavoritesDetailPersonFragment : ComposeFragment() {
                             fontFamily = FontFamily.Monospace
                         )
                     }
-                    Column {
-                        Row {
-                            Text(
-                                modifier = Modifier
-                                    .wrapContentSize()
-                                    .padding(
-                                        bottom = AppTheme.dimens.halfContentMargin,
-                                        top = AppTheme.dimens.halfContentMargin
-                                    ),
-                                text = stringResource(id = R.string.gender_person),
-                                style = AppTheme.typography.body1,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight(700),
-                                fontFamily = FontFamily.SansSerif
-                            )
-                            Text(
-                                modifier = Modifier
-                                    .wrapContentSize()
-                                    .padding(
-                                        bottom = AppTheme.dimens.halfContentMargin,
-                                        top = AppTheme.dimens.halfContentMargin
-                                    ),
-                                text = if ((state.person.gender.toString() == "")||(state.person.gender.toString() == "unknown")) {
-                                    stringResource(id = R.string.not_identify)}else{state.person.gender.toString()},
-                                style = AppTheme.typography.body1,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight(700),
-                                fontFamily = FontFamily.Monospace
-                            )
-                        }
+                    Row {
+                        Text(
+                            modifier = Modifier
+                                .padding(
+                                    bottom = AppTheme.dimens.halfContentMargin,
+                                    top = AppTheme.dimens.halfContentMargin
+                                ),
+                            text = stringResource(id = R.string.gender_person),
+                            style = AppTheme.typography.body1,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight(700),
+                            fontFamily = FontFamily.SansSerif
+                        )
+                        Text(
+                            modifier = Modifier
+                                .padding(
+                                    bottom = AppTheme.dimens.halfContentMargin,
+                                    top = AppTheme.dimens.halfContentMargin
+                                ),
+                            text = if ((state.person.gender.toString() == "") || (state.person.gender.toString() == "unknown")) {
+                                stringResource(id = R.string.not_identify)
+                            } else {
+                                state.person.gender.toString()
+                            },
+                            style = AppTheme.typography.body1,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight(700),
+                            fontFamily = FontFamily.Monospace
+                        )
                     }
-                    Column {
-                        Row {
-                            Text(
-                                modifier = Modifier
-                                    .wrapContentSize()
-                                    .padding(
-                                        bottom = AppTheme.dimens.halfContentMargin,
-                                        top = AppTheme.dimens.halfContentMargin
-                                    ),
-                                text = stringResource(id = R.string.species_person),
-                                style = AppTheme.typography.body1,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight(700),
-                                fontFamily = FontFamily.SansSerif
-                            )
-                            Text(
-                                modifier = Modifier
-                                    .wrapContentSize()
-                                    .padding(
-                                        bottom = AppTheme.dimens.halfContentMargin,
-                                        top = AppTheme.dimens.halfContentMargin
-                                    ),
-                                text = if ((state.person.species.toString() != "")) {
-                                    state.person.species.toString()
-                                }else{
-                                    stringResource(id = R.string.not_identify)},
-                                style = AppTheme.typography.body1,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight(700),
-                                fontFamily = FontFamily.Monospace
-                            )
-                        }
+                    Row {
+                        Text(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(
+                                    bottom = AppTheme.dimens.halfContentMargin,
+                                    top = AppTheme.dimens.halfContentMargin
+                                ),
+                            text = stringResource(id = R.string.species_person),
+                            style = AppTheme.typography.body1,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight(700),
+                            fontFamily = FontFamily.SansSerif
+                        )
+                        Text(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(
+                                    bottom = AppTheme.dimens.halfContentMargin,
+                                    top = AppTheme.dimens.halfContentMargin
+                                ),
+                            text = if ((state.person.species.toString() != "")) {
+                                state.person.species.toString()
+                            } else {
+                                stringResource(id = R.string.not_identify)
+                            },
+                            style = AppTheme.typography.body1,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight(700),
+                            fontFamily = FontFamily.Monospace
+                        )
                     }
-                    Column {
-                        Row {
-                            Text(
-                                modifier = Modifier
-                                    .wrapContentSize()
-                                    .padding(
-                                        bottom = AppTheme.dimens.halfContentMargin,
-                                        top = AppTheme.dimens.halfContentMargin
-                                    ),
-                                text = stringResource(id = R.string.type_person),
-                                style = AppTheme.typography.body1,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight(700),
-                                fontFamily = FontFamily.SansSerif
-                            )
-                            Text(
-                                modifier = Modifier
-                                    .wrapContentSize()
-                                    .padding(
-                                        bottom = AppTheme.dimens.halfContentMargin,
-                                        top = AppTheme.dimens.halfContentMargin
-                                    ),
-                                text = if ((state.person.type.toString() != "")) {
-                                    state.person.type.toString()
-                                }else{
-                                    stringResource(id = R.string.not_identify)},
-                                style = AppTheme.typography.body1,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight(700),
-                                fontFamily = FontFamily.Monospace
-                            )
-                        }
+                    Row {
+                        Text(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(
+                                    bottom = AppTheme.dimens.halfContentMargin,
+                                    top = AppTheme.dimens.halfContentMargin
+                                ),
+                            text = stringResource(id = R.string.type_person),
+                            style = AppTheme.typography.body1,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight(700),
+                            fontFamily = FontFamily.SansSerif
+                        )
+                        Text(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(
+                                    bottom = AppTheme.dimens.halfContentMargin,
+                                    top = AppTheme.dimens.halfContentMargin
+                                ),
+                            text = if ((state.person.type.toString() != "")) {
+                                state.person.type.toString()
+                            } else {
+                                stringResource(id = R.string.not_identify)
+                            },
+                            style = AppTheme.typography.body1,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight(700),
+                            fontFamily = FontFamily.Monospace
+                        )
                     }
-                    Column {
-                        Row {
-                            Text(
-                                modifier = Modifier
-                                    .wrapContentSize()
-                                    .padding(
-                                        bottom = AppTheme.dimens.halfContentMargin,
-                                        top = AppTheme.dimens.halfContentMargin
-                                    ),
-                                text = stringResource(id = R.string.status_person),
-                                style = AppTheme.typography.body1,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight(700),
-                                fontFamily = FontFamily.SansSerif
-                            )
-                            Text(
-                                modifier = Modifier
-                                    .wrapContentSize()
-                                    .padding(
-                                        bottom = AppTheme.dimens.halfContentMargin,
-                                        top = AppTheme.dimens.halfContentMargin
-                                    ),
-                                text = if ((state.person.status.toString() == "")||(state.person.status.toString() == "unknown")) {
-                                    stringResource(id = R.string.not_identify)}else{state.person.status.toString()},
-                                style = AppTheme.typography.body1,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight(700),
-                                fontFamily = FontFamily.Monospace
-                            )
-                        }
+                    Row {
+                        Text(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(
+                                    bottom = AppTheme.dimens.halfContentMargin,
+                                    top = AppTheme.dimens.halfContentMargin
+                                ),
+                            text = stringResource(id = R.string.status_person),
+                            style = AppTheme.typography.body1,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight(700),
+                            fontFamily = FontFamily.SansSerif
+                        )
+                        Text(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(
+                                    bottom = AppTheme.dimens.halfContentMargin,
+                                    top = AppTheme.dimens.halfContentMargin
+                                ),
+                            text = if ((state.person.status.toString() == "") || (state.person.status.toString() == "unknown")) {
+                                stringResource(id = R.string.not_identify)
+                            } else {
+                                state.person.status.toString()
+                            },
+                            style = AppTheme.typography.body1,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight(700),
+                            fontFamily = FontFamily.Monospace
+                        )
                     }
                 }
             }
         }
     }
+
     private fun goToMainScreen() = coordinator.goBack()
 
     @Preview(name = "FavoriteDetailPersonScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
