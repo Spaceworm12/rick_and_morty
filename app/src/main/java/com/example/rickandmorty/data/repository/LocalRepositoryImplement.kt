@@ -1,17 +1,38 @@
 package com.example.rickandmorty.data.repository
 
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
 import com.example.rickandmorty.data.db.Dao
 import com.example.rickandmorty.data.db.Db
 import com.example.rickandmorty.data.db.entity.PersonEntity
+import com.example.rickandmorty.presentation.model.LocalMapper
+import com.example.rickandmorty.presentation.model.modelperson.Person
 import com.example.rickandmorty.util.Resource
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 
+class LocalRepositoryImplement(private val dao: Dao) : LocalRepository {
+    override fun getPersonsIds(): List<Int> {
+        return dao.getAllNotObs().map { it.id }
+    }
 
-class LocalRepositoryImplement(private val dao: Dao, private val db: Db) : LocalRepository {
-    override fun getFavoritePersons(): Observable<Resource<List<PersonEntity>>> {
+    override fun getFavoritePersons(): Observable<Resource<List<Person>>> {
         return dao.getAll()
-            .map<Resource<List<PersonEntity>>> { Resource.Data(it) }
+            .map<Resource<List<Person>>> { Resource.Data(LocalMapper.transformToPresentation(it)) }
+            .onErrorReturn { Resource.Error(it) }
+            .startWith(Resource.Loading)
+            .subscribeOn(Schedulers.io())
+    }
+
+    override fun getFavoritePersonInfo(id: Int): Observable<Resource<Person>> {
+        return dao.getInfo(id)
+            .map<Resource<Person>> { Resource.Data(LocalMapper.transformToPresentation(it)) }
+            .onErrorReturn { Resource.Error(it) }
+            .startWith(Resource.Loading)
+            .subscribeOn(Schedulers.io())
+    }
+
+    override fun getStatusPerson(id: Int): Observable<Resource<Boolean>> {
+        return dao.exists(id)
+            .map<Resource<Boolean>> { Resource.Data(it) }
             .onErrorReturn { Resource.Error(it) }
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())
@@ -26,12 +47,11 @@ class LocalRepositoryImplement(private val dao: Dao, private val db: Db) : Local
             .subscribeOn(Schedulers.io())
     }
 
-    override fun deletePersonFromFavorite(id: Long): Observable<Resource<Unit>> {
-        return dao.deleteExample(id)
+    override fun deletePersonFromFavorite(id: Int): Observable<Resource<Unit>> {
+        return dao.deletePerson(id)
             .andThen(Observable.just(Resource.Success))
             .onErrorReturn { Resource.Error(it) }
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())
     }
-
 }

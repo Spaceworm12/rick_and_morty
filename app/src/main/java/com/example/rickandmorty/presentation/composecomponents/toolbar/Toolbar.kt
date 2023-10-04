@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -50,6 +51,7 @@ fun Toolbar(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = title,
+                    fontFamily = FontFamily.SansSerif,
                     style = AppTheme.typography.h6
                 )
                 if (subtitle?.isNotBlank() == true) {
@@ -59,7 +61,8 @@ fun Toolbar(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = AppTheme.typography.body1,
-                        color = Color.Gray
+                        color = Color.Gray,
+                        fontFamily = FontFamily.SansSerif
                     )
                 }
 

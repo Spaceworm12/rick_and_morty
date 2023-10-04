@@ -7,6 +7,11 @@ import androidx.room.RoomMasterTable
 import com.example.rickandmorty.data.db.Dao
 import com.example.rickandmorty.data.db.Db
 import com.example.rickandmorty.data.network.networkrepo.RickAndMortyApi
+import com.example.rickandmorty.presentation.navigation.Coordinator
+import com.example.rickandmorty.presentation.navigation.CoordinatorRM
+import com.github.terrakok.cicerone.Cicerone
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.Router
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -24,16 +29,41 @@ class App : Application() {
     }
 
     companion object {
-
         private var appInstance: App? = null
         private var db: Db? = null
         private var sharedPreferences: SharedPreferences? = null
         private var api: RickAndMortyApi? = null
+        private val cicerone: Cicerone<Router> = Cicerone.create()
+        private val appCoordinator: Coordinator? = null
+        private val appNavHolder: NavigatorHolder? = null
+        private val appRouter: Router? = null
+
+        fun getNavigatorHolder(): NavigatorHolder {
+            if (appNavHolder == null) {
+                cicerone.getNavigatorHolder()
+            }
+            return cicerone.getNavigatorHolder()
+        }
+
+        fun getCoordinator(): Coordinator {
+            if (appCoordinator == null) {
+                CoordinatorRM(getRouter())
+            }
+            return CoordinatorRM(getRouter())
+        }
+
+        private fun getRouter(): Router {
+            if (appRouter == null) {
+                cicerone.router
+            }
+            return cicerone.router
+        }
 
         fun dao(): Dao {
             checkDb()
-            return db!!.exampleDao()
+            return db!!.personDao()
         }
+
         fun getDb(): Db {
             checkDb()
             return db!!
@@ -52,17 +82,9 @@ class App : Application() {
             }
         }
 
-        fun getSettings(): SharedPreferences {
-            if (sharedPreferences == null) {
-                sharedPreferences =
-                    appInstance!!.applicationContext.getSharedPreferences("THEME", MODE_PRIVATE)
-            }
-            return sharedPreferences!!
-        }
-
         fun getRickAndMortyApi(): RickAndMortyApi {
             val interceptor = HttpLoggingInterceptor()
-            interceptor.level= HttpLoggingInterceptor.Level.BODY
+            interceptor.level = HttpLoggingInterceptor.Level.BODY
             val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
             return api
                 ?: Retrofit.Builder()
@@ -72,5 +94,6 @@ class App : Application() {
                     .build()
                     .create(RickAndMortyApi::class.java)
         }
+
     }
 }

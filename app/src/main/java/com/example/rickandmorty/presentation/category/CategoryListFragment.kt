@@ -23,24 +23,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.rickandmorty.R
+import com.example.rickandmorty.application.App
 import com.example.rickandmorty.presentation.composecomponents.AppTheme
 import com.example.rickandmorty.presentation.composecomponents.ComposeFragment
 import com.example.rickandmorty.presentation.composecomponents.RickAndMortyMainTheme
 import com.example.rickandmorty.presentation.composecomponents.buttons.HorizontalBtn
 import com.example.rickandmorty.presentation.composecomponents.toolbar.Toolbar
-import com.example.rickandmorty.presentation.favorites.InFavoritesListFragment
-
+import com.example.rickandmorty.presentation.navigation.Coordinator
+import com.example.rickandmorty.presentation.navigation.Screens
 
 class CategoryListFragment : ComposeFragment() {
-
+    private val coordinator: Coordinator = App.getCoordinator()
     @Composable
     override fun GetContent() {
         RickAndMortyMainTheme {
             CategoryListScreen(
                 listOf(
                     stringResource(R.string.characters),
-                    stringResource(R.string.episodes),
-                    stringResource(R.string.locations)
                 )
             )
         }
@@ -72,7 +71,6 @@ class CategoryListFragment : ComposeFragment() {
                     contentDescription = "Background Image",
                     contentScale = ContentScale.Crop
                 )
-
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(count = 1),
                     modifier = Modifier.fillMaxSize(),
@@ -103,44 +101,8 @@ class CategoryListFragment : ComposeFragment() {
                         bottom = AppTheme.dimens.halfContentMargin,
                         top = AppTheme.dimens.halfContentMargin
                     ),
-
                 text = category,
-                onClick = {
-                    if (category == R.string.characters.toString()) {
-                        requireActivity()
-                            .supportFragmentManager
-                            .beginTransaction()
-                            .replace(
-                                R.id.fragment_container,
-                                InFavoritesListFragment()
-                            )
-                            .addToBackStack("")
-                            .commit()
-                    }
-                    if (category == R.string.locations.toString()) {
-                        requireActivity()
-                            .supportFragmentManager
-                            .beginTransaction()
-                            .replace(
-                                R.id.fragment_container,
-                                InFavoritesListFragment()
-                            )
-                            .addToBackStack("")
-                            .commit()
-                    } else {
-                        requireActivity()
-                            .supportFragmentManager
-                            .beginTransaction()
-                            .replace(
-                                R.id.fragment_container,
-                                InFavoritesListFragment()
-                            )
-                            .addToBackStack("")
-                            .commit()
-
-                    }
-                })
-
+                onClick = {coordinator.goTo(Screens.ListPersonsScreen()) })
         }
     }
 
